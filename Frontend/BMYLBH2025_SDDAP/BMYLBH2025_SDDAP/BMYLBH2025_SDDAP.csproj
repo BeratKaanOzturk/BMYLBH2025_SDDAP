@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{507305A9-BB34-43C3-9CC9-DDD19ECC5E36}</ProjectGuid>
+    <ProjectGuid>{B1613CFE-2653-4D42-8435-3972E9A924F9}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>BMYLBH2025_SDDAP</RootNamespace>
     <AssemblyName>BMYLBH2025_SDDAP</AssemblyName>
