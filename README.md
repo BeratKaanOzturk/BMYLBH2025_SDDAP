@@ -1,6 +1,6 @@
 # Inventory Management System
 
-Bu proje, Software Design Development and Practice dersi için hazırlanmış bir Envanter Yönetim Sistemidir.
+This project is an Inventory Management System prepared for Software Design Development and Practice course.
 
 ## About the Project
 
