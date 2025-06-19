@@ -9,14 +9,16 @@ namespace BMYLBH2025_SDDAP
     internal static class Program
     {
         /// <summary>
-        /// Uygulamanın ana girdi noktası.
+        /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            
+            // Show login form first
+            Application.Run(new LoginForm());
         }
     }
 }
