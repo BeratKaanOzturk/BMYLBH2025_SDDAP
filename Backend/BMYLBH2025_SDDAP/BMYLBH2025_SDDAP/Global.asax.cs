@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Data.SQLite;
+﻿using BMYLBH2025_SDDAP.Models;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -18,21 +17,9 @@ namespace BMYLBH2025_SDDAP
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             UnityConfig.RegisterComponents();
-            EnsureDatabase();
-        }
-        public static void EnsureDatabase()
-        {
-            var connStr = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
-            using (var conn = new SQLiteConnection(connStr))
-            {
-                conn.Open();
-                var cmd = conn.CreateCommand();
-                cmd.CommandText = @"CREATE TABLE IF NOT EXISTS Person (
-                                Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                Name TEXT NOT NULL
-                            );";
-                cmd.ExecuteNonQuery();
-            }
+            
+            // Initialize database with complete schema
+            DatabaseInitializer.InitializeDatabase();
         }
     }
 }

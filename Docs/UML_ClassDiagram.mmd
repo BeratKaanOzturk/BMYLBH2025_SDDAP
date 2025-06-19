@@ -1,0 +1,83 @@
+classDiagram
+    User --> Notification
+    Category --> Product
+    Product --> Inventory
+    Product --> OrderDetail
+    Supplier --> Order
+    Order --> OrderDetail
+
+    class User {
+        +int UserID
+        +string Username
+        +string Password
+        +string Email
+        +string Role
+        +bool IsActive
+        +ValidateLogin() bool
+        +UpdateProfile() void
+    }
+
+    class Product {
+        +int ProductID
+        +string Name
+        +string Description
+        +decimal Price
+        +int MinimumStockLevel
+        +int CategoryID
+        +UpdateInfo() void
+        +CheckStockLevel() bool
+    }
+
+    class Category {
+        +int CategoryID
+        +string Name
+        +string Description
+        +AddProduct() void
+        +RemoveProduct() void
+    }
+
+    class Inventory {
+        +int InventoryID
+        +int ProductID
+        +int Quantity
+        +DateTime LastUpdated
+        +UpdateQuantity() void
+    }
+
+    class Supplier {
+        +int SupplierID
+        +string Name
+        +string ContactPerson
+        +string Email
+        +string Phone
+        +string Address
+        +UpdateInfo() void
+    }
+
+    class Order {
+        +int OrderID
+        +int SupplierID
+        +DateTime OrderDate
+        +string Status
+        +decimal TotalAmount
+        +PlaceOrder() bool
+    }
+
+    class OrderDetail {
+        +int OrderDetailID
+        +int OrderID
+        +int ProductID
+        +int Quantity
+        +decimal UnitPrice
+        +CalculateLineTotal() decimal
+    }
+
+    class Notification {
+        +int NotificationID
+        +int UserID
+        +string Message
+        +DateTime Date
+        +bool IsRead
+        +MarkAsRead() void
+        +Send() bool
+    } 

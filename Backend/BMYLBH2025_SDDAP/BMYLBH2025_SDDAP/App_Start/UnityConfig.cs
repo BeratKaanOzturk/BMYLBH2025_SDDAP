@@ -15,8 +15,8 @@ namespace BMYLBH2025_SDDAP
             var connStr = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
 
             container.RegisterInstance<IDbConnectionFactory>(new SqliteConnectionFactory(connStr));
-            container.RegisterType<IInventoryRepository, InventoryRepository>();
             container.RegisterType<IUserRepository, UserRepository>();
+            container.RegisterType<IInventoryRepository, InventoryRepository>();
 
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
