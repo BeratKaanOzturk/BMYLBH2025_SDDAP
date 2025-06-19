@@ -13,6 +13,7 @@ namespace BMYLBH2025_SDDAP.Services
         Task<bool> SendVerificationEmailAsync(string to, string verificationToken);
         Task<bool> SendLowStockAlertAsync(string to, List<string> lowStockItems);
         Task<bool> SendWelcomeEmailAsync(string to, string userName);
+        Task<bool> SendPasswordResetOTPAsync(string to, string otp, string userName);
     }
 
     public class EmailService : IEmailService
@@ -28,11 +29,11 @@ namespace BMYLBH2025_SDDAP.Services
         public EmailService()
         {
             // Configure these in Web.config or use default values for development
-            _smtpServer = ConfigurationManager.AppSettings["SmtpServer"] ?? "smtp.gmail.com";
+            _smtpServer = ConfigurationManager.AppSettings["SmtpServer"] ?? "smtp.ethereal.email";
             _smtpPort = int.Parse(ConfigurationManager.AppSettings["SmtpPort"] ?? "587");
-            _smtpUsername = ConfigurationManager.AppSettings["SmtpUsername"] ?? "your-email@gmail.com";
-            _smtpPassword = ConfigurationManager.AppSettings["SmtpPassword"] ?? "your-app-password";
-            _fromEmail = ConfigurationManager.AppSettings["FromEmail"] ?? "noreply@inventory.com";
+            _smtpUsername = ConfigurationManager.AppSettings["SmtpUsername"] ?? "test.account@ethereal.email";
+            _smtpPassword = ConfigurationManager.AppSettings["SmtpPassword"] ?? "test.password";
+            _fromEmail = ConfigurationManager.AppSettings["FromEmail"] ?? "test.account@ethereal.email";
             _fromName = ConfigurationManager.AppSettings["FromName"] ?? "Inventory Management System";
             _enableSsl = bool.Parse(ConfigurationManager.AppSettings["SmtpEnableSsl"] ?? "true");
         }
@@ -41,6 +42,22 @@ namespace BMYLBH2025_SDDAP.Services
         {
             try
             {
+                // For development: Mock email sending (log instead of sending)
+                var isDevelopment = bool.Parse(ConfigurationManager.AppSettings["IsDevelopmentMode"] ?? "true");
+                
+                if (isDevelopment)
+                {
+                    // Log email details for development
+                    System.Diagnostics.Debug.WriteLine($"[MOCK EMAIL] To: {to}");
+                    System.Diagnostics.Debug.WriteLine($"[MOCK EMAIL] Subject: {subject}");
+                    System.Diagnostics.Debug.WriteLine($"[MOCK EMAIL] Body: {body}");
+                    
+                    // Simulate async operation
+                    await Task.Delay(100);
+                    return true;
+                }
+
+                // Production email sending
                 using (var client = new SmtpClient(_smtpServer, _smtpPort))
                 {
                     client.Credentials = new NetworkCredential(_smtpUsername, _smtpPassword);
@@ -62,7 +79,7 @@ namespace BMYLBH2025_SDDAP.Services
             }
             catch (Exception ex)
             {
-                // Log the exception (in a real application, use proper logging)
+                // Log the exception 
                 System.Diagnostics.Debug.WriteLine($"Email sending failed: {ex.Message}");
                 return false;
             }
@@ -88,6 +105,14 @@ namespace BMYLBH2025_SDDAP.Services
         {
             var subject = "Welcome to Inventory Management System! 🎉";
             var body = GenerateWelcomeEmailHtml(userName);
+            
+            return await SendEmailAsync(to, subject, body, true);
+        }
+
+        public async Task<bool> SendPasswordResetOTPAsync(string to, string otp, string userName)
+        {
+            var subject = "🔐 Password Reset Code - Inventory Management System";
+            var body = GeneratePasswordResetOTPHtml(otp, userName);
             
             return await SendEmailAsync(to, subject, body, true);
         }
@@ -234,6 +259,61 @@ namespace BMYLBH2025_SDDAP.Services
                         <div class='footer'>
                             <p>© 2025 Inventory Management System. All rights reserved.</p>
                             <p>Need help? Contact us at support@inventory.com</p>
+                        </div>
+                    </div>
+                </body>
+                </html>";
+        }
+
+        private string GeneratePasswordResetOTPHtml(string otp, string userName)
+        {
+            return $@"
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>Password Reset Code</title>
+                    <style>
+                        body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background-color: #f5f5f5; }}
+                        .container {{ max-width: 600px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }}
+                        .header {{ text-align: center; margin-bottom: 30px; }}
+                        .logo {{ font-size: 24px; font-weight: bold; color: #e74c3c; }}
+                        .content {{ line-height: 1.6; color: #333; }}
+                        .otp-code {{ font-size: 32px; font-weight: bold; color: #e74c3c; text-align: center; background-color: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0; letter-spacing: 5px; border: 2px dashed #e74c3c; }}
+                        .warning {{ background-color: #fff3cd; border: 1px solid #ffc107; color: #856404; padding: 15px; border-radius: 5px; margin: 20px 0; }}
+                        .footer {{ margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; font-size: 12px; color: #666; text-align: center; }}
+                    </style>
+                </head>
+                <body>
+                    <div class='container'>
+                        <div class='header'>
+                            <div class='logo'>🔐 Password Reset Request</div>
+                        </div>
+                        <div class='content'>
+                            <h2>Hello {userName}!</h2>
+                            <p>You have requested to reset your password for your Inventory Management System account.</p>
+                            
+                            <p>Please use the following 6-digit code to reset your password:</p>
+                            
+                            <div class='otp-code'>{otp}</div>
+                            
+                            <div class='warning'>
+                                <strong>⚠️ Important Security Information:</strong>
+                                <ul>
+                                    <li>This code will expire in <strong>15 minutes</strong></li>
+                                    <li>Do not share this code with anyone</li>
+                                    <li>If you didn't request this reset, please ignore this email</li>
+                                    <li>Enter this code in the password reset form on your application</li>
+                                </ul>
+                            </div>
+                            
+                            <p>After entering the code, you'll be able to set a new password for your account.</p>
+                            
+                            <p>If you didn't request this password reset, please contact our support team immediately.</p>
+                        </div>
+                        <div class='footer'>
+                            <p>© 2025 Inventory Management System. All rights reserved.</p>
+                            <p>This is an automated security email. Please do not reply to this message.</p>
                         </div>
                     </div>
                 </body>

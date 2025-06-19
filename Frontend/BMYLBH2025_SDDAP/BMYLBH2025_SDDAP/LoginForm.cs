@@ -8,28 +8,38 @@ namespace BMYLBH2025_SDDAP
     public partial class LoginForm : Form
     {
         private readonly ApiService _apiService;
+        private string _lastErrorEmail; // Store email for resend verification or forgot password
 
         public LoginForm()
         {
             InitializeComponent();
             _apiService = new ApiService();
+            HideErrorElements(); // Initially hide all error UI elements
         }
 
-        private async Task btnLogin_Click(object sender, EventArgs e)
+        private void HideErrorElements()
         {
+            lblErrorMessage.Visible = false;
+            btnResendVerification.Visible = false;
+            btnForgotPassword.Visible = false;
+        }
+
+        private async Task Login()
+        {
+            // Hide previous error messages
+            HideErrorElements();
+
             // Validate input
             if (string.IsNullOrWhiteSpace(txtEmail.Text))
             {
-                MessageBox.Show("Please enter your email address.", "Validation Error", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowErrorMessage("Please enter your email address.");
                 txtEmail.Focus();
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                MessageBox.Show("Please enter your password.", "Validation Error", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowErrorMessage("Please enter your password.");
                 txtPassword.Focus();
                 return;
             }
@@ -43,10 +53,10 @@ namespace BMYLBH2025_SDDAP
                 // Call backend API
                 var authResponse = await _apiService.LoginAsync(txtEmail.Text.Trim(), txtPassword.Text);
                 
-                if (!string.IsNullOrEmpty(authResponse.Token))
+                if (authResponse.Success && authResponse.Data?.Token != null)
                 {
                     // Store token and open main form
-                    _apiService.SetAuthToken(authResponse.Token);
+                    _apiService.SetAuthToken(authResponse.Data.Token);
                     
                     MessageBox.Show("Login successful!", "Success", 
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -59,14 +69,13 @@ namespace BMYLBH2025_SDDAP
                 }
                 else
                 {
-                    MessageBox.Show("Invalid login credentials.", "Login Failed", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // Handle specific error types
+                    HandleLoginError(authResponse);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Login failed: {ex.Message}", "Error", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowErrorMessage($"Login failed: {ex.Message}");
             }
             finally
             {
@@ -76,18 +85,42 @@ namespace BMYLBH2025_SDDAP
             }
         }
 
+        private void HandleLoginError(ApiResponse<LoginResponseData> response)
+        {
+            _lastErrorEmail = response.Data?.Email ?? txtEmail.Text.Trim();
+            
+            ShowErrorMessage(response.Message);
+
+            // Show appropriate action buttons based on error type
+            if (response.Data?.ShowResendVerification == true)
+            {
+                btnResendVerification.Visible = true;
+            }
+            
+            if (response.Data?.ShowForgotPassword == true)
+            {
+                btnForgotPassword.Visible = true;
+            }
+        }
+
+        private void ShowErrorMessage(string message)
+        {
+            lblErrorMessage.Text = message;
+            lblErrorMessage.Visible = true;
+        }
+
         private void btnRegister_Click(object sender, EventArgs e)
         {
             var registerForm = new RegisterForm();
             registerForm.ShowDialog();
         }
 
-        private void txtPassword_KeyPress(object sender, KeyPressEventArgs e)
+        private async void txtPassword_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Allow Enter key to trigger login
             if (e.KeyChar == (char)Keys.Enter)
             {
-                btnLogin_Click(sender, e);
+                await Login();
             }
         }
 
@@ -111,7 +144,57 @@ namespace BMYLBH2025_SDDAP
         {
             txtEmail.Text = "admin@inventory.com";
             txtPassword.Text = "admin123";
-            await btnLogin_Click(sender, e);
+            await Login();
+        }
+
+        private async void btnLogin_Click(object sender, EventArgs e)
+        {
+            await Login();
+        }
+
+        private async void btnResendVerification_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                btnResendVerification.Enabled = false;
+                btnResendVerification.Text = "Sending...";
+
+                var response = await _apiService.ResendVerificationEmailAsync(_lastErrorEmail);
+                
+                MessageBox.Show(response.Message, "Verification Email", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
+                HideErrorElements();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to send verification email: {ex.Message}", "Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                btnResendVerification.Enabled = true;
+                btnResendVerification.Text = "📧 Resend Verification Email";
+            }
+        }
+
+        private void btnForgotPassword_Click(object sender, EventArgs e)
+        {
+            var email = !string.IsNullOrWhiteSpace(_lastErrorEmail) ? _lastErrorEmail : txtEmail.Text.Trim();
+            
+            using (var resetForm = new PasswordResetForm(email))
+            {
+                if (resetForm.ShowDialog(this) == DialogResult.OK)
+                {
+                    MessageBox.Show("Password reset successfully! You can now log in with your new password.", 
+                        "Password Reset Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    
+                    // Clear password field and focus on it
+                    txtPassword.Clear();
+                    txtPassword.Focus();
+                    HideErrorElements();
+                }
+            }
         }
     }
 }

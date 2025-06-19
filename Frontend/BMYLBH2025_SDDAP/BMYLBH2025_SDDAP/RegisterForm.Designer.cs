@@ -35,16 +35,19 @@
             this.txtEmail = new System.Windows.Forms.TextBox();
             this.txtRePassword = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.txtFullName = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnRegister
             // 
-            this.btnRegister.Location = new System.Drawing.Point(113, 90);
+            this.btnRegister.Location = new System.Drawing.Point(113, 116);
             this.btnRegister.Name = "btnRegister";
             this.btnRegister.Size = new System.Drawing.Size(175, 49);
-            this.btnRegister.TabIndex = 7;
+            this.btnRegister.TabIndex = 4;
             this.btnRegister.Text = "REGISTER";
             this.btnRegister.UseVisualStyleBackColor = true;
+            this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
             // 
             // label2
             // 
@@ -66,41 +69,72 @@
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(113, 38);
+            this.txtPassword.Location = new System.Drawing.Point(113, 64);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(175, 20);
-            this.txtPassword.TabIndex = 3;
+            this.txtPassword.TabIndex = 2;
+            this.txtPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtField_KeyPress);
             // 
             // txtEmail
             // 
             this.txtEmail.Location = new System.Drawing.Point(113, 12);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(175, 20);
-            this.txtEmail.TabIndex = 4;
+            this.txtEmail.TabIndex = 0;
+            this.txtEmail.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtField_KeyPress);
             // 
             // txtRePassword
             // 
-            this.txtRePassword.Location = new System.Drawing.Point(113, 64);
+            this.txtRePassword.Location = new System.Drawing.Point(113, 90);
             this.txtRePassword.Name = "txtRePassword";
             this.txtRePassword.PasswordChar = '*';
             this.txtRePassword.Size = new System.Drawing.Size(175, 20);
             this.txtRePassword.TabIndex = 3;
+            this.txtRePassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtField_KeyPress);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 67);
+            this.label3.Location = new System.Drawing.Point(10, 93);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(97, 13);
             this.label3.TabIndex = 5;
             this.label3.Text = "RE-PASSWORD : ";
             // 
+            // txtFullName
+            // 
+            this.txtFullName.Location = new System.Drawing.Point(113, 38);
+            this.txtFullName.Name = "txtFullName";
+            this.txtFullName.Size = new System.Drawing.Size(175, 20);
+            this.txtFullName.TabIndex = 1;
+            this.txtFullName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtField_KeyPress);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(40, 41);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(67, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "FULL NAME";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(37, 67);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(70, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "PASSWORD";
+            // 
             // RegisterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(357, 174);
+            this.ClientSize = new System.Drawing.Size(357, 200);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.txtFullName);
             this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -108,8 +142,13 @@
             this.Controls.Add(this.txtRePassword);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.txtEmail);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "RegisterForm";
-            this.Text = "RegisterForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Register - Inventory Management System";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RegisterForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -124,5 +163,7 @@
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.TextBox txtRePassword;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtFullName;
+        private System.Windows.Forms.Label label4;
     }
 }

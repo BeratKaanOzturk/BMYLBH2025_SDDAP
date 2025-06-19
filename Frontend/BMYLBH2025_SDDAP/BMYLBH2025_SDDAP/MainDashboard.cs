@@ -37,8 +37,6 @@ namespace BMYLBH2025_SDDAP
             // Set placeholder text for search (since Designer doesn't support this in older .NET)
             txtSearchInventory.Text = "🔍 Search inventory...";
             txtSearchInventory.ForeColor = Color.Gray;
-            txtSearchInventory.Enter += TxtSearchInventory_Enter;
-            txtSearchInventory.Leave += TxtSearchInventory_Leave;
 
             // Apply modern styling to data grids
             StyleDataGridView(dgvInventory);
@@ -270,7 +268,8 @@ namespace BMYLBH2025_SDDAP
 
         private void TxtSearchInventory_Enter(object sender, EventArgs e)
         {
-            if (sender is TextBox textBox && textBox.Text == "🔍 Search inventory...")
+            var textBox = sender as TextBox;
+            if (textBox != null && textBox.Text == "🔍 Search inventory...")
             {
                 textBox.Text = "";
                 textBox.ForeColor = Color.Black;
@@ -279,7 +278,8 @@ namespace BMYLBH2025_SDDAP
 
         private void TxtSearchInventory_Leave(object sender, EventArgs e)
         {
-            if (sender is TextBox textBox && string.IsNullOrWhiteSpace(textBox.Text))
+            var textBox = sender as TextBox;
+            if (textBox != null && string.IsNullOrWhiteSpace(textBox.Text))
             {
                 textBox.Text = "🔍 Search inventory...";
                 textBox.ForeColor = Color.Gray;

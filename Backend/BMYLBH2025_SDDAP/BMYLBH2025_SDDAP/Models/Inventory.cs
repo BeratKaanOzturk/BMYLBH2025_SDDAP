@@ -60,18 +60,22 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = @"
-                    SELECT i.*, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID
+                    SELECT i.InventoryID, i.ProductID, i.Quantity, i.LastUpdated,
+                           p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
+                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription
                     FROM Inventory i
                     INNER JOIN Products p ON i.ProductID = p.ProductID
+                    LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
                     ORDER BY i.LastUpdated DESC";
                     
-                return con.Query<Inventory, Product, Inventory>(sql, 
-                    (inventory, product) => 
+                return con.Query<Inventory, Product, Category, Inventory>(sql, 
+                    (inventory, product, category) => 
                     {
+                        product.Category = category;
                         inventory.Product = product;
                         return inventory;
                     }, 
-                    splitOn: "Name").ToList();
+                    splitOn: "ProductID,CategoryID").ToList();
             }
         }
         
@@ -80,19 +84,23 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = @"
-                    SELECT i.*, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID
+                    SELECT i.InventoryID, i.ProductID, i.Quantity, i.LastUpdated,
+                           p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
+                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription
                     FROM Inventory i
                     INNER JOIN Products p ON i.ProductID = p.ProductID
+                    LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
                     WHERE i.InventoryID = @Id";
                     
-                return con.Query<Inventory, Product, Inventory>(sql, 
-                    (inventory, product) => 
+                return con.Query<Inventory, Product, Category, Inventory>(sql, 
+                    (inventory, product, category) => 
                     {
+                        product.Category = category;
                         inventory.Product = product;
                         return inventory;
                     }, 
                     new { Id = id },
-                    splitOn: "Name").FirstOrDefault();
+                    splitOn: "ProductID,CategoryID").FirstOrDefault();
             }
         }
         
@@ -139,19 +147,23 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = @"
-                    SELECT i.*, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID
+                    SELECT i.InventoryID, i.ProductID, i.Quantity, i.LastUpdated,
+                           p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
+                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription
                     FROM Inventory i
                     INNER JOIN Products p ON i.ProductID = p.ProductID
+                    LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
                     WHERE i.ProductID = @ProductId";
                     
-                return con.Query<Inventory, Product, Inventory>(sql, 
-                    (inventory, product) => 
+                return con.Query<Inventory, Product, Category, Inventory>(sql, 
+                    (inventory, product, category) => 
                     {
+                        product.Category = category;
                         inventory.Product = product;
                         return inventory;
                     }, 
                     new { ProductId = productId },
-                    splitOn: "Name").FirstOrDefault();
+                    splitOn: "ProductID,CategoryID").FirstOrDefault();
             }
         }
         
@@ -160,19 +172,23 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = @"
-                    SELECT i.*, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID
+                    SELECT i.InventoryID, i.ProductID, i.Quantity, i.LastUpdated,
+                           p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
+                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription
                     FROM Inventory i
                     INNER JOIN Products p ON i.ProductID = p.ProductID
+                    LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
                     WHERE i.Quantity <= p.MinimumStockLevel
                     ORDER BY i.Quantity ASC";
                     
-                return con.Query<Inventory, Product, Inventory>(sql, 
-                    (inventory, product) => 
+                return con.Query<Inventory, Product, Category, Inventory>(sql, 
+                    (inventory, product, category) => 
                     {
+                        product.Category = category;
                         inventory.Product = product;
                         return inventory;
                     }, 
-                    splitOn: "Name").ToList();
+                    splitOn: "ProductID,CategoryID").ToList();
             }
         }
         
@@ -181,20 +197,24 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = @"
-                    SELECT i.*, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID
+                    SELECT i.InventoryID, i.ProductID, i.Quantity, i.LastUpdated,
+                           p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
+                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription
                     FROM Inventory i
                     INNER JOIN Products p ON i.ProductID = p.ProductID
+                    LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
                     WHERE p.CategoryID = @CategoryId
                     ORDER BY p.Name";
                     
-                return con.Query<Inventory, Product, Inventory>(sql, 
-                    (inventory, product) => 
+                return con.Query<Inventory, Product, Category, Inventory>(sql, 
+                    (inventory, product, category) => 
                     {
+                        product.Category = category;
                         inventory.Product = product;
                         return inventory;
                     }, 
                     new { CategoryId = categoryId },
-                    splitOn: "Name").ToList();
+                    splitOn: "ProductID,CategoryID").ToList();
             }
         }
         

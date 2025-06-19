@@ -28,6 +28,8 @@ namespace BMYLBH2025_SDDAP.Models
                 InsertSampleData(conn);
             }
         }
+
+
         
         private static void CreateUsersTable(SQLiteConnection conn)
         {
@@ -36,11 +38,20 @@ namespace BMYLBH2025_SDDAP.Models
                 CREATE TABLE IF NOT EXISTS Users (
                     UserID INTEGER PRIMARY KEY AUTOINCREMENT,
                     Username TEXT NOT NULL UNIQUE,
-                    Password TEXT NOT NULL,
+                    Password TEXT,
+                    PasswordHash TEXT NOT NULL,
                     Email TEXT NOT NULL UNIQUE,
+                    FullName TEXT NOT NULL,
                     Role TEXT NOT NULL DEFAULT 'User',
                     IsActive BOOLEAN NOT NULL DEFAULT 1,
-                    CreatedDate DATETIME DEFAULT CURRENT_TIMESTAMP
+                    IsEmailVerified BOOLEAN NOT NULL DEFAULT 0,
+                    EmailVerificationToken TEXT,
+                    PasswordResetToken TEXT,
+                    PasswordResetExpiry DATETIME,
+                    PasswordResetOTP TEXT,
+                    OTPExpiry DATETIME,
+                    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
                 );";
             cmd.ExecuteNonQuery();
         }
@@ -53,7 +64,8 @@ namespace BMYLBH2025_SDDAP.Models
                     CategoryID INTEGER PRIMARY KEY AUTOINCREMENT,
                     Name TEXT NOT NULL UNIQUE,
                     Description TEXT,
-                    CreatedDate DATETIME DEFAULT CURRENT_TIMESTAMP
+                    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
                 );";
             cmd.ExecuteNonQuery();
         }
@@ -69,7 +81,8 @@ namespace BMYLBH2025_SDDAP.Models
                     Email TEXT,
                     Phone TEXT,
                     Address TEXT,
-                    CreatedDate DATETIME DEFAULT CURRENT_TIMESTAMP
+                    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
                 );";
             cmd.ExecuteNonQuery();
         }
@@ -85,7 +98,8 @@ namespace BMYLBH2025_SDDAP.Models
                     Price DECIMAL(10,2) NOT NULL,
                     MinimumStockLevel INTEGER NOT NULL DEFAULT 10,
                     CategoryID INTEGER,
-                    CreatedDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UpdatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                     FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
                 );";
             cmd.ExecuteNonQuery();
@@ -159,8 +173,9 @@ namespace BMYLBH2025_SDDAP.Models
         
         private static void InsertSampleData(SQLiteConnection conn)
         {
-            // Insert sample categories
             var cmd = conn.CreateCommand();
+            
+            // Insert sample categories
             cmd.CommandText = @"
                 INSERT OR IGNORE INTO Categories (Name, Description) VALUES 
                 ('Electronics', 'Electronic devices and components'),
@@ -174,10 +189,36 @@ namespace BMYLBH2025_SDDAP.Models
                 ('TechCorp Ltd', 'John Smith', 'john@techcorp.com', '+1-555-0123', '123 Tech Street, Silicon Valley, CA');";
             cmd.ExecuteNonQuery();
             
-            // Insert admin user (with plain password for now - should be hashed in production)
+            // Insert admin user with proper hashed password
             cmd.CommandText = @"
-                INSERT OR IGNORE INTO Users (Username, Password, Email, Role) VALUES 
-                ('admin', 'admin123', 'admin@inventory.com', 'Admin');";
+                INSERT OR IGNORE INTO Users (Username, PasswordHash, Email, FullName, Role, IsEmailVerified, CreatedAt, UpdatedAt) VALUES 
+                ('admin', '$2a$11$7Q.gWaI8eKQvJ5xQg5qjLek1yoKdC3F3YqVx8eqIy5Z2Q6GxJ8cK6', 'admin@inventory.com', 'System Administrator', 'Admin', 1, datetime('now'), datetime('now'));";
+            cmd.ExecuteNonQuery();
+            
+            // Insert sample products
+            cmd.CommandText = @"
+                INSERT OR IGNORE INTO Products (Name, Description, Price, MinimumStockLevel, CategoryID) VALUES 
+                ('Laptop Computer', 'High-performance business laptop', 1299.99, 5, 1),
+                ('Wireless Mouse', 'Ergonomic wireless optical mouse', 29.99, 20, 1),
+                ('USB Flash Drive', '64GB USB 3.0 flash drive', 19.99, 50, 1),
+                ('Office Chair', 'Ergonomic office chair with lumbar support', 299.99, 3, 3),
+                ('Desk Lamp', 'LED desk lamp with adjustable brightness', 49.99, 10, 3),
+                ('Printer Paper', 'A4 white copy paper - 500 sheets', 12.99, 100, 2),
+                ('Blue Pens', 'Pack of 10 blue ballpoint pens', 8.99, 30, 2),
+                ('Notebook', 'Spiral-bound notebook - 200 pages', 5.99, 25, 2);";
+            cmd.ExecuteNonQuery();
+            
+            // Insert sample inventory data
+            cmd.CommandText = @"
+                INSERT OR IGNORE INTO Inventory (ProductID, Quantity, LastUpdated) VALUES 
+                (1, 12, datetime('now')),  -- Laptops: 12 units (above min stock of 5)
+                (2, 45, datetime('now')),  -- Wireless Mouse: 45 units (above min stock of 20)
+                (3, 25, datetime('now')),  -- USB Flash Drive: 25 units (below min stock of 50) - LOW STOCK
+                (4, 2, datetime('now')),   -- Office Chair: 2 units (below min stock of 3) - LOW STOCK
+                (5, 15, datetime('now')),  -- Desk Lamp: 15 units (above min stock of 10)
+                (6, 150, datetime('now')), -- Printer Paper: 150 units (above min stock of 100)
+                (7, 8, datetime('now')),   -- Blue Pens: 8 units (below min stock of 30) - LOW STOCK
+                (8, 35, datetime('now'));  -- Notebook: 35 units (above min stock of 25)";
             cmd.ExecuteNonQuery();
         }
     }

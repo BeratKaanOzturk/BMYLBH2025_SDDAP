@@ -35,6 +35,9 @@
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.btnRegister = new System.Windows.Forms.Button();
             this.btnTestLogin = new System.Windows.Forms.Button();
+            this.btnResendVerification = new System.Windows.Forms.Button();
+            this.btnForgotPassword = new System.Windows.Forms.Button();
+            this.lblErrorMessage = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtEmail
@@ -62,6 +65,7 @@
             this.btnLogin.TabIndex = 2;
             this.btnLogin.Text = "LOGIN";
             this.btnLogin.UseVisualStyleBackColor = true;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // label2
             // 
@@ -101,11 +105,51 @@
             this.btnTestLogin.UseVisualStyleBackColor = true;
             this.btnTestLogin.Click += new System.EventHandler(this.btnTestLogin_Click);
             // 
+            // btnResendVerification
+            // 
+            this.btnResendVerification.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            this.btnResendVerification.ForeColor = System.Drawing.Color.White;
+            this.btnResendVerification.Location = new System.Drawing.Point(3, 140);
+            this.btnResendVerification.Name = "btnResendVerification";
+            this.btnResendVerification.Size = new System.Drawing.Size(190, 35);
+            this.btnResendVerification.TabIndex = 3;
+            this.btnResendVerification.Text = "📧 Resend Verification Email";
+            this.btnResendVerification.UseVisualStyleBackColor = false;
+            this.btnResendVerification.Visible = false;
+            this.btnResendVerification.Click += new System.EventHandler(this.btnResendVerification_Click);
+            // 
+            // btnForgotPassword
+            // 
+            this.btnForgotPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
+            this.btnForgotPassword.ForeColor = System.Drawing.Color.White;
+            this.btnForgotPassword.Location = new System.Drawing.Point(206, 140);
+            this.btnForgotPassword.Name = "btnForgotPassword";
+            this.btnForgotPassword.Size = new System.Drawing.Size(190, 35);
+            this.btnForgotPassword.TabIndex = 4;
+            this.btnForgotPassword.Text = "🔑 Forgot Password";
+            this.btnForgotPassword.UseVisualStyleBackColor = false;
+            this.btnForgotPassword.Visible = false;
+            this.btnForgotPassword.Click += new System.EventHandler(this.btnForgotPassword_Click);
+            // 
+            // lblErrorMessage
+            // 
+            this.lblErrorMessage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
+            this.lblErrorMessage.Location = new System.Drawing.Point(3, 110);
+            this.lblErrorMessage.Name = "lblErrorMessage";
+            this.lblErrorMessage.Size = new System.Drawing.Size(393, 25);
+            this.lblErrorMessage.TabIndex = 5;
+            this.lblErrorMessage.Text = "";
+            this.lblErrorMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblErrorMessage.Visible = false;
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(444, 124);
+            this.ClientSize = new System.Drawing.Size(444, 185);
+            this.Controls.Add(this.lblErrorMessage);
+            this.Controls.Add(this.btnForgotPassword);
+            this.Controls.Add(this.btnResendVerification);
             this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.btnTestLogin);
             this.Controls.Add(this.btnLogin);
@@ -113,8 +157,12 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.txtEmail);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "LoginForm";
-            this.Text = "LoginForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Login - Inventory Management System";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LoginForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -130,5 +178,8 @@
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Button btnRegister;
         private System.Windows.Forms.Button btnTestLogin;
+        private System.Windows.Forms.Button btnResendVerification;
+        private System.Windows.Forms.Button btnForgotPassword;
+        private System.Windows.Forms.Label lblErrorMessage;
     }
 }

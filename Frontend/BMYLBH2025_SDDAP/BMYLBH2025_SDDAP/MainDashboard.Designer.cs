@@ -340,6 +340,8 @@ namespace BMYLBH2025_SDDAP
             this.txtSearchInventory.Size = new System.Drawing.Size(250, 25);
             this.txtSearchInventory.TabIndex = 0;
             this.txtSearchInventory.TextChanged += new System.EventHandler(this.txtSearchInventory_TextChanged);
+            this.txtSearchInventory.Enter += new System.EventHandler(this.TxtSearchInventory_Enter);
+            this.txtSearchInventory.Leave += new System.EventHandler(this.TxtSearchInventory_Leave);
             // 
             // tabProducts
             // 

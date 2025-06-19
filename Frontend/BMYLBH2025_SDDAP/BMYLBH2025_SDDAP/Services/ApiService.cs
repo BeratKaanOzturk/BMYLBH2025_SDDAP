@@ -56,15 +56,28 @@ namespace BMYLBH2025_SDDAP.Services
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 
                 var response = await _httpClient.PostAsync(endpoint, content);
+                var responseContent = await response.Content.ReadAsStringAsync();
                 
-                if (response.IsSuccessStatusCode)
+                // Always try to deserialize the response content, regardless of status code
+                // This allows us to handle structured error responses from the backend
+                if (!string.IsNullOrEmpty(responseContent))
                 {
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<T>(responseContent);
+                    try
+                    {
+                        return JsonConvert.DeserializeObject<T>(responseContent);
+                    }
+                    catch (JsonException)
+                    {
+                        // If deserialization fails, throw the original error
+                        throw new HttpRequestException($"API call failed: {response.StatusCode} - {responseContent}");
+                    }
                 }
                 
-                var errorContent = await response.Content.ReadAsStringAsync();
-                throw new HttpRequestException($"API call failed: {response.StatusCode} - {errorContent}");
+                throw new HttpRequestException($"API call failed: {response.StatusCode} - No response content");
+            }
+            catch (HttpRequestException)
+            {
+                throw; // Re-throw HTTP exceptions as-is
             }
             catch (Exception ex)
             {
@@ -109,10 +122,40 @@ namespace BMYLBH2025_SDDAP.Services
         }
 
         // Authentication Methods
-        public async Task<AuthResponse> LoginAsync(string email, string password)
+        public async Task<ApiResponse<LoginResponseData>> LoginAsync(string email, string password)
         {
             var loginRequest = new { Email = email, Password = password };
-            return await PostAsync<AuthResponse>("api/auth/login", loginRequest);
+            return await PostAsync<ApiResponse<LoginResponseData>>("api/auth/login", loginRequest);
+        }
+
+        public async Task<ApiResponse<RegisterResponseData>> RegisterAsync(string email, string password, string fullName)
+        {
+            var registerRequest = new { Email = email, Password = password, FullName = fullName };
+            return await PostAsync<ApiResponse<RegisterResponseData>>("api/auth/register", registerRequest);
+        }
+
+        public async Task<ApiResponse<EmailResponseData>> ResendVerificationEmailAsync(string email)
+        {
+            var request = new { Email = email };
+            return await PostAsync<ApiResponse<EmailResponseData>>("api/auth/resend-verification", request);
+        }
+
+        public async Task<ApiResponse<EmailResponseData>> ForgotPasswordAsync(string email)
+        {
+            var request = new { Email = email };
+            return await PostAsync<ApiResponse<EmailResponseData>>("api/auth/forgot-password", request);
+        }
+
+        public async Task<ApiResponse<OTPResponseData>> VerifyResetOTPAsync(string email, string otp)
+        {
+            var request = new { Email = email, OTP = otp };
+            return await PostAsync<ApiResponse<OTPResponseData>>("api/auth/verify-reset-otp", request);
+        }
+
+        public async Task<ApiResponse<PasswordResetResponseData>> ResetPasswordAsync(string email, string otp, string newPassword)
+        {
+            var request = new { Email = email, OTP = otp, NewPassword = newPassword };
+            return await PostAsync<ApiResponse<PasswordResetResponseData>>("api/auth/reset-password", request);
         }
 
         // Inventory Methods
@@ -203,11 +246,53 @@ namespace BMYLBH2025_SDDAP.Services
         }
     }
 
+    // Generic API Response wrapper
+    public class ApiResponse<T>
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public T Data { get; set; }
+        public string ErrorType { get; set; }
+        public DateTime Timestamp { get; set; }
+    }
+
+    public class ApiResponse : ApiResponse<object>
+    {
+    }
+
     // DTOs matching backend models
-    public class AuthResponse
+    public class LoginResponseData
     {
         public string Token { get; set; }
-        public string Message { get; set; }
+        public string Email { get; set; }
+        public string FullName { get; set; }
+        public string Role { get; set; }
+        public bool ShowResendVerification { get; set; }
+        public bool ShowForgotPassword { get; set; }
+    }
+
+    public class RegisterResponseData
+    {
+        public int UserId { get; set; }
+        public string Email { get; set; }
+    }
+
+    public class EmailResponseData
+    {
+        public string Email { get; set; }
+        public string Action { get; set; }
+    }
+
+    public class OTPResponseData
+    {
+        public string Email { get; set; }
+        public bool IsValid { get; set; }
+    }
+
+    public class PasswordResetResponseData
+    {
+        public string Email { get; set; }
+        public bool Success { get; set; }
     }
 
     public class InventoryItem

@@ -18,8 +18,12 @@ namespace BMYLBH2025_SDDAP
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             UnityConfig.RegisterComponents();
             
-            // Initialize database with complete schema
+            // Initialize database with complete schema and test
             DatabaseInitializer.InitializeDatabase();
+            
+            // Test database connection and data (for debugging)
+            System.Diagnostics.Debug.WriteLine("=== Testing Database Connection ===");
+            TestDbConnection.TestConnection();
         }
     }
 }
