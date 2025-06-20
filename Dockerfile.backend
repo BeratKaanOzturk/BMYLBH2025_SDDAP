@@ -1,21 +1,65 @@
-# Backend API Dockerfile
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-WORKDIR /app
+# BMYLBH2025_SDDAP Backend API - .NET Framework 4.8 Dockerfile
+# Multi-stage build for optimized production container
+
+# Build stage using .NET Framework SDK
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2022 AS build
+WORKDIR /src
+
+# Copy solution and project files first for better layer caching
+COPY Backend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP.sln Backend/BMYLBH2025_SDDAP/
+COPY Backend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP.csproj Backend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP/
+COPY Backend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP.Tests/BMYLBH2025_SDDAP.Tests.csproj Backend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP.Tests/
+
+# Copy packages.config files
+COPY Backend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP/packages.config Backend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP/
+COPY Backend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP.Tests/packages.config Backend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP.Tests/
+
+# Restore NuGet packages
+WORKDIR /src/Backend/BMYLBH2025_SDDAP
+RUN nuget restore BMYLBH2025_SDDAP.sln
+
+# Copy all source code
+COPY Backend/BMYLBH2025_SDDAP/ .
+
+# Build the application
+WORKDIR /src/Backend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP
+RUN msbuild BMYLBH2025_SDDAP.csproj /p:Configuration=Release /p:Platform="Any CPU" /p:OutputPath=/app/publish/bin
+
+# Production stage using IIS on Windows Server Core
+FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2022 AS runtime
+
+# Set working directory
+WORKDIR /inetpub/wwwroot
+
+# Copy application files from build stage
+COPY --from=build /src/Backend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP/ .
+
+# Copy SQLite database
+COPY Backend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP/App_Data/ ./App_Data/
+
+# Set up IIS configuration
+RUN powershell -Command \
+    Import-Module WebAdministration; \
+    Remove-Website -Name 'Default Web Site'; \
+    New-Website -Name 'BMYLBH2025_API' -Port 80 -PhysicalPath 'C:\inetpub\wwwroot'; \
+    Set-ItemProperty -Path 'IIS:\Sites\BMYLBH2025_API' -Name applicationPool -Value 'DefaultAppPool'; \
+    Set-ItemProperty -Path 'IIS:\AppPools\DefaultAppPool' -Name processModel.identityType -Value ApplicationPoolIdentity; \
+    Set-ItemProperty -Path 'IIS:\AppPools\DefaultAppPool' -Name managedRuntimeVersion -Value 'v4.0'
+
+# Set proper permissions for App_Data directory (SQLite database)
+RUN powershell -Command \
+    $acl = Get-Acl 'C:\inetpub\wwwroot\App_Data'; \
+    $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule('IIS_IUSRS','FullControl','ContainerInherit,ObjectInherit','None','Allow'); \
+    $acl.SetAccessRule($accessRule); \
+    Set-Acl 'C:\inetpub\wwwroot\App_Data' $acl
+
+# Health check endpoint
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD powershell -command "try { Invoke-WebRequest -Uri http://localhost/api/categories -UseBasicParsing | Out-Null; exit 0 } catch { exit 1 }"
+
+# Expose ports
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ["Backend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP.csproj", "BMYLBH2025_SDDAP/"]
-RUN dotnet restore "BMYLBH2025_SDDAP/BMYLBH2025_SDDAP.csproj"
-COPY Backend/BMYLBH2025_SDDAP/ .
-WORKDIR "/src/BMYLBH2025_SDDAP"
-RUN dotnet build "BMYLBH2025_SDDAP.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "BMYLBH2025_SDDAP.csproj" -c Release -o /app/publish
-
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "BMYLBH2025_SDDAP.dll"]
+# Start IIS
+CMD ["powershell", "-Command", "Start-Service W3SVC; while ($true) { Start-Sleep -Seconds 3600 }"]

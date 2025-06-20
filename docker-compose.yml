@@ -1,0 +1,89 @@
+version: '3.8'
+
+# BMYLBH2025_SDDAP - Docker Compose Configuration
+# Week 11: Containerization Implementation
+
+services:
+  # Backend API Service
+  bmylbh-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: bmylbh2025-backend-api
+    ports:
+      - "8080:80"     # HTTP
+      - "8443:443"    # HTTPS
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - IsDevelopmentMode=false
+      - IsContainerMode=true
+    volumes:
+      # Persistent volume for SQLite database
+      - bmylbh-data:/inetpub/wwwroot/App_Data
+      # Persistent volume for logs
+      - bmylbh-logs:/inetpub/logs
+    networks:
+      - bmylbh-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "powershell", "-command", "try { Invoke-WebRequest -Uri http://localhost/api/categories -UseBasicParsing | Out-Null; exit 0 } catch { exit 1 }"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    labels:
+      - "com.bmylbh2025.service=backend-api"
+      - "com.bmylbh2025.version=1.0"
+      - "com.bmylbh2025.description=BMYLBH2025 SDDAP Backend API"
+
+  # Database Backup Service (Optional)
+  bmylbh-backup:
+    image: mcr.microsoft.com/windows/servercore:ltsc2022
+    container_name: bmylbh2025-backup
+    volumes:
+      - bmylbh-data:/data
+      - bmylbh-backups:/backups
+    command: >
+      powershell -Command "
+      while ($true) {
+        $timestamp = Get-Date -Format 'yyyyMMdd_HHmmss'
+        Copy-Item '/data/BMYLBH2025_SDDAP.sqlite' '/backups/BMYLBH2025_SDDAP_$timestamp.sqlite' -Force
+        Write-Host 'Database backup created: BMYLBH2025_SDDAP_$timestamp.sqlite'
+        Start-Sleep -Seconds 86400
+      }"
+    networks:
+      - bmylbh-network
+    restart: unless-stopped
+    depends_on:
+      - bmylbh-backend
+    labels:
+      - "com.bmylbh2025.service=database-backup"
+      - "com.bmylbh2025.version=1.0"
+
+# Persistent Volumes
+volumes:
+  bmylbh-data:
+    driver: local
+    name: bmylbh2025_database_data
+    labels:
+      - "com.bmylbh2025.volume=database"
+      
+  bmylbh-logs:
+    driver: local
+    name: bmylbh2025_application_logs
+    labels:
+      - "com.bmylbh2025.volume=logs"
+      
+  bmylbh-backups:
+    driver: local
+    name: bmylbh2025_database_backups
+    labels:
+      - "com.bmylbh2025.volume=backups"
+
+# Networks
+networks:
+  bmylbh-network:
+    driver: bridge
+    name: bmylbh2025_network
+    labels:
+      - "com.bmylbh2025.network=main" 
