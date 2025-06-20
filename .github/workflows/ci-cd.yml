@@ -140,13 +140,13 @@ jobs:
     - name: Generate Quality Report
       run: |
         echo "Generating code quality report..."
-        mkdir -p quality-reports
-        echo "Code Quality Report - Build ${{ github.run_number }}" > quality-reports/quality-report.txt
-        echo "Generated on: $(date)" >> quality-reports/quality-report.txt
-        echo "Commit: ${{ github.sha }}" >> quality-reports/quality-report.txt
-        echo "Branch: ${{ github.ref_name }}" >> quality-reports/quality-report.txt
-        echo "" >> quality-reports/quality-report.txt
-        echo "✅ All quality gates passed" >> quality-reports/quality-report.txt
+        New-Item -ItemType Directory -Path "quality-reports" -Force
+        echo "Code Quality Report - Build ${{ github.run_number }}" | Out-File "quality-reports/quality-report.txt" -Encoding UTF8
+        echo "Generated on: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" | Out-File "quality-reports/quality-report.txt" -Append -Encoding UTF8
+        echo "Commit: ${{ github.sha }}" | Out-File "quality-reports/quality-report.txt" -Append -Encoding UTF8
+        echo "Branch: ${{ github.ref_name }}" | Out-File "quality-reports/quality-report.txt" -Append -Encoding UTF8
+        echo "" | Out-File "quality-reports/quality-report.txt" -Append -Encoding UTF8
+        echo "✅ All quality gates passed" | Out-File "quality-reports/quality-report.txt" -Append -Encoding UTF8
         
     - name: Upload Quality Report
       uses: actions/upload-artifact@v4
@@ -186,7 +186,6 @@ jobs:
         
     - name: Create Release Manifest
       run: |
-        mkdir -p release-package
         $manifest = @{
           version = "1.0.${{ github.run_number }}"
           build_number = "${{ github.run_number }}"
@@ -202,7 +201,7 @@ jobs:
         
     - name: Create Deployment Scripts
       run: |
-        mkdir -p release-package/deployment-scripts
+        New-Item -ItemType Directory -Path "release-package/deployment-scripts" -Force
         
         # Backend deployment script
         @"
@@ -231,7 +230,7 @@ jobs:
         
     - name: Create Release Documentation
       run: |
-        mkdir -p release-package/docs
+        New-Item -ItemType Directory -Path "release-package/docs" -Force
         @"
         # BMYLBH2025_SDDAP Release Package
         
