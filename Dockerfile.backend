@@ -1,0 +1,21 @@
+# Backend API Dockerfile
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["Backend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP.csproj", "BMYLBH2025_SDDAP/"]
+RUN dotnet restore "BMYLBH2025_SDDAP/BMYLBH2025_SDDAP.csproj"
+COPY Backend/BMYLBH2025_SDDAP/ .
+WORKDIR "/src/BMYLBH2025_SDDAP"
+RUN dotnet build "BMYLBH2025_SDDAP.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "BMYLBH2025_SDDAP.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "BMYLBH2025_SDDAP.dll"]

@@ -1,0 +1,8 @@
+{
+  "Version": "1.0.0",
+  "FrontendPath": "deployment/Staging/frontend",
+  "Configuration": "Debug",
+  "DeploymentDate": "2025-06-20 21:41:01",
+  "Environment": "Staging",
+  "BackendPath": "deployment/Staging/backend"
+}

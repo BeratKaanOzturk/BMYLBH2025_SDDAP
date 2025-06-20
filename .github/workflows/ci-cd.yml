@@ -1,0 +1,128 @@
+name: CI/CD Pipeline - BMYLBH2025_SDDAP
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+env:
+  DOTNET_VERSION: '6.0.x'
+
+jobs:
+  # Backend API Build and Test
+  backend-build-test:
+    name: Backend API - Build & Test
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+      
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.5
+      
+    - name: Restore Backend Dependencies
+      run: |
+        cd Backend/BMYLBH2025_SDDAP
+        nuget restore BMYLBH2025_SDDAP.sln
+        
+    - name: Build Backend Solution
+      run: |
+        cd Backend/BMYLBH2025_SDDAP
+        msbuild BMYLBH2025_SDDAP.sln /p:Configuration=Release /p:Platform="Any CPU"
+        
+    - name: Run Backend Unit Tests
+      run: |
+        cd Backend/BMYLBH2025_SDDAP
+        dotnet test BMYLBH2025_SDDAP.Tests/BMYLBH2025_SDDAP.Tests.csproj --configuration Release --logger trx --results-directory TestResults/
+        
+    - name: Upload Backend Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: backend-test-results
+        path: Backend/BMYLBH2025_SDDAP/TestResults/
+        
+    - name: Upload Backend Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: backend-build
+        path: Backend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP/bin/Release/
+
+  # Frontend Windows Forms Build and Test
+  frontend-build-test:
+    name: Frontend Windows Forms - Build & Test
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+      
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.5
+      
+    - name: Restore Frontend Dependencies
+      run: |
+        cd Frontend/BMYLBH2025_SDDAP
+        nuget restore BMYLBH2025_SDDAP.sln
+        
+    - name: Build Frontend Solution
+      run: |
+        cd Frontend/BMYLBH2025_SDDAP
+        msbuild BMYLBH2025_SDDAP.sln /p:Configuration=Release /p:Platform="Any CPU"
+        
+    - name: Run Frontend Unit Tests
+      run: |
+        cd Frontend/BMYLBH2025_SDDAP
+        msbuild BMYLBH2025_SDDAP.Tests/BMYLBH2025_SDDAP.Tests.csproj /p:Configuration=Release
+        
+    - name: Upload Frontend Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: frontend-test-results
+        path: Frontend/BMYLBH2025_SDDAP/TestResults/
+        
+    - name: Upload Frontend Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: frontend-build
+        path: Frontend/BMYLBH2025_SDDAP/BMYLBH2025_SDDAP/bin/Release/
+
+  # Deployment Job
+  deploy:
+    name: Deploy Application
+    runs-on: windows-latest
+    needs: [backend-build-test, frontend-build-test]
+    if: github.ref == 'refs/heads/master'
+    
+    steps:
+    - name: Download Backend Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: backend-build
+        path: ./deployment/backend/
+        
+    - name: Download Frontend Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: frontend-build
+        path: ./deployment/frontend/
+        
+    - name: Deploy Application
+      run: |
+        echo "Deploying BMYLBH2025_SDDAP Application..."
+        echo "Backend deployed to: ./deployment/backend/"
+        echo "Frontend deployed to: ./deployment/frontend/"

@@ -54,3 +54,9 @@ C:\projects\kaan\BMYLBH2025_SDDAP\Backend\BMYLBH2025_SDDAP\BMYLBH2025_SDDAP.Test
 C:\projects\kaan\BMYLBH2025_SDDAP\Backend\BMYLBH2025_SDDAP\BMYLBH2025_SDDAP.Tests\obj\Debug\BMYLBH20.FBC2EFB1.Up2Date
 C:\projects\kaan\BMYLBH2025_SDDAP\Backend\BMYLBH2025_SDDAP\BMYLBH2025_SDDAP.Tests\obj\Debug\BMYLBH2025_SDDAP.Tests.dll
 C:\projects\kaan\BMYLBH2025_SDDAP\Backend\BMYLBH2025_SDDAP\BMYLBH2025_SDDAP.Tests\obj\Debug\BMYLBH2025_SDDAP.Tests.pdb
+C:\projects\kaan\BMYLBH2025_SDDAP\Backend\BMYLBH2025_SDDAP\BMYLBH2025_SDDAP.Tests\bin\Debug\tr\Microsoft.TestPlatform.AdapterUtilities.resources.dll
+C:\projects\kaan\BMYLBH2025_SDDAP\Backend\BMYLBH2025_SDDAP\BMYLBH2025_SDDAP.Tests\bin\Debug\tr\Microsoft.TestPlatform.CoreUtilities.resources.dll
+C:\projects\kaan\BMYLBH2025_SDDAP\Backend\BMYLBH2025_SDDAP\BMYLBH2025_SDDAP.Tests\bin\Debug\tr\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.resources.dll
+C:\projects\kaan\BMYLBH2025_SDDAP\Backend\BMYLBH2025_SDDAP\BMYLBH2025_SDDAP.Tests\bin\Debug\tr\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.resources.dll
+C:\projects\kaan\BMYLBH2025_SDDAP\Backend\BMYLBH2025_SDDAP\BMYLBH2025_SDDAP.Tests\bin\Debug\tr\Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll
+C:\projects\kaan\BMYLBH2025_SDDAP\Backend\BMYLBH2025_SDDAP\BMYLBH2025_SDDAP.Tests\bin\Debug\tr\Microsoft.VisualStudio.TestPlatform.TestFramework.resources.dll
