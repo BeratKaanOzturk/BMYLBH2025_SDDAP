@@ -165,6 +165,7 @@ namespace BMYLBH2025_SDDAP.Models
                     Type TEXT NOT NULL DEFAULT 'General',
                     Priority TEXT NOT NULL DEFAULT 'Medium',
                     Date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                     IsRead BOOLEAN NOT NULL DEFAULT 0,
                     FOREIGN KEY (UserID) REFERENCES Users(UserID)
                 );";

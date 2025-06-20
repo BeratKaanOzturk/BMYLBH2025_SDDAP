@@ -1,5 +1,4 @@
 using BMYLBH2025_SDDAP.Models;
-using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +9,11 @@ namespace BMYLBH2025_SDDAP.Controllers
     [RoutePrefix("api/products")]
     public class ProductsController : ApiController
     {
-        private readonly IDbConnectionFactory _connectionFactory;
+        private readonly IProductRepository _productRepository;
 
-        public ProductsController(IDbConnectionFactory connectionFactory)
+        public ProductsController(IProductRepository productRepository)
         {
-            _connectionFactory = connectionFactory;
+            _productRepository = productRepository;
         }
 
         // GET api/products
@@ -24,24 +23,8 @@ namespace BMYLBH2025_SDDAP.Controllers
         {
             try
             {
-                using (var con = _connectionFactory.CreateConnection())
-                {
-                    const string sql = @"
-                        SELECT p.*, c.Name as CategoryName, c.Description as CategoryDescription
-                        FROM Products p
-                        LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
-                        ORDER BY p.Name";
-
-                    var products = con.Query<Product, Category, Product>(sql,
-                        (product, category) =>
-                        {
-                            product.Category = category;
-                            return product;
-                        },
-                        splitOn: "CategoryName").ToList();
-
-                    return Ok(products);
-                }
+                var products = _productRepository.GetAll();
+                return Ok(ApiResponse<IEnumerable<Product>>.CreateSuccess(products, "Products retrieved successfully"));
             }
             catch (Exception ex)
             {
@@ -59,28 +42,11 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (id <= 0)
                     return BadRequest("Invalid product ID");
 
-                using (var con = _connectionFactory.CreateConnection())
-                {
-                    const string sql = @"
-                        SELECT p.*, c.Name as CategoryName, c.Description as CategoryDescription
-                        FROM Products p
-                        LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
-                        WHERE p.ProductID = @Id";
+                var product = _productRepository.GetById(id);
+                if (product == null)
+                    return NotFound();
 
-                    var product = con.Query<Product, Category, Product>(sql,
-                        (product, category) =>
-                        {
-                            product.Category = category;
-                            return product;
-                        },
-                        new { Id = id },
-                        splitOn: "CategoryName").FirstOrDefault();
-
-                    if (product == null)
-                        return NotFound();
-
-                    return Ok(product);
-                }
+                return Ok(ApiResponse<Product>.CreateSuccess(product, "Product retrieved successfully"));
             }
             catch (Exception ex)
             {
@@ -98,26 +64,8 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (categoryId <= 0)
                     return BadRequest("Invalid category ID");
 
-                using (var con = _connectionFactory.CreateConnection())
-                {
-                    const string sql = @"
-                        SELECT p.*, c.Name as CategoryName, c.Description as CategoryDescription
-                        FROM Products p
-                        LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
-                        WHERE p.CategoryID = @CategoryId
-                        ORDER BY p.Name";
-
-                    var products = con.Query<Product, Category, Product>(sql,
-                        (product, category) =>
-                        {
-                            product.Category = category;
-                            return product;
-                        },
-                        new { CategoryId = categoryId },
-                        splitOn: "CategoryName").ToList();
-
-                    return Ok(products);
-                }
+                var products = _productRepository.GetByCategory(categoryId);
+                return Ok(ApiResponse<IEnumerable<Product>>.CreateSuccess(products, "Products retrieved successfully"));
             }
             catch (Exception ex)
             {
@@ -132,47 +80,79 @@ namespace BMYLBH2025_SDDAP.Controllers
         {
             try
             {
-                using (var con = _connectionFactory.CreateConnection())
+                IEnumerable<Product> products;
+
+                if (!string.IsNullOrWhiteSpace(name))
                 {
-                    var sql = @"
-                        SELECT p.*, c.Name as CategoryName, c.Description as CategoryDescription
-                        FROM Products p
-                        LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
-                        WHERE 1=1";
-
-                    var parameters = new DynamicParameters();
-
-                    if (!string.IsNullOrWhiteSpace(name))
-                    {
-                        sql += " AND p.Name LIKE @Name";
-                        parameters.Add("Name", $"%{name}%");
-                    }
-
-                    if (minPrice.HasValue)
-                    {
-                        sql += " AND p.Price >= @MinPrice";
-                        parameters.Add("MinPrice", minPrice.Value);
-                    }
-
-                    if (maxPrice.HasValue)
-                    {
-                        sql += " AND p.Price <= @MaxPrice";
-                        parameters.Add("MaxPrice", maxPrice.Value);
-                    }
-
-                    sql += " ORDER BY p.Name";
-
-                    var products = con.Query<Product, Category, Product>(sql,
-                        (product, category) =>
-                        {
-                            product.Category = category;
-                            return product;
-                        },
-                        parameters,
-                        splitOn: "CategoryName").ToList();
-
-                    return Ok(products);
+                    products = _productRepository.SearchByName(name);
                 }
+                else
+                {
+                    products = _productRepository.GetAll();
+                }
+
+                // Apply price filters if specified (simple filtering for now)
+                if (minPrice.HasValue)
+                    products = products.Where(p => p.Price >= minPrice.Value);
+
+                if (maxPrice.HasValue)
+                    products = products.Where(p => p.Price <= maxPrice.Value);
+
+                return Ok(ApiResponse<IEnumerable<Product>>.CreateSuccess(products, "Products retrieved successfully"));
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        // GET api/products/low-stock
+        [HttpGet]
+        [Route("low-stock")]
+        public IHttpActionResult GetLowStockProducts()
+        {
+            try
+            {
+                var products = _productRepository.GetLowStockProducts();
+                return Ok(ApiResponse<IEnumerable<Product>>.CreateSuccess(products, "Low stock products retrieved successfully"));
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        // GET api/products/name/{name}
+        [HttpGet]
+        [Route("name/{name}")]
+        public IHttpActionResult GetProductByName(string name)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(name))
+                    return BadRequest("Product name cannot be empty");
+
+                var product = _productRepository.GetByName(name);
+                if (product == null)
+                    return NotFound();
+
+                return Ok(ApiResponse<Product>.CreateSuccess(product, "Product retrieved successfully"));
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        // GET api/products/total-value
+        [HttpGet]
+        [Route("total-value")]
+        public IHttpActionResult GetTotalProductValue()
+        {
+            try
+            {
+                var totalValue = _productRepository.GetTotalProductValue();
+                return Ok(ApiResponse<decimal>.CreateSuccess(totalValue, "Total product value retrieved successfully"));
             }
             catch (Exception ex)
             {
@@ -199,18 +179,8 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (product.MinimumStockLevel < 0)
                     return BadRequest("Minimum stock level cannot be negative");
 
-                using (var con = _connectionFactory.CreateConnection())
-                {
-                    const string sql = @"
-                        INSERT INTO Products (Name, Description, Price, MinimumStockLevel, CategoryID)
-                        VALUES (@Name, @Description, @Price, @MinimumStockLevel, @CategoryID);
-                        SELECT last_insert_rowid();";
-
-                    var productId = con.QuerySingle<int>(sql, product);
-                    product.ProductID = productId;
-
-                    return Created($"api/products/{product.ProductID}", product);
-                }
+                _productRepository.Add(product);
+                return Ok(ApiResponse<Product>.CreateSuccess(product, "Product created successfully"));
             }
             catch (Exception ex)
             {
@@ -237,30 +207,64 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (product.Price < 0)
                     return BadRequest("Product price cannot be negative");
 
-                using (var con = _connectionFactory.CreateConnection())
-                {
-                    // Check if product exists
-                    var existingProduct = con.QueryFirstOrDefault<Product>(
-                        "SELECT * FROM Products WHERE ProductID = @Id", new { Id = id });
+                var existingProduct = _productRepository.GetById(id);
+                if (existingProduct == null)
+                    return NotFound();
 
-                    if (existingProduct == null)
-                        return NotFound();
+                product.ProductID = id;
+                _productRepository.Update(product);
+                
+                return Ok(ApiResponse<Product>.CreateSuccess(product, "Product updated successfully"));
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
 
-                    // Update product
-                    const string sql = @"
-                        UPDATE Products 
-                        SET Name = @Name, 
-                            Description = @Description, 
-                            Price = @Price, 
-                            MinimumStockLevel = @MinimumStockLevel, 
-                            CategoryID = @CategoryID
-                        WHERE ProductID = @ProductID";
+        // PUT api/products/5/price
+        [HttpPut]
+        [Route("{id:int}/price")]
+        public IHttpActionResult UpdateProductPrice(int id, [FromBody] UpdatePriceRequest request)
+        {
+            try
+            {
+                if (id <= 0)
+                    return BadRequest("Invalid product ID");
 
-                    product.ProductID = id;
-                    con.Execute(sql, product);
+                if (request == null || request.Price < 0)
+                    return BadRequest("Valid price is required");
 
-                    return Ok(product);
-                }
+                var success = _productRepository.UpdatePrice(id, request.Price);
+                if (!success)
+                    return NotFound();
+
+                return Ok(ApiResponse.CreateSuccess("Product price updated successfully"));
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        // PUT api/products/5/minimum-stock
+        [HttpPut]
+        [Route("{id:int}/minimum-stock")]
+        public IHttpActionResult UpdateMinimumStockLevel(int id, [FromBody] UpdateMinimumStockRequest request)
+        {
+            try
+            {
+                if (id <= 0)
+                    return BadRequest("Invalid product ID");
+
+                if (request == null || request.MinimumStockLevel < 0)
+                    return BadRequest("Valid minimum stock level is required");
+
+                var success = _productRepository.UpdateMinimumStockLevel(id, request.MinimumStockLevel);
+                if (!success)
+                    return NotFound();
+
+                return Ok(ApiResponse.CreateSuccess("Minimum stock level updated successfully"));
             }
             catch (Exception ex)
             {
@@ -278,32 +282,28 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (id <= 0)
                     return BadRequest("Invalid product ID");
 
-                using (var con = _connectionFactory.CreateConnection())
-                {
-                    // Check if product exists
-                    var existingProduct = con.QueryFirstOrDefault<Product>(
-                        "SELECT * FROM Products WHERE ProductID = @Id", new { Id = id });
+                var existingProduct = _productRepository.GetById(id);
+                if (existingProduct == null)
+                    return NotFound();
 
-                    if (existingProduct == null)
-                        return NotFound();
-
-                    // Check if product has inventory records
-                    var hasInventory = con.QueryFirstOrDefault<bool>(
-                        "SELECT COUNT(*) FROM Inventory WHERE ProductID = @Id", new { Id = id });
-
-                    if (hasInventory)
-                        return BadRequest("Cannot delete product with existing inventory records");
-
-                    // Delete product
-                    con.Execute("DELETE FROM Products WHERE ProductID = @Id", new { Id = id });
-
-                    return Ok(new { Message = "Product deleted successfully" });
-                }
+                _productRepository.Delete(id);
+                return Ok(ApiResponse.CreateSuccess("Product deleted successfully"));
             }
             catch (Exception ex)
             {
                 return InternalServerError(ex);
             }
         }
+    }
+
+    // Request DTOs
+    public class UpdatePriceRequest
+    {
+        public decimal Price { get; set; }
+    }
+
+    public class UpdateMinimumStockRequest
+    {
+        public int MinimumStockLevel { get; set; }
     }
 } 

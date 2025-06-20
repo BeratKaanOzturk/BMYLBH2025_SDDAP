@@ -7,11 +7,11 @@
       "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\services\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\frontend\\bmylbh2025_sddap\\bmylbh2025_sddap\\maindashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\maindashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\maindashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\frontend\\bmylbh2025_sddap\\bmylbh2025_sddap\\maindashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\maindashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\maindashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
@@ -72,7 +72,7 @@
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Services\\ApiService.cs",
               "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Services\\ApiService.cs",
               "RelativeToolTip": "BMYLBH2025_SDDAP\\Services\\ApiService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAPAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-19T13:54:57.753Z",
               "EditorCaption": ""
@@ -85,10 +85,9 @@
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\MainDashboard.cs",
               "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\MainDashboard.cs",
               "RelativeToolTip": "BMYLBH2025_SDDAP\\MainDashboard.cs",
-              "ViewState": "AgIAAEAAAAAAAAAAAAAYwEMAAAAQAAAAAAAAAA==",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAwEMAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T13:54:34.442Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-19T13:54:34.442Z"
             },
             {
               "$type": "Document",
@@ -99,8 +98,7 @@
               "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\MainDashboard.cs [Design]",
               "RelativeToolTip": "BMYLBH2025_SDDAP\\MainDashboard.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T13:54:33.422Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-06-19T13:54:33.422Z"
             }
           ]
         }

@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\backend\\bmylbh2025_sddap\\bmylbh2025_sddap\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8EDF4429-251A-416D-BB68-93F227191BCF}|BMYLBH2025_SDDAP.Tests\\BMYLBH2025_SDDAP.Tests.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap.tests\\utilities\\mockdatagenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8EDF4429-251A-416D-BB68-93F227191BCF}|BMYLBH2025_SDDAP.Tests\\BMYLBH2025_SDDAP.Tests.csproj|solutionrelative:bmylbh2025_sddap.tests\\utilities\\mockdatagenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\models\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\models\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -15,7 +23,7 @@
       "RelativeMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\backend\\bmylbh2025_sddap\\bmylbh2025_sddap\\global.asax.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\global.asax.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\global.asax.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -86,7 +94,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 12,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Bookmark",
@@ -130,7 +138,32 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
+              "Title": "ProductsController.cs",
+              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Controllers\\ProductsController.cs",
+              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Controllers\\ProductsController.cs",
+              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Controllers\\ProductsController.cs",
+              "RelativeToolTip": "BMYLBH2025_SDDAP\\Controllers\\ProductsController.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAwwBIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T18:42:24.237Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MockDataGenerator.cs",
+              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.Tests\\Utilities\\MockDataGenerator.cs",
+              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP.Tests\\Utilities\\MockDataGenerator.cs",
+              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.Tests\\Utilities\\MockDataGenerator.cs",
+              "RelativeToolTip": "BMYLBH2025_SDDAP.Tests\\Utilities\\MockDataGenerator.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABsAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T18:41:28.174Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "Global.asax.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Global.asax.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Global.asax.cs",
@@ -138,12 +171,11 @@
               "RelativeToolTip": "BMYLBH2025_SDDAP\\Global.asax.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-04T21:44:12.136Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-04T21:44:12.136Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "Web.config",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Web.config",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Web.config",
@@ -156,20 +188,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "DatabaseInitializer.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\DatabaseInitializer.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Models\\DatabaseInitializer.cs",
               "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\DatabaseInitializer.cs",
               "RelativeToolTip": "BMYLBH2025_SDDAP\\Models\\DatabaseInitializer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAQAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T12:03:28.805Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-19T12:03:28.805Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "ApiResponse.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\ApiResponse.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Models\\ApiResponse.cs",
@@ -181,7 +212,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "EmailService.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Services\\EmailService.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Services\\EmailService.cs",
@@ -189,12 +220,11 @@
               "RelativeToolTip": "BMYLBH2025_SDDAP\\Services\\EmailService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAEwAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T11:06:54.831Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-19T11:06:54.831Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "InventoryController.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Controllers\\InventoryController.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Controllers\\InventoryController.cs",
@@ -206,7 +236,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "Notification.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\Notification.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Models\\Notification.cs",
@@ -218,7 +248,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "SqliteConnectionFactory.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\SqliteConnectionFactory.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Models\\SqliteConnectionFactory.cs",
@@ -230,7 +260,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 14,
               "Title": "WebApiConfig.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\App_Start\\WebApiConfig.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\App_Start\\WebApiConfig.cs",
@@ -242,7 +272,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "User.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\User.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Models\\User.cs",
@@ -254,7 +284,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 17,
               "Title": "Inventory.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\Inventory.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Models\\Inventory.cs",
@@ -266,7 +296,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "UnityConfig.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\App_Start\\UnityConfig.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\App_Start\\UnityConfig.cs",
@@ -278,7 +308,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 16,
               "Title": "BaseRepository.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\BaseRepository.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Models\\BaseRepository.cs",
@@ -290,7 +320,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 18,
               "Title": "Category.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\Category.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Models\\Category.cs",
@@ -302,7 +332,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "Auth.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\Auth.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Models\\Auth.cs",
@@ -314,7 +344,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Controllers\\AuthController.cs",
@@ -322,12 +352,11 @@
               "RelativeToolTip": "BMYLBH2025_SDDAP\\Controllers\\AuthController.cs",
               "ViewState": "AgIAAGIAAAAAAAAAAAAYwHoAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-04T21:45:17.703Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-04T21:45:17.703Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 15,
               "Title": "RouteConfig.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\App_Start\\RouteConfig.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\App_Start\\RouteConfig.cs",
@@ -339,7 +368,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 19,
               "Title": "ValuesController.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Controllers\\ValuesController.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Controllers\\ValuesController.cs",
@@ -351,7 +380,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 20,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Controllers\\HomeController.cs",

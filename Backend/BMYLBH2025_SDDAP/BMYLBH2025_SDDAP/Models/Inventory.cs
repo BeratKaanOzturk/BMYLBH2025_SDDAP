@@ -15,10 +15,19 @@ namespace BMYLBH2025_SDDAP.Models
         // Navigation Properties
         public virtual Product Product { get; set; }
         
+        // Additional properties for test compatibility
+        public string ProductName { get; set; }
+        public string CategoryName { get; set; }
+        public decimal Price { get; set; }
+        public int MinimumStockLevel { get; set; }
+        
         // Business Methods
         public bool IsLowStock()
         {
-            return Product != null && Quantity <= Product.MinimumStockLevel;
+            if (Product != null)
+                return Quantity < Product.MinimumStockLevel;
+            else
+                return Quantity < MinimumStockLevel;
         }
         
         public void UpdateQuantity(int newQuantity)
@@ -32,7 +41,20 @@ namespace BMYLBH2025_SDDAP.Models
         
         public decimal CalculateStockValue()
         {
-            return Product != null ? Quantity * Product.Price : 0;
+            if (Product != null)
+                return Quantity * Product.Price;
+            else
+                return Quantity * Price;
+        }
+        
+        public string GetStockStatus()
+        {
+            if (Quantity == 0)
+                return "Out of Stock";
+            else if (IsLowStock())
+                return "Low Stock";
+            else
+                return "In Stock";
         }
     }
     
@@ -42,8 +64,11 @@ namespace BMYLBH2025_SDDAP.Models
         Inventory GetByProductId(int productId);
         IEnumerable<Inventory> GetLowStockItems();
         IEnumerable<Inventory> GetByCategory(int categoryId);
-        void UpdateStock(int productId, int quantity);
+        bool UpdateStock(int productId, int quantity);
         decimal GetTotalInventoryValue();
+        bool Create(Inventory inventory);
+        bool UpdateInventory(Inventory inventory);
+        bool DeleteInventory(int id);
     }
     
     public class InventoryRepository : IInventoryRepository
@@ -59,6 +84,7 @@ namespace BMYLBH2025_SDDAP.Models
         {
             using (var con = _connectionFactory.CreateConnection())
             {
+                con.Open();
                 const string sql = @"
                     SELECT i.InventoryID, i.ProductID, i.Quantity, i.LastUpdated,
                            p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
@@ -73,6 +99,11 @@ namespace BMYLBH2025_SDDAP.Models
                     {
                         product.Category = category;
                         inventory.Product = product;
+                        // Populate additional navigation properties for testing
+                        inventory.ProductName = product.Name;
+                        inventory.CategoryName = category?.Name;
+                        inventory.Price = product.Price;
+                        inventory.MinimumStockLevel = product.MinimumStockLevel;
                         return inventory;
                     }, 
                     splitOn: "ProductID,CategoryID").ToList();
@@ -117,28 +148,68 @@ namespace BMYLBH2025_SDDAP.Models
             }
         }
         
-        public void Update(Inventory entity)
+        public bool Create(Inventory entity)
         {
-            using (var con = _connectionFactory.CreateConnection())
+            try
             {
-                const string sql = @"
-                    UPDATE Inventory 
-                    SET ProductID = @ProductID, 
-                        Quantity = @Quantity, 
-                        LastUpdated = @LastUpdated 
-                    WHERE InventoryID = @InventoryID";
-                    
-                entity.LastUpdated = DateTime.Now;
-                con.Execute(sql, entity);
+                using (var con = _connectionFactory.CreateConnection())
+                {
+                    con.Open();
+                    const string sql = @"
+                        INSERT INTO Inventory (ProductID, Quantity, LastUpdated) 
+                        VALUES (@ProductID, @Quantity, @LastUpdated)";
+                        
+                    entity.LastUpdated = DateTime.Now;
+                    var result = con.Execute(sql, entity);
+                    return result > 0;
+                }
+            }
+            catch
+            {
+                return false;
             }
         }
         
-        public void Delete(int id)
+        public bool UpdateInventory(Inventory entity)
         {
-            using (var con = _connectionFactory.CreateConnection())
+            try
             {
-                const string sql = "DELETE FROM Inventory WHERE InventoryID = @Id";
-                con.Execute(sql, new { Id = id });
+                using (var con = _connectionFactory.CreateConnection())
+                {
+                    con.Open();
+                    const string sql = @"
+                        UPDATE Inventory 
+                        SET ProductID = @ProductID, 
+                            Quantity = @Quantity, 
+                            LastUpdated = @LastUpdated 
+                        WHERE InventoryID = @InventoryID";
+                        
+                    entity.LastUpdated = DateTime.Now;
+                    var result = con.Execute(sql, entity);
+                    return result > 0;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        
+        public bool DeleteInventory(int id)
+        {
+            try
+            {
+                using (var con = _connectionFactory.CreateConnection())
+                {
+                    con.Open();
+                    const string sql = "DELETE FROM Inventory WHERE InventoryID = @Id";
+                    var result = con.Execute(sql, new { Id = id });
+                    return result > 0;
+                }
+            }
+            catch
+            {
+                return false;
             }
         }
         
@@ -218,20 +289,30 @@ namespace BMYLBH2025_SDDAP.Models
             }
         }
         
-        public void UpdateStock(int productId, int quantity)
+        public bool UpdateStock(int productId, int quantity)
         {
-            using (var con = _connectionFactory.CreateConnection())
+            try
             {
-                const string sql = @"
-                    UPDATE Inventory 
-                    SET Quantity = @Quantity, LastUpdated = @LastUpdated 
-                    WHERE ProductID = @ProductId";
-                    
-                con.Execute(sql, new { 
-                    ProductId = productId, 
-                    Quantity = quantity, 
-                    LastUpdated = DateTime.Now 
-                });
+                using (var con = _connectionFactory.CreateConnection())
+                {
+                    con.Open();
+                    const string sql = @"
+                        UPDATE Inventory 
+                        SET Quantity = Quantity + @Quantity, 
+                            LastUpdated = @LastUpdated 
+                        WHERE ProductID = @ProductId";
+                        
+                    var result = con.Execute(sql, new { 
+                        ProductId = productId, 
+                        Quantity = quantity, 
+                        LastUpdated = DateTime.Now 
+                    });
+                    return result > 0;
+                }
+            }
+            catch
+            {
+                return false;
             }
         }
         
@@ -246,6 +327,16 @@ namespace BMYLBH2025_SDDAP.Models
                     
                 return con.QuerySingleOrDefault<decimal>(sql);
             }
+        }
+        
+        public void Update(Inventory entity)
+        {
+            UpdateInventory(entity);
+        }
+        
+        public void Delete(int id)
+        {
+            DeleteInventory(id);
         }
     }
 }
