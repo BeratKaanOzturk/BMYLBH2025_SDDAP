@@ -4,20 +4,31 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using BMYLBH2025_SDDAP.Models;
 
 namespace BMYLBH2025_SDDAP.Services
 {
-    public class ApiService
+    public class ApiService : IApiService
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseUrl;
         private string _authToken;
 
-        public ApiService(string baseUrl = "https://localhost:44313")
+        public ApiService() : this("https://localhost:44313")
+        {
+        }
+
+        public ApiService(string baseUrl)
         {
             _baseUrl = baseUrl;
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri(_baseUrl);
+        }
+
+        public ApiService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+            _baseUrl = httpClient.BaseAddress?.ToString() ?? "https://localhost:44313";
         }
 
         public void SetAuthToken(string token)
@@ -27,8 +38,14 @@ namespace BMYLBH2025_SDDAP.Services
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
 
+        public void ClearAuthToken()
+        {
+            _authToken = null;
+            _httpClient.DefaultRequestHeaders.Authorization = null;
+        }
+
         // Generic HTTP Methods
-        public async Task<T> GetAsync<T>(string endpoint)
+        private async Task<T> GetAsync<T>(string endpoint)
         {
             try
             {
@@ -40,15 +57,16 @@ namespace BMYLBH2025_SDDAP.Services
                     return JsonConvert.DeserializeObject<T>(content);
                 }
                 
-                throw new HttpRequestException($"API call failed: {response.StatusCode}");
+                return default(T);
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error calling API: {ex.Message}", ex);
+                System.Diagnostics.Debug.WriteLine($"Error calling GET {endpoint}: {ex.Message}");
+                return default(T);
             }
         }
 
-        public async Task<T> PostAsync<T>(string endpoint, object data)
+        private async Task<T> PostAsync<T>(string endpoint, object data)
         {
             try
             {
@@ -58,8 +76,6 @@ namespace BMYLBH2025_SDDAP.Services
                 var response = await _httpClient.PostAsync(endpoint, content);
                 var responseContent = await response.Content.ReadAsStringAsync();
                 
-                // Always try to deserialize the response content, regardless of status code
-                // This allows us to handle structured error responses from the backend
                 if (!string.IsNullOrEmpty(responseContent))
                 {
                     try
@@ -68,24 +84,21 @@ namespace BMYLBH2025_SDDAP.Services
                     }
                     catch (JsonException)
                     {
-                        // If deserialization fails, throw the original error
-                        throw new HttpRequestException($"API call failed: {response.StatusCode} - {responseContent}");
+                        // Return error response for failed deserialization
+                        return CreateErrorResponse<T>($"Failed to parse response from {endpoint}");
                     }
                 }
                 
-                throw new HttpRequestException($"API call failed: {response.StatusCode} - No response content");
-            }
-            catch (HttpRequestException)
-            {
-                throw; // Re-throw HTTP exceptions as-is
+                return CreateErrorResponse<T>($"No response from {endpoint}");
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error calling API: {ex.Message}", ex);
+                System.Diagnostics.Debug.WriteLine($"Error calling POST {endpoint}: {ex.Message}");
+                return CreateErrorResponse<T>($"Network error: {ex.Message}");
             }
         }
 
-        public async Task<T> PutAsync<T>(string endpoint, object data)
+        private async Task<T> PutAsync<T>(string endpoint, object data)
         {
             try
             {
@@ -100,15 +113,16 @@ namespace BMYLBH2025_SDDAP.Services
                     return JsonConvert.DeserializeObject<T>(responseContent);
                 }
                 
-                throw new HttpRequestException($"API call failed: {response.StatusCode}");
+                return default(T);
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error calling API: {ex.Message}", ex);
+                System.Diagnostics.Debug.WriteLine($"Error calling PUT {endpoint}: {ex.Message}");
+                return default(T);
             }
         }
 
-        public async Task<bool> DeleteAsync(string endpoint)
+        private async Task<bool> DeleteAsync(string endpoint)
         {
             try
             {
@@ -117,72 +131,103 @@ namespace BMYLBH2025_SDDAP.Services
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error calling API: {ex.Message}", ex);
+                System.Diagnostics.Debug.WriteLine($"Error calling DELETE {endpoint}: {ex.Message}");
+                return false;
             }
         }
 
+        private T CreateErrorResponse<T>(string message)
+        {
+            if (typeof(T).IsGenericType && typeof(T).GetGenericTypeDefinition() == typeof(ApiResponse<>))
+            {
+                var responseType = typeof(T);
+                var response = Activator.CreateInstance(responseType);
+                
+                var successProperty = responseType.GetProperty("Success");
+                var messageProperty = responseType.GetProperty("Message");
+                
+                successProperty?.SetValue(response, false);
+                messageProperty?.SetValue(response, message);
+                
+                return (T)response;
+            }
+            
+            return default(T);
+        }
+
         // Authentication Methods
-        public async Task<ApiResponse<LoginResponseData>> LoginAsync(string email, string password)
+        public async Task<ApiResponse<LoginResponseData>> LoginAsync(LoginRequest request)
         {
-            var loginRequest = new { Email = email, Password = password };
-            return await PostAsync<ApiResponse<LoginResponseData>>("api/auth/login", loginRequest);
+            return await PostAsync<ApiResponse<LoginResponseData>>("api/auth/login", request);
         }
 
-        public async Task<ApiResponse<RegisterResponseData>> RegisterAsync(string email, string password, string fullName)
+        public async Task<ApiResponse<RegisterResponseData>> RegisterAsync(RegisterRequest request)
         {
-            var registerRequest = new { Email = email, Password = password, FullName = fullName };
-            return await PostAsync<ApiResponse<RegisterResponseData>>("api/auth/register", registerRequest);
+            return await PostAsync<ApiResponse<RegisterResponseData>>("api/auth/register", request);
         }
 
-        public async Task<ApiResponse<EmailResponseData>> ResendVerificationEmailAsync(string email)
+        public async Task<ApiResponse<EmailResponseData>> ResendVerificationEmailAsync(ResendVerificationRequest request)
         {
-            var request = new { Email = email };
             return await PostAsync<ApiResponse<EmailResponseData>>("api/auth/resend-verification", request);
         }
 
-        public async Task<ApiResponse<EmailResponseData>> ForgotPasswordAsync(string email)
+        public async Task<ApiResponse<EmailResponseData>> ForgotPasswordAsync(ForgotPasswordRequest request)
         {
-            var request = new { Email = email };
             return await PostAsync<ApiResponse<EmailResponseData>>("api/auth/forgot-password", request);
         }
 
-        public async Task<ApiResponse<OTPResponseData>> VerifyResetOTPAsync(string email, string otp)
+        public async Task<ApiResponse<EmailResponseData>> VerifyEmailAsync(string token)
         {
-            var request = new { Email = email, OTP = otp };
-            return await PostAsync<ApiResponse<OTPResponseData>>("api/auth/verify-reset-otp", request);
+            return await GetAsync<ApiResponse<EmailResponseData>>($"api/auth/verify-email?token={token}");
         }
 
-        public async Task<ApiResponse<PasswordResetResponseData>> ResetPasswordAsync(string email, string otp, string newPassword)
+        public async Task<ApiResponse<EmailResponseData>> VerifyResetOTPAsync(VerifyOTPRequest request)
         {
-            var request = new { Email = email, OTP = otp, NewPassword = newPassword };
-            return await PostAsync<ApiResponse<PasswordResetResponseData>>("api/auth/reset-password", request);
+            return await PostAsync<ApiResponse<EmailResponseData>>("api/auth/verify-reset-otp", request);
+        }
+
+        public async Task<ApiResponse<EmailResponseData>> ResetPasswordAsync(ResetPasswordRequest request)
+        {
+            return await PostAsync<ApiResponse<EmailResponseData>>("api/auth/reset-password", request);
         }
 
         // Inventory Methods
-        public async Task<List<InventoryItem>> GetAllInventoryAsync()
+        public async Task<List<Inventory>> GetAllInventoryAsync()
         {
-            return await GetAsync<List<InventoryItem>>("api/inventory");
+            return await GetAsync<List<Inventory>>("api/inventory") ?? new List<Inventory>();
         }
 
-        public async Task<List<InventoryItem>> GetLowStockItemsAsync()
+        public async Task<Inventory> GetInventoryByIdAsync(int id)
         {
-            return await GetAsync<List<InventoryItem>>("api/inventory/lowstock");
+            return await GetAsync<Inventory>($"api/inventory/{id}");
+        }
+
+        public async Task<List<Inventory>> GetLowStockItemsAsync()
+        {
+            return await GetAsync<List<Inventory>>("api/inventory/lowstock") ?? new List<Inventory>();
         }
 
         public async Task<decimal> GetTotalInventoryValueAsync()
         {
-            var response = await GetAsync<dynamic>("api/inventory/totalvalue");
-            return response.TotalValue;
+            try
+            {
+                var response = await GetAsync<dynamic>("api/inventory/totalvalue");
+                return response?.TotalValue ?? 0m;
+            }
+            catch
+            {
+                return 0m;
+            }
         }
 
-        public async Task<InventoryItem> CreateInventoryAsync(InventoryItem inventory)
+        public async Task<Inventory> CreateInventoryAsync(Inventory inventory)
         {
-            return await PostAsync<InventoryItem>("api/inventory", inventory);
+            return await PostAsync<Inventory>("api/inventory", inventory);
         }
 
-        public async Task<InventoryItem> UpdateInventoryAsync(int id, InventoryItem inventory)
+        public async Task<Inventory> UpdateInventoryAsync(int id, Inventory inventory)
         {
-            return await PutAsync<InventoryItem>($"api/inventory/{id}", inventory);
+            return await PutAsync<Inventory>($"api/inventory/{id}", inventory);
         }
 
         public async Task<bool> UpdateStockAsync(int productId, int quantity)
@@ -200,12 +245,14 @@ namespace BMYLBH2025_SDDAP.Services
         // Product Methods
         public async Task<List<Product>> GetAllProductsAsync()
         {
-            return await GetAsync<List<Product>>("api/products");
+            var response = await GetAsync<ApiResponse<IEnumerable<Product>>>("api/products");
+            return response?.Data != null ? new List<Product>(response.Data) : new List<Product>();
         }
 
         public async Task<Product> GetProductByIdAsync(int id)
         {
-            return await GetAsync<Product>($"api/products/{id}");
+            var response = await GetAsync<ApiResponse<Product>>($"api/products/{id}");
+            return response?.Data;
         }
 
         public async Task<List<Product>> SearchProductsAsync(string name = "", decimal? minPrice = null, decimal? maxPrice = null)
@@ -214,25 +261,29 @@ namespace BMYLBH2025_SDDAP.Services
             
             if (!string.IsNullOrEmpty(name))
                 queryParams.Add($"name={Uri.EscapeDataString(name)}");
-                
+            
             if (minPrice.HasValue)
-                queryParams.Add($"minPrice={minPrice}");
-                
+                queryParams.Add($"minPrice={minPrice.Value}");
+            
             if (maxPrice.HasValue)
-                queryParams.Add($"maxPrice={maxPrice}");
-
+                queryParams.Add($"maxPrice={maxPrice.Value}");
+            
             var queryString = queryParams.Count > 0 ? "?" + string.Join("&", queryParams) : "";
-            return await GetAsync<List<Product>>($"api/products/search{queryString}");
+            var response = await GetAsync<ApiResponse<IEnumerable<Product>>>($"api/products/search{queryString}");
+            
+            return response?.Data != null ? new List<Product>(response.Data) : new List<Product>();
         }
 
         public async Task<Product> CreateProductAsync(Product product)
         {
-            return await PostAsync<Product>("api/products", product);
+            var response = await PostAsync<ApiResponse<Product>>("api/products", product);
+            return response?.Data;
         }
 
         public async Task<Product> UpdateProductAsync(int id, Product product)
         {
-            return await PutAsync<Product>($"api/products/{id}", product);
+            var response = await PutAsync<ApiResponse<Product>>($"api/products/{id}", product);
+            return response?.Data;
         }
 
         public async Task<bool> DeleteProductAsync(int id)
@@ -244,81 +295,5 @@ namespace BMYLBH2025_SDDAP.Services
         {
             _httpClient?.Dispose();
         }
-    }
-
-    // Generic API Response wrapper
-    public class ApiResponse<T>
-    {
-        public bool Success { get; set; }
-        public string Message { get; set; }
-        public T Data { get; set; }
-        public string ErrorType { get; set; }
-        public DateTime Timestamp { get; set; }
-    }
-
-    public class ApiResponse : ApiResponse<object>
-    {
-    }
-
-    // DTOs matching backend models
-    public class LoginResponseData
-    {
-        public string Token { get; set; }
-        public string Email { get; set; }
-        public string FullName { get; set; }
-        public string Role { get; set; }
-        public bool ShowResendVerification { get; set; }
-        public bool ShowForgotPassword { get; set; }
-    }
-
-    public class RegisterResponseData
-    {
-        public int UserId { get; set; }
-        public string Email { get; set; }
-    }
-
-    public class EmailResponseData
-    {
-        public string Email { get; set; }
-        public string Action { get; set; }
-    }
-
-    public class OTPResponseData
-    {
-        public string Email { get; set; }
-        public bool IsValid { get; set; }
-    }
-
-    public class PasswordResetResponseData
-    {
-        public string Email { get; set; }
-        public bool Success { get; set; }
-    }
-
-    public class InventoryItem
-    {
-        public int InventoryID { get; set; }
-        public int ProductID { get; set; }
-        public int Quantity { get; set; }
-        public DateTime LastUpdated { get; set; }
-        public Product Product { get; set; }
-    }
-
-    public class Product
-    {
-        public int ProductID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public decimal Price { get; set; }
-        public int MinimumStockLevel { get; set; }
-        public int CategoryID { get; set; }
-        public Category Category { get; set; }
-    }
-
-    public class Category
-    {
-        public int CategoryID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
     }
 } 

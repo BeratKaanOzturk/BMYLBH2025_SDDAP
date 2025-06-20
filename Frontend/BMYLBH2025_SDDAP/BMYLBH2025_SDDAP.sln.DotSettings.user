@@ -1,0 +1,8 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f51cacf8_002Ddeb4_002D4d04_002D9790_002Db6fcc30a2735/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="LoginForm_OnInitialization_ShouldHaveCorrectTitle" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;MSTest::8EDF4429-251A-416D-BB68-93F227191BCF::.NETFramework,Version=v4.8::BMYLBH2025_SDDAP.Tests.Forms.LoginFormTests.LoginForm_OnInitialization_ShouldHaveCorrectTitle&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::8EDF4429-251A-416D-BB68-93F227191BCF::.NETFramework,Version=v4.8::BMYLBH2025_SDDAP.Tests.Forms.LoginFormTests.LoginForm_OnInitialization_ShouldHaveRequiredControls&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::8EDF4429-251A-416D-BB68-93F227191BCF::.NETFramework,Version=v4.8::BMYLBH2025_SDDAP.Tests.Forms.LoginFormTests.ValidateInput_WithEmptyEmail_ShouldShowError&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

@@ -1,8 +1,10 @@
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BMYLBH2025_SDDAP.Services;
+using BMYLBH2025_SDDAP.Models;
 
 namespace BMYLBH2025_SDDAP
 {
@@ -16,13 +18,15 @@ namespace BMYLBH2025_SDDAP
         {
             InitializeComponent();
             _apiService = new ApiService();
-            _userEmail = email;
             
-            if (!string.IsNullOrEmpty(email))
+            if (!string.IsNullOrWhiteSpace(email))
             {
                 txtEmail.Text = email;
-                txtEmail.ReadOnly = true;
             }
+            
+            // Initially disable subsequent sections
+            grpOTPVerification.Enabled = false;
+            grpPasswordReset.Enabled = false;
         }
 
         private async void btnSendOTP_Click(object sender, EventArgs e)
@@ -44,7 +48,12 @@ namespace BMYLBH2025_SDDAP
                 btnSendOTP.Enabled = false;
                 btnSendOTP.Text = "Sending...";
                 
-                var response = await _apiService.ForgotPasswordAsync(txtEmail.Text);
+                var request = new ForgotPasswordRequest
+                {
+                    Email = txtEmail.Text
+                };
+                
+                var response = await _apiService.ForgotPasswordAsync(request);
                 
                 if (response.Success)
                 {
@@ -93,7 +102,13 @@ namespace BMYLBH2025_SDDAP
                 btnVerifyOTP.Enabled = false;
                 btnVerifyOTP.Text = "Verifying...";
                 
-                var response = await _apiService.VerifyResetOTPAsync(_userEmail, txtOTP.Text);
+                var request = new VerifyOTPRequest
+                {
+                    Email = _userEmail,
+                    OTP = txtOTP.Text
+                };
+                
+                var response = await _apiService.VerifyResetOTPAsync(request);
                 
                 if (response.Success)
                 {
@@ -154,7 +169,14 @@ namespace BMYLBH2025_SDDAP
                 btnResetPassword.Enabled = false;
                 btnResetPassword.Text = "Resetting...";
                 
-                var response = await _apiService.ResetPasswordAsync(_userEmail, txtOTP.Text, txtNewPassword.Text);
+                var request = new ResetPasswordRequest
+                {
+                    Email = _userEmail,
+                    OTP = txtOTP.Text,
+                    NewPassword = txtNewPassword.Text
+                };
+                
+                var response = await _apiService.ResetPasswordAsync(request);
                 
                 if (response.Success)
                 {

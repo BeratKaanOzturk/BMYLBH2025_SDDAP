@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BMYLBH2025_SDDAP.Services;
 using System.Drawing;
+using BMYLBH2025_SDDAP.Models;
 
 namespace BMYLBH2025_SDDAP
 {
@@ -13,7 +14,7 @@ namespace BMYLBH2025_SDDAP
         #region Fields
 
         private readonly ApiService _apiService;
-        private List<InventoryItem> _currentInventory;
+        private List<Inventory> _currentInventory;
         private List<Product> _currentProducts;
 
         #endregion

@@ -9,6 +9,9 @@
         public int MinimumStockLevel { get; set; }
         public int CategoryID { get; set; }
 
+        // Navigation property
+        public Category Category { get; set; }
+
         public Product()
         {
             // Constructor

@@ -65,12 +65,6 @@
       <DependentUpon>MainDashboard.cs</DependentUpon>
     </Compile>
     <Compile Include="models\Category.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="models\Inventory.cs" />
     <Compile Include="models\Notification.cs" />
     <Compile Include="models\Order.cs" />
@@ -93,6 +87,8 @@
       <DependentUpon>PasswordResetForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\ApiService.cs" />
+    <Compile Include="Services\IApiService.cs" />
+    <Compile Include="Models\ApiModels.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LoginForm.resx">

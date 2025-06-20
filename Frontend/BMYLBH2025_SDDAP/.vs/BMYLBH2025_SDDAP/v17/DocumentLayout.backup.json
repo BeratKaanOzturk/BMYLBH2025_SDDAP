@@ -3,7 +3,15 @@
   "WorkspaceRootPath": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\frontend\\bmylbh2025_sddap\\bmylbh2025_sddap\\services\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{8EDF4429-251A-416D-BB68-93F227191BCF}|BMYLBH2025_SDDAP.Tests\\BMYLBH2025_SDDAP.Tests.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\frontend\\bmylbh2025_sddap\\bmylbh2025_sddap.tests\\forms\\loginformtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8EDF4429-251A-416D-BB68-93F227191BCF}|BMYLBH2025_SDDAP.Tests\\BMYLBH2025_SDDAP.Tests.csproj|solutionrelative:bmylbh2025_sddap.tests\\forms\\loginformtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\models\\inventory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\models\\inventory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\services\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\services\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -67,19 +75,43 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ApiService.cs",
-              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Services\\ApiService.cs",
-              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Services\\ApiService.cs",
-              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Services\\ApiService.cs",
-              "RelativeToolTip": "BMYLBH2025_SDDAP\\Services\\ApiService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "Title": "LoginFormTests.cs",
+              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.Tests\\Forms\\LoginFormTests.cs",
+              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP.Tests\\Forms\\LoginFormTests.cs",
+              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.Tests\\Forms\\LoginFormTests.cs",
+              "RelativeToolTip": "BMYLBH2025_SDDAP.Tests\\Forms\\LoginFormTests.cs",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAmwKEAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T13:54:57.753Z",
+              "WhenOpened": "2025-06-20T12:29:36.823Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "Inventory.cs",
+              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\models\\Inventory.cs",
+              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\models\\Inventory.cs",
+              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\models\\Inventory.cs",
+              "RelativeToolTip": "BMYLBH2025_SDDAP\\models\\Inventory.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T10:49:18.054Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ApiService.cs",
+              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Services\\ApiService.cs",
+              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Services\\ApiService.cs",
+              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Services\\ApiService.cs",
+              "RelativeToolTip": "BMYLBH2025_SDDAP\\Services\\ApiService.cs",
+              "ViewState": "AgIAADQBAAAAAAAAAAAAwA0AAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T13:54:57.753Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "MainDashboard.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\MainDashboard.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\MainDashboard.cs",
@@ -91,7 +123,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "MainDashboard.cs [Design]",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\MainDashboard.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\MainDashboard.cs",

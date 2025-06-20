@@ -9,6 +9,9 @@ namespace BMYLBH2025_SDDAP.Models
         public int Quantity { get; set; }
         public DateTime LastUpdated { get; set; }
 
+        // Navigation property
+        public Product Product { get; set; }
+
         public Inventory()
         {
             // Constructor

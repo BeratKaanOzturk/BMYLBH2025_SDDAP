@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using BMYLBH2025_SDDAP.Services;
+using BMYLBH2025_SDDAP.Models;
 using System.Threading.Tasks;
 
 namespace BMYLBH2025_SDDAP
@@ -50,8 +51,15 @@ namespace BMYLBH2025_SDDAP
             
             try
             {
+                // Create login request
+                var loginRequest = new LoginRequest
+                {
+                    Email = txtEmail.Text.Trim(),
+                    Password = txtPassword.Text
+                };
+
                 // Call backend API
-                var authResponse = await _apiService.LoginAsync(txtEmail.Text.Trim(), txtPassword.Text);
+                var authResponse = await _apiService.LoginAsync(loginRequest);
                 
                 if (authResponse.Success && authResponse.Data?.Token != null)
                 {
@@ -159,7 +167,12 @@ namespace BMYLBH2025_SDDAP
                 btnResendVerification.Enabled = false;
                 btnResendVerification.Text = "Sending...";
 
-                var response = await _apiService.ResendVerificationEmailAsync(_lastErrorEmail);
+                var request = new ResendVerificationRequest
+                {
+                    Email = _lastErrorEmail
+                };
+
+                var response = await _apiService.ResendVerificationEmailAsync(request);
                 
                 MessageBox.Show(response.Message, "Verification Email", 
                     MessageBoxButtons.OK, MessageBoxIcon.Information);

@@ -1,4 +1,5 @@
 ﻿using BMYLBH2025_SDDAP.Services;
+using BMYLBH2025_SDDAP.Models;
 using System;
 using System.Windows.Forms;
 
@@ -28,13 +29,18 @@ namespace BMYLBH2025_SDDAP
                 btnRegister.Enabled = false;
                 btnRegister.Text = "REGISTERING...";
 
-                // Call registration API
-                var response = await _apiService.RegisterAsync(
-                    txtEmail.Text.Trim(),
-                    txtPassword.Text,
-                    txtFullName.Text.Trim());
+                // Create registration request
+                var registerRequest = new RegisterRequest
+                {
+                    Email = txtEmail.Text.Trim(),
+                    Password = txtPassword.Text,
+                    FullName = txtFullName.Text.Trim()
+                };
 
-                if (response != null)
+                // Call registration API
+                var response = await _apiService.RegisterAsync(registerRequest);
+
+                if (response != null && response.Success)
                 {
                     MessageBox.Show(
                         "Registration successful! Please check your email to verify your account before logging in.",
@@ -48,7 +54,7 @@ namespace BMYLBH2025_SDDAP
                 else
                 {
                     MessageBox.Show(
-                        "Registration failed. Please try again.",
+                        response?.Message ?? "Registration failed. Please try again.",
                         "Registration Failed",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
