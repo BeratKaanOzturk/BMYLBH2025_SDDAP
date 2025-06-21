@@ -158,8 +158,16 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (string.IsNullOrWhiteSpace(category.Name))
                     return BadRequest("Category name is required");
 
+                // Set creation timestamps
+                category.CreatedAt = DateTime.Now;
+                category.UpdatedAt = DateTime.Now;
+
                 _categoryRepository.Add(category);
-                return Ok(ApiResponse.CreateSuccess("Category created successfully"));
+                
+                // Retrieve the created category with its assigned ID
+                var createdCategory = _categoryRepository.GetByName(category.Name);
+                
+                return Ok(ApiResponse<Category>.CreateSuccess(createdCategory, "Category created successfully"));
             }
             catch (Exception ex)
             {
@@ -180,9 +188,25 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (category == null)
                     return BadRequest("Category data is required");
 
+                // Verify the category exists
+                var existingCategory = _categoryRepository.GetById(id);
+                if (existingCategory == null)
+                    return NotFound();
+
+                // Set update timestamp and ID
                 category.CategoryID = id;
+                category.UpdatedAt = DateTime.Now;
+                
+                // Preserve creation date if not provided
+                if (category.CreatedAt == default(DateTime))
+                    category.CreatedAt = existingCategory.CreatedAt;
+
                 _categoryRepository.Update(category);
-                return Ok(ApiResponse.CreateSuccess("Category updated successfully"));
+                
+                // Retrieve the updated category
+                var updatedCategory = _categoryRepository.GetById(id);
+                
+                return Ok(ApiResponse<Category>.CreateSuccess(updatedCategory, "Category updated successfully"));
             }
             catch (Exception ex)
             {

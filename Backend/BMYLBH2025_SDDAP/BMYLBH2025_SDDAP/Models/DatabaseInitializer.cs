@@ -174,6 +174,12 @@ namespace BMYLBH2025_SDDAP.Models
         
         private static void InsertSampleData(SQLiteConnection conn)
         {
+            // Check if sample data already exists to avoid duplicate inserts
+            if (HasSampleData(conn))
+            {
+                return; // Sample data already exists, skip insertion
+            }
+            
             var cmd = conn.CreateCommand();
             
             // Insert sample categories
@@ -184,16 +190,18 @@ namespace BMYLBH2025_SDDAP.Models
                 ('Furniture', 'Office and warehouse furniture');";
             cmd.ExecuteNonQuery();
             
-            // Insert sample supplier
+            // Insert sample suppliers
             cmd.CommandText = @"
                 INSERT OR IGNORE INTO Suppliers (Name, ContactPerson, Email, Phone, Address) VALUES 
-                ('TechCorp Ltd', 'John Smith', 'john@techcorp.com', '+1-555-0123', '123 Tech Street, Silicon Valley, CA');";
+                ('TechCorp Ltd', 'John Smith', 'john@techcorp.com', '+1-555-0123', '123 Tech Street, Silicon Valley, CA'),
+                ('Office Solutions Inc', 'Sarah Johnson', 'sarah@officesolutions.com', '+1-555-0456', '456 Business Ave, New York, NY'),
+                ('Furniture World', 'Mike Brown', 'mike@furnitureworld.com', '+1-555-0789', '789 Furniture St, Chicago, IL');";
             cmd.ExecuteNonQuery();
             
             // Insert admin user with proper hashed password
             cmd.CommandText = @"
                 INSERT OR IGNORE INTO Users (Username, PasswordHash, Email, FullName, Role, IsEmailVerified, CreatedAt, UpdatedAt) VALUES 
-                ('admin', '$2a$11$7Q.gWaI8eKQvJ5xQg5qjLek1yoKdC3F3YqVx8eqIy5Z2Q6GxJ8cK6', 'admin@inventory.com', 'System Administrator', 'Admin', 1, datetime('now'), datetime('now'));";
+                ('admin', 'YWRtaW4xMjNzYWx0', 'admin@inventory.com', 'System Administrator', 'Admin', 1, datetime('now'), datetime('now'));";
             cmd.ExecuteNonQuery();
             
             // Insert sample products
@@ -221,6 +229,31 @@ namespace BMYLBH2025_SDDAP.Models
                 (7, 8, datetime('now')),   -- Blue Pens: 8 units (below min stock of 30) - LOW STOCK
                 (8, 35, datetime('now'));  -- Notebook: 35 units (above min stock of 25)";
             cmd.ExecuteNonQuery();
+        }
+        
+        /// <summary>
+        /// Checks if sample data already exists in the database
+        /// </summary>
+        /// <param name="conn">SQLite database connection</param>
+        /// <returns>True if sample data exists, false otherwise</returns>
+        private static bool HasSampleData(SQLiteConnection conn)
+        {
+            var cmd = conn.CreateCommand();
+            
+            // Check if admin user exists (primary indicator of sample data)
+            cmd.CommandText = "SELECT COUNT(*) FROM Users WHERE Username = 'admin'";
+            var userCount = Convert.ToInt32(cmd.ExecuteScalar());
+            
+            // Check if sample categories exist
+            cmd.CommandText = "SELECT COUNT(*) FROM Categories WHERE Name IN ('Electronics', 'Office Supplies', 'Furniture')";
+            var categoryCount = Convert.ToInt32(cmd.ExecuteScalar());
+            
+            // Check if sample products exist
+            cmd.CommandText = "SELECT COUNT(*) FROM Products WHERE Name IN ('Laptop Computer', 'Wireless Mouse', 'USB Flash Drive')";
+            var productCount = Convert.ToInt32(cmd.ExecuteScalar());
+            
+            // If any of the key sample data exists, assume all sample data has been inserted
+            return userCount > 0 || categoryCount > 0 || productCount > 0;
         }
     }
 } 

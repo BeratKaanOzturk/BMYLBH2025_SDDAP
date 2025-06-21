@@ -131,20 +131,52 @@ namespace BMYLBH2025_SDDAP.Models
             {
                 con.Open();
                 const string sql = @"
-                    SELECT p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
-                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription
+                    SELECT p.ProductID, p.Name AS ProductName, p.Description AS ProductDescription, p.Price, p.MinimumStockLevel, p.CategoryID AS ProductCategoryID,
+                           c.CategoryID AS CategoryID, c.Name AS CategoryName, c.Description AS CategoryDescription
                     FROM Products p
                     LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
                     ORDER BY p.Name";
                     
-                return con.Query<Product, Category, Product>(sql, 
-                    (product, category) => 
+                var result = con.Query(sql);
+                var products = new List<Product>();
+                
+                foreach (dynamic row in result)
+                {
+                    try
                     {
-                        product.Category = category;
-                        product.CategoryName = category?.Name;
-                        return product;
-                    }, 
-                    splitOn: "CategoryID").ToList();
+                        var product = new Product
+                        {
+                            ProductID = row.ProductID == null ? 0 : Convert.ToInt32(row.ProductID),
+                            Name = Convert.ToString(row.ProductName) ?? string.Empty,
+                            Description = Convert.ToString(row.ProductDescription) ?? string.Empty,
+                            Price = row.Price == null ? 0m : Convert.ToDecimal(row.Price),
+                            MinimumStockLevel = row.MinimumStockLevel == null ? 0 : Convert.ToInt32(row.MinimumStockLevel),
+                            CategoryID = row.ProductCategoryID == null ? 0 : Convert.ToInt32(row.ProductCategoryID)
+                        };
+                        
+                        // Check if category data exists
+                        if (row.CategoryID != null && row.CategoryName != null)
+                        {
+                            product.Category = new Category
+                            {
+                                CategoryID = Convert.ToInt32(row.CategoryID),
+                                Name = Convert.ToString(row.CategoryName) ?? string.Empty,
+                                Description = Convert.ToString(row.CategoryDescription) ?? string.Empty
+                            };
+                            product.CategoryName = Convert.ToString(row.CategoryName) ?? string.Empty;
+                        }
+                        
+                        products.Add(product);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error or handle as needed
+                        // For now, we'll skip this row if conversion fails
+                        continue;
+                    }
+                }
+                
+                return products;
             }
         }
         
@@ -153,21 +185,47 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = @"
-                    SELECT p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
-                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription
+                    SELECT p.ProductID, p.Name AS ProductName, p.Description AS ProductDescription, p.Price, p.MinimumStockLevel, p.CategoryID AS ProductCategoryID,
+                           c.CategoryID AS CategoryID, c.Name AS CategoryName, c.Description AS CategoryDescription
                     FROM Products p
                     LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
                     WHERE p.ProductID = @Id";
                     
-                return con.Query<Product, Category, Product>(sql, 
-                    (product, category) => 
+                var row = con.QueryFirstOrDefault(sql, new { Id = id });
+                if (row == null) return null;
+                
+                try
+                {
+                    var product = new Product
                     {
-                        product.Category = category;
-                        product.CategoryName = category?.Name;
-                        return product;
-                    }, 
-                    new { Id = id },
-                    splitOn: "CategoryID").FirstOrDefault();
+                        ProductID = row.ProductID == null ? 0 : Convert.ToInt32(row.ProductID),
+                        Name = Convert.ToString(row.ProductName) ?? string.Empty,
+                        Description = Convert.ToString(row.ProductDescription) ?? string.Empty,
+                        Price = row.Price == null ? 0m : Convert.ToDecimal(row.Price),
+                        MinimumStockLevel = row.MinimumStockLevel == null ? 0 : Convert.ToInt32(row.MinimumStockLevel),
+                        CategoryID = row.ProductCategoryID == null ? 0 : Convert.ToInt32(row.ProductCategoryID)
+                    };
+                    
+                    // Check if category data exists
+                    if (row.CategoryID != null && row.CategoryName != null)
+                    {
+                        product.Category = new Category
+                        {
+                            CategoryID = Convert.ToInt32(row.CategoryID),
+                            Name = Convert.ToString(row.CategoryName) ?? string.Empty,
+                            Description = Convert.ToString(row.CategoryDescription) ?? string.Empty
+                        };
+                        product.CategoryName = Convert.ToString(row.CategoryName) ?? string.Empty;
+                    }
+                    
+                    return product;
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle as needed
+                    // Return null if conversion fails
+                    return null;
+                }
             }
         }
         
@@ -214,22 +272,53 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = @"
-                    SELECT p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
-                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription
+                    SELECT p.ProductID, p.Name AS ProductName, p.Description AS ProductDescription, p.Price, p.MinimumStockLevel, p.CategoryID AS ProductCategoryID,
+                           c.CategoryID AS CategoryID, c.Name AS CategoryName, c.Description AS CategoryDescription
                     FROM Products p
                     LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
                     WHERE p.CategoryID = @CategoryId
                     ORDER BY p.Name";
                     
-                return con.Query<Product, Category, Product>(sql, 
-                    (product, category) => 
+                var result = con.Query(sql, new { CategoryId = categoryId });
+                var products = new List<Product>();
+                
+                foreach (dynamic row in result)
+                {
+                    try
                     {
-                        product.Category = category;
-                        product.CategoryName = category?.Name;
-                        return product;
-                    }, 
-                    new { CategoryId = categoryId },
-                    splitOn: "CategoryID").ToList();
+                        var product = new Product
+                        {
+                            ProductID = row.ProductID == null ? 0 : Convert.ToInt32(row.ProductID),
+                            Name = Convert.ToString(row.ProductName) ?? string.Empty,
+                            Description = Convert.ToString(row.ProductDescription) ?? string.Empty,
+                            Price = row.Price == null ? 0m : Convert.ToDecimal(row.Price),
+                            MinimumStockLevel = row.MinimumStockLevel == null ? 0 : Convert.ToInt32(row.MinimumStockLevel),
+                            CategoryID = row.ProductCategoryID == null ? 0 : Convert.ToInt32(row.ProductCategoryID)
+                        };
+                        
+                        // Check if category data exists
+                        if (row.CategoryID != null && row.CategoryName != null)
+                        {
+                            product.Category = new Category
+                            {
+                                CategoryID = Convert.ToInt32(row.CategoryID),
+                                Name = Convert.ToString(row.CategoryName) ?? string.Empty,
+                                Description = Convert.ToString(row.CategoryDescription) ?? string.Empty
+                            };
+                            product.CategoryName = Convert.ToString(row.CategoryName) ?? string.Empty;
+                        }
+                        
+                        products.Add(product);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error or handle as needed
+                        // For now, we'll skip this row if conversion fails
+                        continue;
+                    }
+                }
+                
+                return products;
             }
         }
         
@@ -238,22 +327,53 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = @"
-                    SELECT p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
-                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription
+                    SELECT p.ProductID, p.Name AS ProductName, p.Description AS ProductDescription, p.Price, p.MinimumStockLevel, p.CategoryID AS ProductCategoryID,
+                           c.CategoryID AS CategoryID, c.Name AS CategoryName, c.Description AS CategoryDescription
                     FROM Products p
                     LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
                     WHERE p.Name LIKE @Name
                     ORDER BY p.Name";
                     
-                return con.Query<Product, Category, Product>(sql, 
-                    (product, category) => 
+                var result = con.Query(sql, new { Name = $"%{name}%" });
+                var products = new List<Product>();
+                
+                foreach (dynamic row in result)
+                {
+                    try
                     {
-                        product.Category = category;
-                        product.CategoryName = category?.Name;
-                        return product;
-                    }, 
-                    new { Name = $"%{name}%" },
-                    splitOn: "CategoryID").ToList();
+                        var product = new Product
+                        {
+                            ProductID = row.ProductID == null ? 0 : Convert.ToInt32(row.ProductID),
+                            Name = Convert.ToString(row.ProductName) ?? string.Empty,
+                            Description = Convert.ToString(row.ProductDescription) ?? string.Empty,
+                            Price = row.Price == null ? 0m : Convert.ToDecimal(row.Price),
+                            MinimumStockLevel = row.MinimumStockLevel == null ? 0 : Convert.ToInt32(row.MinimumStockLevel),
+                            CategoryID = row.ProductCategoryID == null ? 0 : Convert.ToInt32(row.ProductCategoryID)
+                        };
+                        
+                        // Check if category data exists
+                        if (row.CategoryID != null && row.CategoryName != null)
+                        {
+                            product.Category = new Category
+                            {
+                                CategoryID = Convert.ToInt32(row.CategoryID),
+                                Name = Convert.ToString(row.CategoryName) ?? string.Empty,
+                                Description = Convert.ToString(row.CategoryDescription) ?? string.Empty
+                            };
+                            product.CategoryName = Convert.ToString(row.CategoryName) ?? string.Empty;
+                        }
+                        
+                        products.Add(product);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error or handle as needed
+                        // For now, we'll skip this row if conversion fails
+                        continue;
+                    }
+                }
+                
+                return products;
             }
         }
         
@@ -262,8 +382,8 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = @"
-                    SELECT p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
-                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription,
+                    SELECT p.ProductID, p.Name AS ProductName, p.Description AS ProductDescription, p.Price, p.MinimumStockLevel, p.CategoryID AS ProductCategoryID,
+                           c.CategoryID AS CategoryID, c.Name AS CategoryName, c.Description AS CategoryDescription,
                            i.Quantity
                     FROM Products p
                     LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
@@ -271,14 +391,56 @@ namespace BMYLBH2025_SDDAP.Models
                     WHERE i.Quantity <= p.MinimumStockLevel
                     ORDER BY i.Quantity ASC";
                     
-                return con.Query<Product, Category, Product>(sql, 
-                    (product, category) => 
+                var result = con.Query(sql);
+                var products = new List<Product>();
+                
+                foreach (dynamic row in result)
+                {
+                    try
                     {
-                        product.Category = category;
-                        product.CategoryName = category?.Name;
-                        return product;
-                    }, 
-                    splitOn: "CategoryID").ToList();
+                        var product = new Product
+                        {
+                            ProductID = row.ProductID == null ? 0 : Convert.ToInt32(row.ProductID),
+                            Name = Convert.ToString(row.ProductName) ?? string.Empty,
+                            Description = Convert.ToString(row.ProductDescription) ?? string.Empty,
+                            Price = row.Price == null ? 0m : Convert.ToDecimal(row.Price),
+                            MinimumStockLevel = row.MinimumStockLevel == null ? 0 : Convert.ToInt32(row.MinimumStockLevel),
+                            CategoryID = row.ProductCategoryID == null ? 0 : Convert.ToInt32(row.ProductCategoryID)
+                        };
+                        
+                        // Add inventory information if available
+                        if (row.Quantity != null)
+                        {
+                            product.Inventory = new Inventory
+                            {
+                                ProductID = product.ProductID,
+                                Quantity = Convert.ToInt32(row.Quantity)
+                            };
+                        }
+                        
+                        // Check if category data exists
+                        if (row.CategoryID != null && row.CategoryName != null)
+                        {
+                            product.Category = new Category
+                            {
+                                CategoryID = Convert.ToInt32(row.CategoryID),
+                                Name = Convert.ToString(row.CategoryName) ?? string.Empty,
+                                Description = Convert.ToString(row.CategoryDescription) ?? string.Empty
+                            };
+                            product.CategoryName = Convert.ToString(row.CategoryName) ?? string.Empty;
+                        }
+                        
+                        products.Add(product);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error or handle as needed
+                        // For now, we'll skip this row if conversion fails
+                        continue;
+                    }
+                }
+                
+                return products;
             }
         }
         
@@ -287,21 +449,47 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = @"
-                    SELECT p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
-                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription
+                    SELECT p.ProductID, p.Name AS ProductName, p.Description AS ProductDescription, p.Price, p.MinimumStockLevel, p.CategoryID AS ProductCategoryID,
+                           c.CategoryID AS CategoryID, c.Name AS CategoryName, c.Description AS CategoryDescription
                     FROM Products p
                     LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
                     WHERE p.Name = @Name";
                     
-                return con.Query<Product, Category, Product>(sql, 
-                    (product, category) => 
+                var row = con.QueryFirstOrDefault(sql, new { Name = name });
+                if (row == null) return null;
+                
+                try
+                {
+                    var product = new Product
                     {
-                        product.Category = category;
-                        product.CategoryName = category?.Name;
-                        return product;
-                    }, 
-                    new { Name = name },
-                    splitOn: "CategoryID").FirstOrDefault();
+                        ProductID = row.ProductID == null ? 0 : Convert.ToInt32(row.ProductID),
+                        Name = Convert.ToString(row.ProductName) ?? string.Empty,
+                        Description = Convert.ToString(row.ProductDescription) ?? string.Empty,
+                        Price = row.Price == null ? 0m : Convert.ToDecimal(row.Price),
+                        MinimumStockLevel = row.MinimumStockLevel == null ? 0 : Convert.ToInt32(row.MinimumStockLevel),
+                        CategoryID = row.ProductCategoryID == null ? 0 : Convert.ToInt32(row.ProductCategoryID)
+                    };
+                    
+                    // Check if category data exists
+                    if (row.CategoryID != null && row.CategoryName != null)
+                    {
+                        product.Category = new Category
+                        {
+                            CategoryID = Convert.ToInt32(row.CategoryID),
+                            Name = Convert.ToString(row.CategoryName) ?? string.Empty,
+                            Description = Convert.ToString(row.CategoryDescription) ?? string.Empty
+                        };
+                        product.CategoryName = Convert.ToString(row.CategoryName) ?? string.Empty;
+                    }
+                    
+                    return product;
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle as needed
+                    // Return null if conversion fails
+                    return null;
+                }
             }
         }
         

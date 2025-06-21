@@ -48,7 +48,44 @@ namespace BMYLBH2025_SDDAP.Models
         {
             using (var con = _connectionFactory.CreateConnection())
             {
-                return con.Query<User>("SELECT * FROM Users").ToList();
+                var result = con.Query("SELECT * FROM Users");
+                var users = new List<User>();
+                
+                foreach (dynamic row in result)
+                {
+                    try
+                    {
+                        var user = new User
+                        {
+                            UserID = row.UserID == null ? 0 : Convert.ToInt32(row.UserID),
+                            Username = Convert.ToString(row.Username) ?? string.Empty,
+                            Password = Convert.ToString(row.Password) ?? string.Empty,
+                            PasswordHash = Convert.ToString(row.PasswordHash) ?? string.Empty,
+                            Email = Convert.ToString(row.Email) ?? string.Empty,
+                            FullName = Convert.ToString(row.FullName) ?? string.Empty,
+                            Role = Convert.ToString(row.Role) ?? string.Empty,
+                            IsActive = row.IsActive == null ? false : Convert.ToBoolean(row.IsActive),
+                            IsEmailVerified = row.IsEmailVerified == null ? false : Convert.ToBoolean(row.IsEmailVerified),
+                            EmailVerificationToken = Convert.ToString(row.EmailVerificationToken) ?? string.Empty,
+                            PasswordResetToken = Convert.ToString(row.PasswordResetToken) ?? string.Empty,
+                            PasswordResetExpiry = row.PasswordResetExpiry == null ? (DateTime?)null : Convert.ToDateTime(row.PasswordResetExpiry),
+                            PasswordResetOTP = Convert.ToString(row.PasswordResetOTP) ?? string.Empty,
+                            OTPExpiry = row.OTPExpiry == null ? (DateTime?)null : Convert.ToDateTime(row.OTPExpiry),
+                            CreatedAt = row.CreatedAt == null ? DateTime.Now : Convert.ToDateTime(row.CreatedAt),
+                            UpdatedAt = row.UpdatedAt == null ? (DateTime?)null : Convert.ToDateTime(row.UpdatedAt)
+                        };
+                        
+                        users.Add(user);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error or handle as needed
+                        // For now, we'll skip this row if conversion fails
+                        continue;
+                    }
+                }
+                
+                return users;
             }
         }
 
@@ -56,7 +93,39 @@ namespace BMYLBH2025_SDDAP.Models
         {
             using (var con = _connectionFactory.CreateConnection())
             {
-                return con.QueryFirstOrDefault<User>($"SELECT * FROM Users WHERE UserID={id}");
+                var row = con.QueryFirstOrDefault($"SELECT * FROM Users WHERE UserID=@Id", new { Id = id });
+                if (row == null) return null;
+                
+                try
+                {
+                    var user = new User
+                    {
+                        UserID = row.UserID == null ? 0 : Convert.ToInt32(row.UserID),
+                        Username = Convert.ToString(row.Username) ?? string.Empty,
+                        Password = Convert.ToString(row.Password) ?? string.Empty,
+                        PasswordHash = Convert.ToString(row.PasswordHash) ?? string.Empty,
+                        Email = Convert.ToString(row.Email) ?? string.Empty,
+                        FullName = Convert.ToString(row.FullName) ?? string.Empty,
+                        Role = Convert.ToString(row.Role) ?? string.Empty,
+                        IsActive = row.IsActive == null ? false : Convert.ToBoolean(row.IsActive),
+                        IsEmailVerified = row.IsEmailVerified == null ? false : Convert.ToBoolean(row.IsEmailVerified),
+                        EmailVerificationToken = Convert.ToString(row.EmailVerificationToken) ?? string.Empty,
+                        PasswordResetToken = Convert.ToString(row.PasswordResetToken) ?? string.Empty,
+                        PasswordResetExpiry = row.PasswordResetExpiry == null ? (DateTime?)null : Convert.ToDateTime(row.PasswordResetExpiry),
+                        PasswordResetOTP = Convert.ToString(row.PasswordResetOTP) ?? string.Empty,
+                        OTPExpiry = row.OTPExpiry == null ? (DateTime?)null : Convert.ToDateTime(row.OTPExpiry),
+                        CreatedAt = row.CreatedAt == null ? DateTime.Now : Convert.ToDateTime(row.CreatedAt),
+                        UpdatedAt = row.UpdatedAt == null ? (DateTime?)null : Convert.ToDateTime(row.UpdatedAt)
+                    };
+                    
+                    return user;
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle as needed
+                    // Return null if conversion fails
+                    return null;
+                }
             }
         }
 
@@ -95,7 +164,7 @@ namespace BMYLBH2025_SDDAP.Models
         {
             using (var con = _connectionFactory.CreateConnection())
             {
-                con.Execute($"DELETE FROM Users WHERE UserID = {id}");
+                con.Execute("DELETE FROM Users WHERE UserID = @Id", new { Id = id });
             }
         }
 
@@ -103,8 +172,40 @@ namespace BMYLBH2025_SDDAP.Models
         {
             using (var con = _connectionFactory.CreateConnection())
             {
-                return con.QueryFirstOrDefault<User>("SELECT * FROM Users WHERE Username = @Username",
+                var row = con.QueryFirstOrDefault("SELECT * FROM Users WHERE Username = @Username",
                     new { Username = username });
+                if (row == null) return null;
+                
+                try
+                {
+                    var user = new User
+                    {
+                        UserID = row.UserID == null ? 0 : Convert.ToInt32(row.UserID),
+                        Username = Convert.ToString(row.Username) ?? string.Empty,
+                        Password = Convert.ToString(row.Password) ?? string.Empty,
+                        PasswordHash = Convert.ToString(row.PasswordHash) ?? string.Empty,
+                        Email = Convert.ToString(row.Email) ?? string.Empty,
+                        FullName = Convert.ToString(row.FullName) ?? string.Empty,
+                        Role = Convert.ToString(row.Role) ?? string.Empty,
+                        IsActive = row.IsActive == null ? false : Convert.ToBoolean(row.IsActive),
+                        IsEmailVerified = row.IsEmailVerified == null ? false : Convert.ToBoolean(row.IsEmailVerified),
+                        EmailVerificationToken = Convert.ToString(row.EmailVerificationToken) ?? string.Empty,
+                        PasswordResetToken = Convert.ToString(row.PasswordResetToken) ?? string.Empty,
+                        PasswordResetExpiry = row.PasswordResetExpiry == null ? (DateTime?)null : Convert.ToDateTime(row.PasswordResetExpiry),
+                        PasswordResetOTP = Convert.ToString(row.PasswordResetOTP) ?? string.Empty,
+                        OTPExpiry = row.OTPExpiry == null ? (DateTime?)null : Convert.ToDateTime(row.OTPExpiry),
+                        CreatedAt = row.CreatedAt == null ? DateTime.Now : Convert.ToDateTime(row.CreatedAt),
+                        UpdatedAt = row.UpdatedAt == null ? (DateTime?)null : Convert.ToDateTime(row.UpdatedAt)
+                    };
+                    
+                    return user;
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle as needed
+                    // Return null if conversion fails
+                    return null;
+                }
             }
         }
 
@@ -112,8 +213,40 @@ namespace BMYLBH2025_SDDAP.Models
         {
             using (var con = _connectionFactory.CreateConnection())
             {
-                return con.QueryFirstOrDefault<User>("SELECT * FROM Users WHERE Email = @Email",
+                var row = con.QueryFirstOrDefault("SELECT * FROM Users WHERE Email = @Email",
                     new { Email = email });
+                if (row == null) return null;
+                
+                try
+                {
+                    var user = new User
+                    {
+                        UserID = row.UserID == null ? 0 : Convert.ToInt32(row.UserID),
+                        Username = Convert.ToString(row.Username) ?? string.Empty,
+                        Password = Convert.ToString(row.Password) ?? string.Empty,
+                        PasswordHash = Convert.ToString(row.PasswordHash) ?? string.Empty,
+                        Email = Convert.ToString(row.Email) ?? string.Empty,
+                        FullName = Convert.ToString(row.FullName) ?? string.Empty,
+                        Role = Convert.ToString(row.Role) ?? string.Empty,
+                        IsActive = row.IsActive == null ? false : Convert.ToBoolean(row.IsActive),
+                        IsEmailVerified = row.IsEmailVerified == null ? false : Convert.ToBoolean(row.IsEmailVerified),
+                        EmailVerificationToken = Convert.ToString(row.EmailVerificationToken) ?? string.Empty,
+                        PasswordResetToken = Convert.ToString(row.PasswordResetToken) ?? string.Empty,
+                        PasswordResetExpiry = row.PasswordResetExpiry == null ? (DateTime?)null : Convert.ToDateTime(row.PasswordResetExpiry),
+                        PasswordResetOTP = Convert.ToString(row.PasswordResetOTP) ?? string.Empty,
+                        OTPExpiry = row.OTPExpiry == null ? (DateTime?)null : Convert.ToDateTime(row.OTPExpiry),
+                        CreatedAt = row.CreatedAt == null ? DateTime.Now : Convert.ToDateTime(row.CreatedAt),
+                        UpdatedAt = row.UpdatedAt == null ? (DateTime?)null : Convert.ToDateTime(row.UpdatedAt)
+                    };
+                    
+                    return user;
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle as needed
+                    // Return null if conversion fails
+                    return null;
+                }
             }
         }
 
@@ -121,8 +254,40 @@ namespace BMYLBH2025_SDDAP.Models
         {
             using (var con = _connectionFactory.CreateConnection())
             {
-                return con.QueryFirstOrDefault<User>("SELECT * FROM Users WHERE EmailVerificationToken = @Token",
+                var row = con.QueryFirstOrDefault("SELECT * FROM Users WHERE EmailVerificationToken = @Token",
                     new { Token = token });
+                if (row == null) return null;
+                
+                try
+                {
+                    var user = new User
+                    {
+                        UserID = row.UserID == null ? 0 : Convert.ToInt32(row.UserID),
+                        Username = Convert.ToString(row.Username) ?? string.Empty,
+                        Password = Convert.ToString(row.Password) ?? string.Empty,
+                        PasswordHash = Convert.ToString(row.PasswordHash) ?? string.Empty,
+                        Email = Convert.ToString(row.Email) ?? string.Empty,
+                        FullName = Convert.ToString(row.FullName) ?? string.Empty,
+                        Role = Convert.ToString(row.Role) ?? string.Empty,
+                        IsActive = row.IsActive == null ? false : Convert.ToBoolean(row.IsActive),
+                        IsEmailVerified = row.IsEmailVerified == null ? false : Convert.ToBoolean(row.IsEmailVerified),
+                        EmailVerificationToken = Convert.ToString(row.EmailVerificationToken) ?? string.Empty,
+                        PasswordResetToken = Convert.ToString(row.PasswordResetToken) ?? string.Empty,
+                        PasswordResetExpiry = row.PasswordResetExpiry == null ? (DateTime?)null : Convert.ToDateTime(row.PasswordResetExpiry),
+                        PasswordResetOTP = Convert.ToString(row.PasswordResetOTP) ?? string.Empty,
+                        OTPExpiry = row.OTPExpiry == null ? (DateTime?)null : Convert.ToDateTime(row.OTPExpiry),
+                        CreatedAt = row.CreatedAt == null ? DateTime.Now : Convert.ToDateTime(row.CreatedAt),
+                        UpdatedAt = row.UpdatedAt == null ? (DateTime?)null : Convert.ToDateTime(row.UpdatedAt)
+                    };
+                    
+                    return user;
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle as needed
+                    // Return null if conversion fails
+                    return null;
+                }
             }
         }
 
@@ -130,9 +295,41 @@ namespace BMYLBH2025_SDDAP.Models
         {
             using (var con = _connectionFactory.CreateConnection())
             {
-                return con.QueryFirstOrDefault<User>(
+                var row = con.QueryFirstOrDefault(
                     "SELECT * FROM Users WHERE PasswordResetOTP = @OTP AND OTPExpiry > @Now",
                     new { OTP = otp, Now = DateTime.UtcNow });
+                if (row == null) return null;
+                
+                try
+                {
+                    var user = new User
+                    {
+                        UserID = row.UserID == null ? 0 : Convert.ToInt32(row.UserID),
+                        Username = Convert.ToString(row.Username) ?? string.Empty,
+                        Password = Convert.ToString(row.Password) ?? string.Empty,
+                        PasswordHash = Convert.ToString(row.PasswordHash) ?? string.Empty,
+                        Email = Convert.ToString(row.Email) ?? string.Empty,
+                        FullName = Convert.ToString(row.FullName) ?? string.Empty,
+                        Role = Convert.ToString(row.Role) ?? string.Empty,
+                        IsActive = row.IsActive == null ? false : Convert.ToBoolean(row.IsActive),
+                        IsEmailVerified = row.IsEmailVerified == null ? false : Convert.ToBoolean(row.IsEmailVerified),
+                        EmailVerificationToken = Convert.ToString(row.EmailVerificationToken) ?? string.Empty,
+                        PasswordResetToken = Convert.ToString(row.PasswordResetToken) ?? string.Empty,
+                        PasswordResetExpiry = row.PasswordResetExpiry == null ? (DateTime?)null : Convert.ToDateTime(row.PasswordResetExpiry),
+                        PasswordResetOTP = Convert.ToString(row.PasswordResetOTP) ?? string.Empty,
+                        OTPExpiry = row.OTPExpiry == null ? (DateTime?)null : Convert.ToDateTime(row.OTPExpiry),
+                        CreatedAt = row.CreatedAt == null ? DateTime.Now : Convert.ToDateTime(row.CreatedAt),
+                        UpdatedAt = row.UpdatedAt == null ? (DateTime?)null : Convert.ToDateTime(row.UpdatedAt)
+                    };
+                    
+                    return user;
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle as needed
+                    // Return null if conversion fails
+                    return null;
+                }
             }
         }
 

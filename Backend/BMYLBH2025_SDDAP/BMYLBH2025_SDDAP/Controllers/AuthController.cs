@@ -1,8 +1,8 @@
-﻿using System;
-using System.Web.Http;
-using BMYLBH2025_SDDAP.Models;
+﻿using BMYLBH2025_SDDAP.Models;
 using BMYLBH2025_SDDAP.Services;
+using System;
 using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace BMYLBH2025_SDDAP.Controllers
 {
@@ -27,11 +27,11 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (request == null || string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
                 {
                     return Json(ApiResponse<LoginResponseData>.CreateError("Email and password are required.", "ValidationError"));
-            }
+                }
 
-            var user = _userRepository.GetByEmail(request.Email);
-                
-            if (user == null)
+                var user = _userRepository.GetByEmail(request.Email);
+
+                if (user == null)
                 {
                     var errorData = new LoginResponseData
                     {
@@ -40,7 +40,7 @@ namespace BMYLBH2025_SDDAP.Controllers
                     };
                     return Json(ApiResponse<LoginResponseData>.CreateError("Invalid email or password.", "InvalidCredentials", errorData));
                 }
-                 
+
                 user.PasswordHash = string.IsNullOrEmpty(user.PasswordHash) ? HashPassword(user.Password) : user.PasswordHash;
 
                 if (!VerifyPassword(request.Password, user.PasswordHash))
@@ -88,7 +88,7 @@ namespace BMYLBH2025_SDDAP.Controllers
         {
             try
             {
-                if (request == null || string.IsNullOrEmpty(request.Email) || 
+                if (request == null || string.IsNullOrEmpty(request.Email) ||
                     string.IsNullOrEmpty(request.Password) || string.IsNullOrEmpty(request.FullName))
                 {
                     return Json(ApiResponse<RegisterResponseData>.CreateError("All fields are required.", "ValidationError"));
@@ -115,10 +115,10 @@ namespace BMYLBH2025_SDDAP.Controllers
                 };
 
                 _userRepository.Create(user);
-                
+
                 // Send verification email
                 await _emailService.SendVerificationEmailAsync(user.Email, user.EmailVerificationToken);
-                
+
                 // Send welcome email
                 await _emailService.SendWelcomeEmailAsync(user.Email, user.FullName);
 
@@ -128,7 +128,7 @@ namespace BMYLBH2025_SDDAP.Controllers
                     Email = user.Email
                 };
 
-                return Json(ApiResponse<RegisterResponseData>.CreateSuccess(responseData, 
+                return Json(ApiResponse<RegisterResponseData>.CreateSuccess(responseData,
                     "Registration successful! Please check your email to verify your account."));
             }
             catch (Exception ex)
@@ -149,7 +149,7 @@ namespace BMYLBH2025_SDDAP.Controllers
                 }
 
                 var user = _userRepository.GetByVerificationToken(token);
-                
+
                 if (user == null)
                 {
                     return Json(ApiResponse<EmailResponseData>.CreateError("Invalid verification token.", "InvalidToken"));
@@ -191,7 +191,7 @@ namespace BMYLBH2025_SDDAP.Controllers
                 }
 
                 var user = _userRepository.GetByEmail(request.Email);
-                
+
                 if (user == null)
                 {
                     return Json(ApiResponse<EmailResponseData>.CreateError("User not found.", "UserNotFound"));
@@ -244,11 +244,11 @@ namespace BMYLBH2025_SDDAP.Controllers
                 };
 
                 var user = _userRepository.GetByEmail(request.Email);
-                
+
                 if (user == null)
                 {
                     // Don't reveal whether user exists or not for security, but still return success
-                    return Json(ApiResponse<EmailResponseData>.CreateSuccess(responseData, 
+                    return Json(ApiResponse<EmailResponseData>.CreateSuccess(responseData,
                         "If the email exists, a password reset code has been sent."));
                 }
 
@@ -261,7 +261,7 @@ namespace BMYLBH2025_SDDAP.Controllers
                 // Send OTP email
                 await _emailService.SendPasswordResetOTPAsync(user.Email, otp, user.FullName);
 
-                return Json(ApiResponse<EmailResponseData>.CreateSuccess(responseData, 
+                return Json(ApiResponse<EmailResponseData>.CreateSuccess(responseData,
                     "If the email exists, a password reset code has been sent."));
             }
             catch (Exception ex)
@@ -282,7 +282,7 @@ namespace BMYLBH2025_SDDAP.Controllers
                 }
 
                 var user = _userRepository.GetByEmail(request.Email);
-                
+
                 if (user == null || user.PasswordResetOTP != request.OTP || user.OTPExpiry < DateTime.UtcNow)
                 {
                     return Json(ApiResponse<OTPResponseData>.CreateError("Invalid or expired OTP.", "InvalidOTP"));
@@ -308,14 +308,14 @@ namespace BMYLBH2025_SDDAP.Controllers
         {
             try
             {
-                if (request == null || string.IsNullOrEmpty(request.Email) || 
+                if (request == null || string.IsNullOrEmpty(request.Email) ||
                     string.IsNullOrEmpty(request.OTP) || string.IsNullOrEmpty(request.NewPassword))
                 {
                     return Json(ApiResponse<PasswordResetResponseData>.CreateError("All fields are required.", "ValidationError"));
                 }
 
                 var user = _userRepository.GetByEmail(request.Email);
-                
+
                 if (user == null || user.PasswordResetOTP != request.OTP || user.OTPExpiry < DateTime.UtcNow)
                 {
                     return Json(ApiResponse<PasswordResetResponseData>.CreateError("Invalid or expired OTP.", "InvalidOTP"));
@@ -335,7 +335,7 @@ namespace BMYLBH2025_SDDAP.Controllers
                     Success = true
                 };
 
-                return Json(ApiResponse<PasswordResetResponseData>.CreateSuccess(responseData, 
+                return Json(ApiResponse<PasswordResetResponseData>.CreateSuccess(responseData,
                     "Password reset successfully. You can now log in with your new password."));
             }
             catch (Exception ex)

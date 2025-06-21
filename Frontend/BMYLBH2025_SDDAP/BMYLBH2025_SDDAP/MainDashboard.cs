@@ -16,6 +16,10 @@ namespace BMYLBH2025_SDDAP
         private readonly ApiService _apiService;
         private List<Inventory> _currentInventory;
         private List<Product> _currentProducts;
+        private List<Category> _currentCategories;
+        private List<Category> _filteredCategories;
+        private List<Order> _currentOrders;
+        private List<Order> _filteredOrders;
 
         #endregion
 
@@ -35,26 +39,48 @@ namespace BMYLBH2025_SDDAP
 
         private void InitializeFormSettings()
         {
-            // Set placeholder text for search (since Designer doesn't support this in older .NET)
-            txtSearchInventory.Text = "🔍 Search inventory...";
-            txtSearchInventory.ForeColor = Color.Gray;
+            try
+            {
+                // Set placeholder text for search (since Designer doesn't support this in older .NET)
+                txtSearchInventory.Text = "🔍 Search inventory...";
+                txtSearchInventory.ForeColor = Color.Gray;
+                
+                txtSearchCategories.Text = "🔍 Search categories...";
+                txtSearchCategories.ForeColor = Color.Gray;
+                
+                txtSearchOrders.Text = "🔍 Search orders...";
+                txtSearchOrders.ForeColor = Color.Gray;
 
-            // Apply modern styling to data grids
-            StyleDataGridView(dgvInventory);
-            StyleDataGridView(dgvProducts);
+                // Apply modern styling to data grids
+                StyleDataGridView(dgvInventory);
+                StyleDataGridView(dgvProducts);
+                StyleDataGridView(dgvCategories);
+                StyleDataGridView(dgvOrders);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error initializing form settings: {ex.Message}");
+            }
         }
 
         private void StyleDataGridView(DataGridView dgv)
         {
-            dgv.EnableHeadersVisualStyles = false;
-            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 152, 219);
-            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(250, 250, 250);
-            dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(52, 152, 219);
-            dgv.DefaultCellStyle.SelectionForeColor = Color.White;
-            dgv.ColumnHeadersHeight = 35;
-            dgv.RowTemplate.Height = 30;
+            try
+            {
+                dgv.EnableHeadersVisualStyles = false;
+                dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 152, 219);
+                dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+                dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(250, 250, 250);
+                dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(52, 152, 219);
+                dgv.DefaultCellStyle.SelectionForeColor = Color.White;
+                dgv.ColumnHeadersHeight = 35;
+                dgv.RowTemplate.Height = 30;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error styling DataGridView: {ex.Message}");
+            }
         }
 
         #endregion
@@ -73,18 +99,26 @@ namespace BMYLBH2025_SDDAP
                 // Load data concurrently for better performance
                 var inventoryTask = _apiService.GetAllInventoryAsync();
                 var productsTask = _apiService.GetAllProductsAsync();
+                var categoriesTask = _apiService.GetAllCategoriesAsync();
+                var ordersTask = _apiService.GetAllOrdersAsync();
                 var totalValueTask = _apiService.GetTotalInventoryValueAsync();
                 var lowStockTask = _apiService.GetLowStockItemsAsync();
 
-                await Task.WhenAll(inventoryTask, productsTask, totalValueTask, lowStockTask);
+                await Task.WhenAll(inventoryTask, productsTask, categoriesTask, ordersTask, totalValueTask, lowStockTask);
 
                 // Store results
                 _currentInventory = inventoryTask.Result;
                 _currentProducts = productsTask.Result;
+                _currentCategories = categoriesTask.Result;
+                _currentOrders = ordersTask.Result;
+                _filteredCategories = new List<Category>(_currentCategories ?? new List<Category>());
+                _filteredOrders = new List<Order>(_currentOrders ?? new List<Order>());
 
                 // Update UI
                 UpdateInventoryGrid();
                 UpdateProductsGrid();
+                UpdateCategoriesGrid();
+                UpdateOrdersGrid();
                 UpdateDashboardSummary(totalValueTask.Result, lowStockTask.Result.Count);
 
                 // Show success feedback
@@ -105,56 +139,208 @@ namespace BMYLBH2025_SDDAP
 
         private void UpdateInventoryGrid()
         {
-            if (dgvInventory == null || _currentInventory == null) return;
-
-            var displayData = _currentInventory.Select(i => new
+            try
             {
-                ID = i.InventoryID,
-                Product = i.Product?.Name ?? "Unknown",
-                Category = i.Product?.Category?.Name ?? "Uncategorized",
-                Quantity = i.Quantity,
-                MinStock = i.Product?.MinimumStockLevel ?? 0,
-                Status = GetStockStatus(i.Quantity, i.Product?.MinimumStockLevel ?? 0),
-                LastUpdated = i.LastUpdated.ToString("yyyy-MM-dd HH:mm")
-            }).ToList();
+                if (dgvInventory == null || _currentInventory == null) return;
 
-            dgvInventory.DataSource = displayData;
-            
-            // Apply conditional formatting for status column
-            ApplyInventoryStatusFormatting();
+                var displayData = _currentInventory.Select(i => new
+                {
+                    ID = i.InventoryID,
+                    Product = i.Product?.Name ?? "Unknown",
+                    Category = i.Product?.Category?.Name ?? "Uncategorized",
+                    Quantity = i.Quantity,
+                    MinStock = i.Product?.MinimumStockLevel ?? 0,
+                    Status = GetStockStatus(i.Quantity, i.Product?.MinimumStockLevel ?? 0),
+                    LastUpdated = i.LastUpdated.ToString("yyyy-MM-dd HH:mm")
+                }).ToList();
+
+                dgvInventory.DataSource = displayData;
+                
+                // Apply conditional formatting for status column
+                ApplyInventoryStatusFormatting();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error updating inventory grid: {ex.Message}");
+            }
         }
 
         private void UpdateProductsGrid()
         {
-            if (dgvProducts == null || _currentProducts == null) return;
-
-            var displayData = _currentProducts.Select(p => new
+            try
             {
-                ID = p.ProductID,
-                Name = p.Name,
-                Description = p.Description,
-                Price = p.Price.ToString("C"),
-                Category = p.Category?.Name ?? "Uncategorized",
-                MinStock = p.MinimumStockLevel
-            }).ToList();
+                if (dgvProducts == null || _currentProducts == null) return;
 
-            dgvProducts.DataSource = displayData;
+                var displayData = _currentProducts.Select(p => new
+                {
+                    ID = p.ProductID,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price.ToString("C"),
+                    Category = p.Category?.Name ?? "Uncategorized",
+                    MinStock = p.MinimumStockLevel
+                }).ToList();
+
+                dgvProducts.DataSource = displayData;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error updating products grid: {ex.Message}");
+            }
+        }
+
+        private void UpdateCategoriesGrid()
+        {
+            try
+            {
+                if (dgvCategories == null || _filteredCategories == null) return;
+
+                var displayData = _filteredCategories.Select(c => new
+                {
+                    ID = c.CategoryID,
+                    Name = c.Name,
+                    Description = c.Description,
+                    ProductCount = _currentProducts?.Count(p => p.CategoryID == c.CategoryID) ?? 0,
+                    CreatedAt = c.CreatedAt.ToString("yyyy-MM-dd"),
+                    LastUpdated = c.UpdatedAt.ToString("yyyy-MM-dd")
+                }).ToList();
+
+                dgvCategories.DataSource = displayData;
+
+                // Configure column headers and widths
+                if (dgvCategories.Columns.Count > 0)
+                {
+                    dgvCategories.Columns["ID"].HeaderText = "ID";
+                    dgvCategories.Columns["ID"].Width = 60;
+                    dgvCategories.Columns["Name"].HeaderText = "Category Name";
+                    dgvCategories.Columns["Name"].Width = 200;
+                    dgvCategories.Columns["Description"].HeaderText = "Description";
+                    dgvCategories.Columns["Description"].Width = 300;
+                    dgvCategories.Columns["ProductCount"].HeaderText = "Products";
+                    dgvCategories.Columns["ProductCount"].Width = 100;
+                    dgvCategories.Columns["CreatedAt"].HeaderText = "Created";
+                    dgvCategories.Columns["CreatedAt"].Width = 120;
+                    dgvCategories.Columns["LastUpdated"].HeaderText = "Updated";
+                    dgvCategories.Columns["LastUpdated"].Width = 120;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error updating categories grid: {ex.Message}");
+            }
+        }
+
+        private void UpdateOrdersGrid()
+        {
+            try
+            {
+                if (dgvOrders == null || _filteredOrders == null) return;
+
+                var displayData = _filteredOrders.Select(o => new
+                {
+                    ID = o.OrderID,
+                    OrderDate = o.OrderDate.ToString("yyyy-MM-dd"),
+                    Supplier = o.Supplier?.Name ?? "Unknown",
+                    Status = o.Status,
+                    TotalAmount = o.TotalAmount.ToString("C"),
+                    ItemCount = o.GetTotalItems(),
+                    CreatedAt = o.CreatedAt.ToString("yyyy-MM-dd HH:mm")
+                }).ToList();
+
+                dgvOrders.DataSource = displayData;
+
+                // Configure column headers and widths
+                if (dgvOrders.Columns.Count > 0)
+                {
+                    dgvOrders.Columns["ID"].HeaderText = "Order #";
+                    dgvOrders.Columns["ID"].Width = 80;
+                    dgvOrders.Columns["OrderDate"].HeaderText = "Order Date";
+                    dgvOrders.Columns["OrderDate"].Width = 120;
+                    dgvOrders.Columns["Supplier"].HeaderText = "Supplier";
+                    dgvOrders.Columns["Supplier"].Width = 200;
+                    dgvOrders.Columns["Status"].HeaderText = "Status";
+                    dgvOrders.Columns["Status"].Width = 120;
+                    dgvOrders.Columns["TotalAmount"].HeaderText = "Total Amount";
+                    dgvOrders.Columns["TotalAmount"].Width = 120;
+                    dgvOrders.Columns["ItemCount"].HeaderText = "Items";
+                    dgvOrders.Columns["ItemCount"].Width = 80;
+                    dgvOrders.Columns["CreatedAt"].HeaderText = "Created";
+                    dgvOrders.Columns["CreatedAt"].Width = 140;
+                }
+
+                // Apply status-based row coloring
+                ApplyOrderStatusFormatting();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error updating orders grid: {ex.Message}");
+            }
+        }
+
+        private void ApplyOrderStatusFormatting()
+        {
+            try
+            {
+                if (dgvOrders.Columns["Status"] == null) return;
+                
+                foreach (DataGridViewRow row in dgvOrders.Rows)
+                {
+                    var status = row.Cells["Status"].Value?.ToString()?.ToLower();
+                    if (status == null) continue;
+
+                    switch (status)
+                    {
+                        case "pending":
+                            row.DefaultCellStyle.BackColor = Color.FromArgb(255, 248, 225); // Light yellow
+                            break;
+                        case "confirmed":
+                            row.DefaultCellStyle.BackColor = Color.FromArgb(217, 237, 247); // Light blue
+                            break;
+                        case "processing":
+                            row.DefaultCellStyle.BackColor = Color.FromArgb(230, 244, 255); // Lighter blue
+                            break;
+                        case "completed":
+                            row.DefaultCellStyle.BackColor = Color.FromArgb(223, 240, 216); // Light green
+                            break;
+                        case "cancelled":
+                            row.DefaultCellStyle.BackColor = Color.FromArgb(248, 215, 218); // Light red
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error applying order status formatting: {ex.Message}");
+            }
         }
 
         private void UpdateDashboardSummary(decimal totalValue, int lowStockCount)
         {
-            lblTotalValue.Text = totalValue.ToString("C");
-            lblLowStockCount.Text = lowStockCount.ToString();
-            lblProductsCount.Text = _currentProducts?.Count.ToString() ?? "0";
+            try
+            {
+                lblTotalValue.Text = totalValue.ToString("C");
+                lblLowStockCount.Text = lowStockCount.ToString();
+                lblProductsCount.Text = _currentProducts?.Count.ToString() ?? "0";
+                
+                // Add order count to summary
+                if (lblOrdersCount != null)
+                {
+                    lblOrdersCount.Text = _currentOrders?.Count.ToString() ?? "0";
+                }
 
-            // Update card colors based on status
-            if (lowStockCount > 0)
-            {
-                pnlLowStockCard.BackColor = Color.FromArgb(231, 76, 60); // Red for alerts
+                // Update card colors based on status
+                if (lowStockCount > 0)
+                {
+                    pnlLowStockCard.BackColor = Color.FromArgb(231, 76, 60); // Red for alerts
+                }
+                else
+                {
+                    pnlLowStockCard.BackColor = Color.FromArgb(46, 204, 113); // Green for good status
+                }
             }
-            else
+            catch (Exception ex)
             {
-                pnlLowStockCard.BackColor = Color.FromArgb(46, 204, 113); // Green for good status
+                ShowErrorMessage($"Error updating dashboard summary: {ex.Message}");
             }
         }
 
@@ -173,17 +359,24 @@ namespace BMYLBH2025_SDDAP
 
         private void ApplyInventoryStatusFormatting()
         {
-            if (dgvInventory.Columns["Status"] == null) return;
-            foreach (DataGridViewRow row in dgvInventory.Rows)
+            try
             {
-                var status = row.Cells["Status"].Value?.ToString();
-                if (status == null) continue;
-                if (status.Contains("Out of Stock"))
-                    row.DefaultCellStyle.BackColor = Color.FromArgb(255, 240, 240);
-                else if (status.Contains("Low Stock"))
-                    row.DefaultCellStyle.BackColor = Color.FromArgb(255, 248, 220);
-                else
-                    row.DefaultCellStyle.BackColor = Color.White;
+                if (dgvInventory.Columns["Status"] == null) return;
+                foreach (DataGridViewRow row in dgvInventory.Rows)
+                {
+                    var status = row.Cells["Status"].Value?.ToString();
+                    if (status == null) continue;
+                    if (status.Contains("Out of Stock"))
+                        row.DefaultCellStyle.BackColor = Color.FromArgb(255, 240, 240);
+                    else if (status.Contains("Low Stock"))
+                        row.DefaultCellStyle.BackColor = Color.FromArgb(255, 248, 220);
+                    else
+                        row.DefaultCellStyle.BackColor = Color.White;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error applying inventory status formatting: {ex.Message}");
             }
         }
 
@@ -203,31 +396,38 @@ namespace BMYLBH2025_SDDAP
 
         private void FilterInventoryData(string searchTerm)
         {
-            if (_currentInventory == null) return;
-
-            if (string.IsNullOrWhiteSpace(searchTerm) || searchTerm == "🔍 Search inventory...")
+            try
             {
-                UpdateInventoryGrid();
-                return;
-            }
+                if (_currentInventory == null) return;
 
-            var filteredData = _currentInventory
-                .Where(i => 
-                    (i.Product?.Name?.ToLower().Contains(searchTerm.ToLower()) ?? false) ||
-                    (i.Product?.Category?.Name?.ToLower().Contains(searchTerm.ToLower()) ?? false))
-                .Select(i => new
+                if (string.IsNullOrWhiteSpace(searchTerm) || searchTerm == "🔍 Search inventory...")
                 {
-                    ID = i.InventoryID,
-                    Product = i.Product?.Name ?? "Unknown",
-                    Category = i.Product?.Category?.Name ?? "Uncategorized",
-                    Quantity = i.Quantity,
-                    MinStock = i.Product?.MinimumStockLevel ?? 0,
-                    Status = GetStockStatus(i.Quantity, i.Product?.MinimumStockLevel ?? 0),
-                    LastUpdated = i.LastUpdated.ToString("yyyy-MM-dd HH:mm")
-                }).ToList();
+                    UpdateInventoryGrid();
+                    return;
+                }
 
-            dgvInventory.DataSource = filteredData;
-            ApplyInventoryStatusFormatting();
+                var filteredData = _currentInventory
+                    .Where(i => 
+                        (i.Product?.Name?.ToLower().Contains(searchTerm.ToLower()) ?? false) ||
+                        (i.Product?.Category?.Name?.ToLower().Contains(searchTerm.ToLower()) ?? false))
+                    .Select(i => new
+                    {
+                        ID = i.InventoryID,
+                        Product = i.Product?.Name ?? "Unknown",
+                        Category = i.Product?.Category?.Name ?? "Uncategorized",
+                        Quantity = i.Quantity,
+                        MinStock = i.Product?.MinimumStockLevel ?? 0,
+                        Status = GetStockStatus(i.Quantity, i.Product?.MinimumStockLevel ?? 0),
+                        LastUpdated = i.LastUpdated.ToString("yyyy-MM-dd HH:mm")
+                    }).ToList();
+
+                dgvInventory.DataSource = filteredData;
+                ApplyInventoryStatusFormatting();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error filtering inventory data: {ex.Message}");
+            }
         }
 
         #endregion
@@ -241,50 +441,118 @@ namespace BMYLBH2025_SDDAP
 
         private void btnAddProduct_Click(object sender, EventArgs e)
         {
-            ShowInfoMessage("Add Product feature will be implemented in the next phase!");
+            try
+            {
+                var productForm = new ProductManagementForm(_apiService);
+                productForm.ShowDialog(this);
+                
+                // Refresh data after the form closes
+                _ = LoadDataAsync();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error opening product management: {ex.Message}");
+            }
         }
 
         private void btnUpdateStock_Click(object sender, EventArgs e)
         {
-            if (dgvInventory.SelectedRows.Count > 0)
+            try
             {
-                var selectedRow = dgvInventory.SelectedRows[0];
-                var productName = selectedRow.Cells["Product"].Value?.ToString();
-                ShowInfoMessage($"Update Stock feature for '{productName}' will be implemented in the next phase!");
+                if (dgvInventory.SelectedRows.Count > 0)
+                {
+                    var selectedRow = dgvInventory.SelectedRows[0];
+                    var productName = selectedRow.Cells["Product"].Value?.ToString();
+                    ShowInfoMessage($"Update Stock feature for '{productName}' will be implemented in the next phase!");
+                }
+                else
+                {
+                    ShowInfoMessage("Please select an inventory item to update stock levels.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ShowInfoMessage("Please select an inventory item to update stock levels.");
+                ShowErrorMessage($"Error updating stock: {ex.Message}");
             }
         }
 
         private void txtSearchInventory_TextChanged(object sender, EventArgs e)
         {
-            var textBox = sender as TextBox;
-            if (textBox != null && textBox.ForeColor != Color.Gray)
+            try
             {
-                FilterInventoryData(textBox.Text);
+                var textBox = sender as TextBox;
+                if (textBox != null && textBox.ForeColor != Color.Gray)
+                {
+                    FilterInventoryData(textBox.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error in search text changed: {ex.Message}");
             }
         }
 
         private void TxtSearchInventory_Enter(object sender, EventArgs e)
         {
-            var textBox = sender as TextBox;
-            if (textBox != null && textBox.Text == "🔍 Search inventory...")
+            try
             {
-                textBox.Text = "";
-                textBox.ForeColor = Color.Black;
+                var textBox = sender as TextBox;
+                if (textBox != null && textBox.Text == "🔍 Search inventory...")
+                {
+                    textBox.Text = "";
+                    textBox.ForeColor = Color.Black;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error in search enter: {ex.Message}");
             }
         }
 
         private void TxtSearchInventory_Leave(object sender, EventArgs e)
         {
-            var textBox = sender as TextBox;
-            if (textBox != null && string.IsNullOrWhiteSpace(textBox.Text))
+            try
             {
-                textBox.Text = "🔍 Search inventory...";
-                textBox.ForeColor = Color.Gray;
-                FilterInventoryData(""); // Reset filter
+                var textBox = sender as TextBox;
+                if (textBox != null && string.IsNullOrWhiteSpace(textBox.Text))
+                {
+                    textBox.Text = "🔍 Search inventory...";
+                    textBox.ForeColor = Color.Gray;
+                    FilterInventoryData(""); // Reset filter
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error in search leave: {ex.Message}");
+            }
+        }
+
+        private void btnManageCategories_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var categoryForm = new CategoryManagementForm(_apiService);
+                categoryForm.ShowDialog(this);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error opening category management: {ex.Message}");
+            }
+        }
+
+        private void btnManageProducts_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var productForm = new ProductManagementForm(_apiService);
+                productForm.ShowDialog(this);
+                
+                // Refresh data after the form closes
+                _ = LoadDataAsync();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error opening product management: {ex.Message}");
             }
         }
 
@@ -298,6 +566,205 @@ namespace BMYLBH2025_SDDAP
             {
                 // Log error but don't prevent form closing
                 System.Diagnostics.Debug.WriteLine($"Error disposing ApiService: {ex.Message}");
+            }
+        }
+
+        private void txtSearchCategories_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var textBox = sender as TextBox;
+                if (textBox != null && textBox.ForeColor != Color.Gray)
+                {
+                    FilterCategoriesData(textBox.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error in category search text changed: {ex.Message}");
+            }
+        }
+
+        private void txtSearchCategories_Enter(object sender, EventArgs e)
+        {
+            try
+            {
+                var textBox = sender as TextBox;
+                if (textBox != null && textBox.Text == "🔍 Search categories...")
+                {
+                    textBox.Text = "";
+                    textBox.ForeColor = Color.Black;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error in category search enter: {ex.Message}");
+            }
+        }
+
+        private void txtSearchCategories_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                var textBox = sender as TextBox;
+                if (textBox != null && string.IsNullOrWhiteSpace(textBox.Text))
+                {
+                    textBox.Text = "🔍 Search categories...";
+                    textBox.ForeColor = Color.Gray;
+                    FilterCategoriesData(""); // Reset filter
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error in category search leave: {ex.Message}");
+            }
+        }
+
+        private void FilterCategoriesData(string searchTerm)
+        {
+            try
+            {
+                if (_currentCategories == null) return;
+
+                if (string.IsNullOrWhiteSpace(searchTerm) || searchTerm == "🔍 Search categories...")
+                {
+                    _filteredCategories = new List<Category>(_currentCategories);
+                }
+                else
+                {
+                    _filteredCategories = _currentCategories.Where(c =>
+                        (c.Name?.ToLower().Contains(searchTerm.ToLower()) ?? false) ||
+                        (c.Description?.ToLower().Contains(searchTerm.ToLower()) ?? false)
+                    ).ToList();
+                }
+
+                UpdateCategoriesGrid();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error filtering categories data: {ex.Message}");
+            }
+        }
+
+        // Orders Event Handlers
+        private void btnCreateOrder_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var orderCreationForm = new OrderCreationForm(_apiService);
+                var result = orderCreationForm.ShowDialog(this);
+                
+                if (result == DialogResult.OK)
+                {
+                    // Refresh the orders data after successful creation
+                    _ = LoadDataAsync();
+                    ShowInfoMessage("Order created successfully!");
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error opening order creation: {ex.Message}");
+            }
+        }
+
+        private void btnManageOrders_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var orderManagementForm = new OrderManagementForm(_apiService);
+                orderManagementForm.ShowDialog(this);
+                
+                // Refresh the orders data after the form closes
+                _ = LoadDataAsync();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error opening order management: {ex.Message}");
+            }
+        }
+
+        private void txtSearchOrders_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var searchTerm = txtSearchOrders.Text;
+                if (searchTerm == "🔍 Search orders...") return;
+                FilterOrdersData(searchTerm);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error in order search text changed: {ex.Message}");
+            }
+        }
+
+        private void txtSearchOrders_Enter(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtSearchOrders.Text == "🔍 Search orders...")
+                {
+                    txtSearchOrders.Text = "";
+                    txtSearchOrders.ForeColor = Color.Black;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error in order search enter: {ex.Message}");
+            }
+        }
+
+        private void txtSearchOrders_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(txtSearchOrders.Text))
+                {
+                    txtSearchOrders.Text = "🔍 Search orders...";
+                    txtSearchOrders.ForeColor = Color.Gray;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error in order search leave: {ex.Message}");
+            }
+        }
+
+        private void dgvOrders_SelectionChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Handle order selection - could show order details in the future
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error in order selection changed: {ex.Message}");
+            }
+        }
+
+        private void FilterOrdersData(string searchTerm)
+        {
+            try
+            {
+                if (_currentOrders == null) return;
+
+                if (string.IsNullOrWhiteSpace(searchTerm) || searchTerm == "🔍 Search orders...")
+                {
+                    _filteredOrders = new List<Order>(_currentOrders);
+                }
+                else
+                {
+                    _filteredOrders = _currentOrders.Where(o =>
+                        o.OrderID.ToString().Contains(searchTerm) ||
+                        (o.Status?.ToLower().Contains(searchTerm.ToLower()) ?? false) ||
+                        (o.Supplier?.Name?.ToLower().Contains(searchTerm.ToLower()) ?? false)
+                    ).ToList();
+                }
+
+                UpdateOrdersGrid();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error filtering orders data: {ex.Message}");
             }
         }
 

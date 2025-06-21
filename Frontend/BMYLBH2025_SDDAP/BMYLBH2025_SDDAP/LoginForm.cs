@@ -20,9 +20,16 @@ namespace BMYLBH2025_SDDAP
 
         private void HideErrorElements()
         {
-            lblErrorMessage.Visible = false;
-            btnResendVerification.Visible = false;
-            btnForgotPassword.Visible = false;
+            try
+            {
+                lblErrorMessage.Visible = false;
+                btnResendVerification.Visible = false;
+                btnForgotPassword.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error hiding elements: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private async Task Login()
@@ -119,32 +126,61 @@ namespace BMYLBH2025_SDDAP
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            var registerForm = new RegisterForm();
-            registerForm.ShowDialog();
+            try
+            {
+                var registerForm = new RegisterForm();
+                registerForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error opening register form: {ex.Message}");
+            }
         }
 
         private async void txtPassword_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Allow Enter key to trigger login
-            if (e.KeyChar == (char)Keys.Enter)
+            try
             {
-                await Login();
+                // Allow Enter key to trigger login
+                if (e.KeyChar == (char)Keys.Enter)
+                {
+                    await Login();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error handling password key press: {ex.Message}");
             }
         }
 
         private void txtEmail_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Allow Enter key to move to password field
-            if (e.KeyChar == (char)Keys.Enter)
+            try
             {
-                txtPassword.Focus();
+                // Allow Enter key to move to password field
+                if (e.KeyChar == (char)Keys.Enter)
+                {
+                    txtPassword.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error handling email key press: {ex.Message}");
             }
         }
 
         private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // Clean up API service
-            _apiService?.Dispose();
+            try
+            {
+                // Clean up API service
+                _apiService?.Dispose();
+            }
+            catch (Exception ex)
+            {
+                // Log error but don't prevent form closing
+                System.Diagnostics.Debug.WriteLine($"Error disposing ApiService: {ex.Message}");
+            }
         }
 
         // Test login with default admin credentials
