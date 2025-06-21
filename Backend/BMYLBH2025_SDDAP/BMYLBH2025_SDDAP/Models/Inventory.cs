@@ -86,27 +86,71 @@ namespace BMYLBH2025_SDDAP.Models
             {
                 con.Open();
                 const string sql = @"
-                    SELECT i.InventoryID, i.ProductID, i.Quantity, i.LastUpdated,
-                           p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
-                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription
+                    SELECT i.InventoryID, i.ProductID AS InventoryProductID, i.Quantity, i.LastUpdated,
+                           p.ProductID, p.Name AS ProductName, p.Description AS ProductDescription, p.Price, p.MinimumStockLevel, p.CategoryID AS ProductCategoryID,
+                           c.CategoryID AS CategoryID, c.Name AS CategoryName, c.Description AS CategoryDescription
                     FROM Inventory i
                     INNER JOIN Products p ON i.ProductID = p.ProductID
                     LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
                     ORDER BY i.LastUpdated DESC";
                     
-                return con.Query<Inventory, Product, Category, Inventory>(sql, 
-                    (inventory, product, category) => 
+                var result = con.Query(sql);
+                var inventories = new List<Inventory>();
+                
+                foreach (dynamic row in result)
+                {
+                    try
                     {
-                        product.Category = category;
-                        inventory.Product = product;
-                        // Populate additional navigation properties for testing
-                        inventory.ProductName = product.Name;
-                        inventory.CategoryName = category?.Name;
-                        inventory.Price = product.Price;
-                        inventory.MinimumStockLevel = product.MinimumStockLevel;
-                        return inventory;
-                    }, 
-                    splitOn: "ProductID,CategoryID").ToList();
+                        var inventory = new Inventory
+                        {
+                            InventoryID = row.InventoryID == null ? 0 : Convert.ToInt32(row.InventoryID),
+                            ProductID = row.InventoryProductID == null ? 0 : Convert.ToInt32(row.InventoryProductID),
+                            Quantity = row.Quantity == null ? 0 : Convert.ToInt32(row.Quantity),
+                            LastUpdated = row.LastUpdated == null ? DateTime.Now : Convert.ToDateTime(row.LastUpdated)
+                        };
+                        
+                        // Add Product information
+                        if (row.ProductID != null)
+                        {
+                            inventory.Product = new Product
+                            {
+                                ProductID = Convert.ToInt32(row.ProductID),
+                                Name = Convert.ToString(row.ProductName) ?? string.Empty,
+                                Description = Convert.ToString(row.ProductDescription) ?? string.Empty,
+                                Price = row.Price == null ? 0m : Convert.ToDecimal(row.Price),
+                                MinimumStockLevel = row.MinimumStockLevel == null ? 0 : Convert.ToInt32(row.MinimumStockLevel),
+                                CategoryID = row.ProductCategoryID == null ? 0 : Convert.ToInt32(row.ProductCategoryID)
+                            };
+                            
+                            // Populate additional navigation properties for testing
+                            inventory.ProductName = Convert.ToString(row.ProductName) ?? string.Empty;
+                            inventory.Price = row.Price == null ? 0m : Convert.ToDecimal(row.Price);
+                            inventory.MinimumStockLevel = row.MinimumStockLevel == null ? 0 : Convert.ToInt32(row.MinimumStockLevel);
+                        }
+                        
+                        // Add Category information
+                        if (row.CategoryID != null && row.CategoryName != null && inventory.Product != null)
+                        {
+                            inventory.Product.Category = new Category
+                            {
+                                CategoryID = Convert.ToInt32(row.CategoryID),
+                                Name = Convert.ToString(row.CategoryName) ?? string.Empty,
+                                Description = Convert.ToString(row.CategoryDescription) ?? string.Empty
+                            };
+                            inventory.CategoryName = Convert.ToString(row.CategoryName) ?? string.Empty;
+                        }
+                        
+                        inventories.Add(inventory);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error or handle as needed
+                        // For now, we'll skip this row if conversion fails
+                        continue;
+                    }
+                }
+                
+                return inventories;
             }
         }
         
@@ -115,23 +159,60 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = @"
-                    SELECT i.InventoryID, i.ProductID, i.Quantity, i.LastUpdated,
-                           p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
-                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription
+                    SELECT i.InventoryID, i.ProductID AS InventoryProductID, i.Quantity, i.LastUpdated,
+                           p.ProductID, p.Name AS ProductName, p.Description AS ProductDescription, p.Price, p.MinimumStockLevel, p.CategoryID AS ProductCategoryID,
+                           c.CategoryID AS CategoryID, c.Name AS CategoryName, c.Description AS CategoryDescription
                     FROM Inventory i
                     INNER JOIN Products p ON i.ProductID = p.ProductID
                     LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
                     WHERE i.InventoryID = @Id";
                     
-                return con.Query<Inventory, Product, Category, Inventory>(sql, 
-                    (inventory, product, category) => 
+                var row = con.QueryFirstOrDefault(sql, new { Id = id });
+                if (row == null) return null;
+                
+                try
+                {
+                    var inventory = new Inventory
                     {
-                        product.Category = category;
-                        inventory.Product = product;
-                        return inventory;
-                    }, 
-                    new { Id = id },
-                    splitOn: "ProductID,CategoryID").FirstOrDefault();
+                        InventoryID = row.InventoryID == null ? 0 : Convert.ToInt32(row.InventoryID),
+                        ProductID = row.InventoryProductID == null ? 0 : Convert.ToInt32(row.InventoryProductID),
+                        Quantity = row.Quantity == null ? 0 : Convert.ToInt32(row.Quantity),
+                        LastUpdated = row.LastUpdated == null ? DateTime.Now : Convert.ToDateTime(row.LastUpdated)
+                    };
+                    
+                    // Add Product information
+                    if (row.ProductID != null)
+                    {
+                        inventory.Product = new Product
+                        {
+                            ProductID = Convert.ToInt32(row.ProductID),
+                            Name = Convert.ToString(row.ProductName) ?? string.Empty,
+                            Description = Convert.ToString(row.ProductDescription) ?? string.Empty,
+                            Price = row.Price == null ? 0m : Convert.ToDecimal(row.Price),
+                            MinimumStockLevel = row.MinimumStockLevel == null ? 0 : Convert.ToInt32(row.MinimumStockLevel),
+                            CategoryID = row.ProductCategoryID == null ? 0 : Convert.ToInt32(row.ProductCategoryID)
+                        };
+                    }
+                    
+                    // Add Category information
+                    if (row.CategoryID != null && row.CategoryName != null && inventory.Product != null)
+                    {
+                        inventory.Product.Category = new Category
+                        {
+                            CategoryID = Convert.ToInt32(row.CategoryID),
+                            Name = Convert.ToString(row.CategoryName) ?? string.Empty,
+                            Description = Convert.ToString(row.CategoryDescription) ?? string.Empty
+                        };
+                    }
+                    
+                    return inventory;
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle as needed
+                    // Return null if conversion fails
+                    return null;
+                }
             }
         }
         
@@ -218,23 +299,60 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = @"
-                    SELECT i.InventoryID, i.ProductID, i.Quantity, i.LastUpdated,
-                           p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
-                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription
+                    SELECT i.InventoryID, i.ProductID AS InventoryProductID, i.Quantity, i.LastUpdated,
+                           p.ProductID, p.Name AS ProductName, p.Description AS ProductDescription, p.Price, p.MinimumStockLevel, p.CategoryID AS ProductCategoryID,
+                           c.CategoryID AS CategoryID, c.Name AS CategoryName, c.Description AS CategoryDescription
                     FROM Inventory i
                     INNER JOIN Products p ON i.ProductID = p.ProductID
                     LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
                     WHERE i.ProductID = @ProductId";
                     
-                return con.Query<Inventory, Product, Category, Inventory>(sql, 
-                    (inventory, product, category) => 
+                var row = con.QueryFirstOrDefault(sql, new { ProductId = productId });
+                if (row == null) return null;
+                
+                try
+                {
+                    var inventory = new Inventory
                     {
-                        product.Category = category;
-                        inventory.Product = product;
-                        return inventory;
-                    }, 
-                    new { ProductId = productId },
-                    splitOn: "ProductID,CategoryID").FirstOrDefault();
+                        InventoryID = row.InventoryID == null ? 0 : Convert.ToInt32(row.InventoryID),
+                        ProductID = row.InventoryProductID == null ? 0 : Convert.ToInt32(row.InventoryProductID),
+                        Quantity = row.Quantity == null ? 0 : Convert.ToInt32(row.Quantity),
+                        LastUpdated = row.LastUpdated == null ? DateTime.Now : Convert.ToDateTime(row.LastUpdated)
+                    };
+                    
+                    // Add Product information
+                    if (row.ProductID != null)
+                    {
+                        inventory.Product = new Product
+                        {
+                            ProductID = Convert.ToInt32(row.ProductID),
+                            Name = Convert.ToString(row.ProductName) ?? string.Empty,
+                            Description = Convert.ToString(row.ProductDescription) ?? string.Empty,
+                            Price = row.Price == null ? 0m : Convert.ToDecimal(row.Price),
+                            MinimumStockLevel = row.MinimumStockLevel == null ? 0 : Convert.ToInt32(row.MinimumStockLevel),
+                            CategoryID = row.ProductCategoryID == null ? 0 : Convert.ToInt32(row.ProductCategoryID)
+                        };
+                    }
+                    
+                    // Add Category information
+                    if (row.CategoryID != null && row.CategoryName != null && inventory.Product != null)
+                    {
+                        inventory.Product.Category = new Category
+                        {
+                            CategoryID = Convert.ToInt32(row.CategoryID),
+                            Name = Convert.ToString(row.CategoryName) ?? string.Empty,
+                            Description = Convert.ToString(row.CategoryDescription) ?? string.Empty
+                        };
+                    }
+                    
+                    return inventory;
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle as needed
+                    // Return null if conversion fails
+                    return null;
+                }
             }
         }
         
@@ -243,23 +361,66 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = @"
-                    SELECT i.InventoryID, i.ProductID, i.Quantity, i.LastUpdated,
-                           p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
-                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription
+                    SELECT i.InventoryID, i.ProductID AS InventoryProductID, i.Quantity, i.LastUpdated,
+                           p.ProductID, p.Name AS ProductName, p.Description AS ProductDescription, p.Price, p.MinimumStockLevel, p.CategoryID AS ProductCategoryID,
+                           c.CategoryID AS CategoryID, c.Name AS CategoryName, c.Description AS CategoryDescription
                     FROM Inventory i
                     INNER JOIN Products p ON i.ProductID = p.ProductID
                     LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
                     WHERE i.Quantity <= p.MinimumStockLevel
                     ORDER BY i.Quantity ASC";
                     
-                return con.Query<Inventory, Product, Category, Inventory>(sql, 
-                    (inventory, product, category) => 
+                var result = con.Query(sql);
+                var inventories = new List<Inventory>();
+                
+                foreach (dynamic row in result)
+                {
+                    try
                     {
-                        product.Category = category;
-                        inventory.Product = product;
-                        return inventory;
-                    }, 
-                    splitOn: "ProductID,CategoryID").ToList();
+                        var inventory = new Inventory
+                        {
+                            InventoryID = row.InventoryID == null ? 0 : Convert.ToInt32(row.InventoryID),
+                            ProductID = row.InventoryProductID == null ? 0 : Convert.ToInt32(row.InventoryProductID),
+                            Quantity = row.Quantity == null ? 0 : Convert.ToInt32(row.Quantity),
+                            LastUpdated = row.LastUpdated == null ? DateTime.Now : Convert.ToDateTime(row.LastUpdated)
+                        };
+                        
+                        // Add Product information
+                        if (row.ProductID != null)
+                        {
+                            inventory.Product = new Product
+                            {
+                                ProductID = Convert.ToInt32(row.ProductID),
+                                Name = Convert.ToString(row.ProductName) ?? string.Empty,
+                                Description = Convert.ToString(row.ProductDescription) ?? string.Empty,
+                                Price = row.Price == null ? 0m : Convert.ToDecimal(row.Price),
+                                MinimumStockLevel = row.MinimumStockLevel == null ? 0 : Convert.ToInt32(row.MinimumStockLevel),
+                                CategoryID = row.ProductCategoryID == null ? 0 : Convert.ToInt32(row.ProductCategoryID)
+                            };
+                        }
+                        
+                        // Add Category information
+                        if (row.CategoryID != null && row.CategoryName != null && inventory.Product != null)
+                        {
+                            inventory.Product.Category = new Category
+                            {
+                                CategoryID = Convert.ToInt32(row.CategoryID),
+                                Name = Convert.ToString(row.CategoryName) ?? string.Empty,
+                                Description = Convert.ToString(row.CategoryDescription) ?? string.Empty
+                            };
+                        }
+                        
+                        inventories.Add(inventory);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error or handle as needed
+                        // For now, we'll skip this row if conversion fails
+                        continue;
+                    }
+                }
+                
+                return inventories;
             }
         }
         
@@ -268,24 +429,66 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = @"
-                    SELECT i.InventoryID, i.ProductID, i.Quantity, i.LastUpdated,
-                           p.ProductID, p.Name, p.Description, p.Price, p.MinimumStockLevel, p.CategoryID,
-                           c.CategoryID, c.Name as CategoryName, c.Description as CategoryDescription
+                    SELECT i.InventoryID, i.ProductID AS InventoryProductID, i.Quantity, i.LastUpdated,
+                           p.ProductID, p.Name AS ProductName, p.Description AS ProductDescription, p.Price, p.MinimumStockLevel, p.CategoryID AS ProductCategoryID,
+                           c.CategoryID AS CategoryID, c.Name AS CategoryName, c.Description AS CategoryDescription
                     FROM Inventory i
                     INNER JOIN Products p ON i.ProductID = p.ProductID
                     LEFT JOIN Categories c ON p.CategoryID = c.CategoryID
                     WHERE p.CategoryID = @CategoryId
                     ORDER BY p.Name";
                     
-                return con.Query<Inventory, Product, Category, Inventory>(sql, 
-                    (inventory, product, category) => 
+                var result = con.Query(sql, new { CategoryId = categoryId });
+                var inventories = new List<Inventory>();
+                
+                foreach (dynamic row in result)
+                {
+                    try
                     {
-                        product.Category = category;
-                        inventory.Product = product;
-                        return inventory;
-                    }, 
-                    new { CategoryId = categoryId },
-                    splitOn: "ProductID,CategoryID").ToList();
+                        var inventory = new Inventory
+                        {
+                            InventoryID = row.InventoryID == null ? 0 : Convert.ToInt32(row.InventoryID),
+                            ProductID = row.InventoryProductID == null ? 0 : Convert.ToInt32(row.InventoryProductID),
+                            Quantity = row.Quantity == null ? 0 : Convert.ToInt32(row.Quantity),
+                            LastUpdated = row.LastUpdated == null ? DateTime.Now : Convert.ToDateTime(row.LastUpdated)
+                        };
+                        
+                        // Add Product information
+                        if (row.ProductID != null)
+                        {
+                            inventory.Product = new Product
+                            {
+                                ProductID = Convert.ToInt32(row.ProductID),
+                                Name = Convert.ToString(row.ProductName) ?? string.Empty,
+                                Description = Convert.ToString(row.ProductDescription) ?? string.Empty,
+                                Price = row.Price == null ? 0m : Convert.ToDecimal(row.Price),
+                                MinimumStockLevel = row.MinimumStockLevel == null ? 0 : Convert.ToInt32(row.MinimumStockLevel),
+                                CategoryID = row.ProductCategoryID == null ? 0 : Convert.ToInt32(row.ProductCategoryID)
+                            };
+                        }
+                        
+                        // Add Category information
+                        if (row.CategoryID != null && row.CategoryName != null && inventory.Product != null)
+                        {
+                            inventory.Product.Category = new Category
+                            {
+                                CategoryID = Convert.ToInt32(row.CategoryID),
+                                Name = Convert.ToString(row.CategoryName) ?? string.Empty,
+                                Description = Convert.ToString(row.CategoryDescription) ?? string.Empty
+                            };
+                        }
+                        
+                        inventories.Add(inventory);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error or handle as needed
+                        // For now, we'll skip this row if conversion fails
+                        continue;
+                    }
+                }
+                
+                return inventories;
             }
         }
         

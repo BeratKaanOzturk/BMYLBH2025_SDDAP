@@ -8,15 +8,55 @@
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
 
+        // Navigation properties
+        public Order Order { get; set; }
+        public Product Product { get; set; }
+
         public OrderDetail()
         {
-            // Constructor
+            Quantity = 1;
+            UnitPrice = 0m;
         }
 
         public decimal CalculateSubtotal()
         {
-            // Calculate subtotal
             return Quantity * UnitPrice;
+        }
+
+        public decimal GetTotalDiscount()
+        {
+            // For future discount functionality
+            return 0m;
+        }
+
+        public decimal GetFinalAmount()
+        {
+            return CalculateSubtotal() - GetTotalDiscount();
+        }
+
+        public string GetFormattedSubtotal()
+        {
+            return CalculateSubtotal().ToString("C");
+        }
+
+        public string GetFormattedUnitPrice()
+        {
+            return UnitPrice.ToString("C");
+        }
+
+        public bool IsValidQuantity()
+        {
+            return Quantity > 0;
+        }
+
+        public bool IsValidPrice()
+        {
+            return UnitPrice >= 0;
+        }
+
+        public bool IsValid()
+        {
+            return IsValidQuantity() && IsValidPrice() && ProductID > 0;
         }
     }
 }

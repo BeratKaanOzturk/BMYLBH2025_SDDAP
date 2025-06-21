@@ -26,6 +26,7 @@ namespace BMYLBH2025_SDDAP
             container.RegisterType<ICategoryRepository, CategoryRepository>();
             container.RegisterType<ISupplierRepository, SupplierRepository>();
             container.RegisterType<IOrderRepository, OrderRepository>();
+            container.RegisterType<IOrderDetailRepository, OrderDetailRepository>();
             container.RegisterType<INotificationRepository, NotificationRepository>();
             
             // Register Services

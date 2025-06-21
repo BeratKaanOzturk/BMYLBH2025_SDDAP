@@ -78,7 +78,34 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = "SELECT * FROM Suppliers ORDER BY Name";
-                return con.Query<Supplier>(sql).ToList();
+                var result = con.Query(sql);
+                var suppliers = new List<Supplier>();
+                
+                foreach (dynamic row in result)
+                {
+                    try
+                    {
+                        var supplier = new Supplier
+                        {
+                            SupplierID = row.SupplierID == null ? 0 : Convert.ToInt32(row.SupplierID),
+                            Name = Convert.ToString(row.Name) ?? string.Empty,
+                            ContactPerson = Convert.ToString(row.ContactPerson) ?? string.Empty,
+                            Email = Convert.ToString(row.Email) ?? string.Empty,
+                            Phone = Convert.ToString(row.Phone) ?? string.Empty,
+                            Address = Convert.ToString(row.Address) ?? string.Empty
+                        };
+                        
+                        suppliers.Add(supplier);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error or handle as needed
+                        // For now, we'll skip this row if conversion fails
+                        continue;
+                    }
+                }
+                
+                return suppliers;
             }
         }
         
@@ -87,7 +114,29 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = "SELECT * FROM Suppliers WHERE SupplierID = @Id";
-                return con.QuerySingleOrDefault<Supplier>(sql, new { Id = id });
+                var row = con.QueryFirstOrDefault(sql, new { Id = id });
+                if (row == null) return null;
+                
+                try
+                {
+                    var supplier = new Supplier
+                    {
+                        SupplierID = row.SupplierID == null ? 0 : Convert.ToInt32(row.SupplierID),
+                        Name = Convert.ToString(row.Name) ?? string.Empty,
+                        ContactPerson = Convert.ToString(row.ContactPerson) ?? string.Empty,
+                        Email = Convert.ToString(row.Email) ?? string.Empty,
+                        Phone = Convert.ToString(row.Phone) ?? string.Empty,
+                        Address = Convert.ToString(row.Address) ?? string.Empty
+                    };
+                    
+                    return supplier;
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle as needed
+                    // Return null if conversion fails
+                    return null;
+                }
             }
         }
         
@@ -134,7 +183,29 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = "SELECT * FROM Suppliers WHERE Name = @Name";
-                return con.QuerySingleOrDefault<Supplier>(sql, new { Name = name });
+                var row = con.QueryFirstOrDefault(sql, new { Name = name });
+                if (row == null) return null;
+                
+                try
+                {
+                    var supplier = new Supplier
+                    {
+                        SupplierID = row.SupplierID == null ? 0 : Convert.ToInt32(row.SupplierID),
+                        Name = Convert.ToString(row.Name) ?? string.Empty,
+                        ContactPerson = Convert.ToString(row.ContactPerson) ?? string.Empty,
+                        Email = Convert.ToString(row.Email) ?? string.Empty,
+                        Phone = Convert.ToString(row.Phone) ?? string.Empty,
+                        Address = Convert.ToString(row.Address) ?? string.Empty
+                    };
+                    
+                    return supplier;
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle as needed
+                    // Return null if conversion fails
+                    return null;
+                }
             }
         }
         
@@ -143,7 +214,29 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = "SELECT * FROM Suppliers WHERE Email = @Email";
-                return con.QuerySingleOrDefault<Supplier>(sql, new { Email = email });
+                var row = con.QueryFirstOrDefault(sql, new { Email = email });
+                if (row == null) return null;
+                
+                try
+                {
+                    var supplier = new Supplier
+                    {
+                        SupplierID = row.SupplierID == null ? 0 : Convert.ToInt32(row.SupplierID),
+                        Name = Convert.ToString(row.Name) ?? string.Empty,
+                        ContactPerson = Convert.ToString(row.ContactPerson) ?? string.Empty,
+                        Email = Convert.ToString(row.Email) ?? string.Empty,
+                        Phone = Convert.ToString(row.Phone) ?? string.Empty,
+                        Address = Convert.ToString(row.Address) ?? string.Empty
+                    };
+                    
+                    return supplier;
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle as needed
+                    // Return null if conversion fails
+                    return null;
+                }
             }
         }
         
@@ -152,7 +245,34 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = "SELECT * FROM Suppliers WHERE Name LIKE @Name ORDER BY Name";
-                return con.Query<Supplier>(sql, new { Name = $"%{name}%" }).ToList();
+                var result = con.Query(sql, new { Name = $"%{name}%" });
+                var suppliers = new List<Supplier>();
+                
+                foreach (dynamic row in result)
+                {
+                    try
+                    {
+                        var supplier = new Supplier
+                        {
+                            SupplierID = row.SupplierID == null ? 0 : Convert.ToInt32(row.SupplierID),
+                            Name = Convert.ToString(row.Name) ?? string.Empty,
+                            ContactPerson = Convert.ToString(row.ContactPerson) ?? string.Empty,
+                            Email = Convert.ToString(row.Email) ?? string.Empty,
+                            Phone = Convert.ToString(row.Phone) ?? string.Empty,
+                            Address = Convert.ToString(row.Address) ?? string.Empty
+                        };
+                        
+                        suppliers.Add(supplier);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error or handle as needed
+                        // For now, we'll skip this row if conversion fails
+                        continue;
+                    }
+                }
+                
+                return suppliers;
             }
         }
         
@@ -166,7 +286,34 @@ namespace BMYLBH2025_SDDAP.Models
                     INNER JOIN Products p ON s.SupplierID = p.SupplierID
                     ORDER BY s.Name";
                     
-                return con.Query<Supplier>(sql).ToList();
+                var result = con.Query(sql);
+                var suppliers = new List<Supplier>();
+                
+                foreach (dynamic row in result)
+                {
+                    try
+                    {
+                        var supplier = new Supplier
+                        {
+                            SupplierID = row.SupplierID == null ? 0 : Convert.ToInt32(row.SupplierID),
+                            Name = Convert.ToString(row.Name) ?? string.Empty,
+                            ContactPerson = Convert.ToString(row.ContactPerson) ?? string.Empty,
+                            Email = Convert.ToString(row.Email) ?? string.Empty,
+                            Phone = Convert.ToString(row.Phone) ?? string.Empty,
+                            Address = Convert.ToString(row.Address) ?? string.Empty
+                        };
+                        
+                        suppliers.Add(supplier);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error or handle as needed
+                        // For now, we'll skip this row if conversion fails
+                        continue;
+                    }
+                }
+                
+                return suppliers;
             }
         }
         

@@ -137,7 +137,33 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = "SELECT * FROM Categories ORDER BY Name";
-                return con.Query<Category>(sql).ToList();
+                var result = con.Query(sql);
+                var categories = new List<Category>();
+                
+                foreach (dynamic row in result)
+                {
+                    try
+                    {
+                        var category = new Category
+                        {
+                            CategoryID = row.CategoryID == null ? 0 : Convert.ToInt32(row.CategoryID),
+                            Name = Convert.ToString(row.Name) ?? string.Empty,
+                            Description = Convert.ToString(row.Description) ?? string.Empty,
+                            CreatedAt = row.CreatedAt == null ? DateTime.Now : Convert.ToDateTime(row.CreatedAt),
+                            UpdatedAt = row.UpdatedAt == null ? DateTime.Now : Convert.ToDateTime(row.UpdatedAt)
+                        };
+                        
+                        categories.Add(category);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error or handle as needed
+                        // For now, we'll skip this row if conversion fails
+                        continue;
+                    }
+                }
+                
+                return categories;
             }
         }
         
@@ -146,7 +172,28 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = "SELECT * FROM Categories WHERE CategoryID = @Id";
-                return con.QuerySingleOrDefault<Category>(sql, new { Id = id });
+                var row = con.QueryFirstOrDefault(sql, new { Id = id });
+                if (row == null) return null;
+                
+                try
+                {
+                    var category = new Category
+                    {
+                        CategoryID = row.CategoryID == null ? 0 : Convert.ToInt32(row.CategoryID),
+                        Name = Convert.ToString(row.Name) ?? string.Empty,
+                        Description = Convert.ToString(row.Description) ?? string.Empty,
+                        CreatedAt = row.CreatedAt == null ? DateTime.Now : Convert.ToDateTime(row.CreatedAt),
+                        UpdatedAt = row.UpdatedAt == null ? DateTime.Now : Convert.ToDateTime(row.UpdatedAt)
+                    };
+                    
+                    return category;
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle as needed
+                    // Return null if conversion fails
+                    return null;
+                }
             }
         }
         
@@ -189,7 +236,28 @@ namespace BMYLBH2025_SDDAP.Models
             using (var con = _connectionFactory.CreateConnection())
             {
                 const string sql = "SELECT * FROM Categories WHERE Name = @Name";
-                return con.QuerySingleOrDefault<Category>(sql, new { Name = name });
+                var row = con.QueryFirstOrDefault(sql, new { Name = name });
+                if (row == null) return null;
+                
+                try
+                {
+                    var category = new Category
+                    {
+                        CategoryID = row.CategoryID == null ? 0 : Convert.ToInt32(row.CategoryID),
+                        Name = Convert.ToString(row.Name) ?? string.Empty,
+                        Description = Convert.ToString(row.Description) ?? string.Empty,
+                        CreatedAt = row.CreatedAt == null ? DateTime.Now : Convert.ToDateTime(row.CreatedAt),
+                        UpdatedAt = row.UpdatedAt == null ? DateTime.Now : Convert.ToDateTime(row.UpdatedAt)
+                    };
+                    
+                    return category;
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or handle as needed
+                    // Return null if conversion fails
+                    return null;
+                }
             }
         }
         
@@ -203,7 +271,33 @@ namespace BMYLBH2025_SDDAP.Models
                     INNER JOIN Products p ON c.CategoryID = p.CategoryID
                     ORDER BY c.Name";
                     
-                return con.Query<Category>(sql).ToList();
+                var result = con.Query(sql);
+                var categories = new List<Category>();
+                
+                foreach (dynamic row in result)
+                {
+                    try
+                    {
+                        var category = new Category
+                        {
+                            CategoryID = row.CategoryID == null ? 0 : Convert.ToInt32(row.CategoryID),
+                            Name = Convert.ToString(row.Name) ?? string.Empty,
+                            Description = Convert.ToString(row.Description) ?? string.Empty,
+                            CreatedAt = row.CreatedAt == null ? DateTime.Now : Convert.ToDateTime(row.CreatedAt),
+                            UpdatedAt = row.UpdatedAt == null ? DateTime.Now : Convert.ToDateTime(row.UpdatedAt)
+                        };
+                        
+                        categories.Add(category);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error or handle as needed
+                        // For now, we'll skip this row if conversion fails
+                        continue;
+                    }
+                }
+                
+                return categories;
             }
         }
         
@@ -219,7 +313,33 @@ namespace BMYLBH2025_SDDAP.Models
                     WHERE i.Quantity <= p.MinimumStockLevel
                     ORDER BY c.Name";
                     
-                return con.Query<Category>(sql).ToList();
+                var result = con.Query(sql);
+                var categories = new List<Category>();
+                
+                foreach (dynamic row in result)
+                {
+                    try
+                    {
+                        var category = new Category
+                        {
+                            CategoryID = row.CategoryID == null ? 0 : Convert.ToInt32(row.CategoryID),
+                            Name = Convert.ToString(row.Name) ?? string.Empty,
+                            Description = Convert.ToString(row.Description) ?? string.Empty,
+                            CreatedAt = row.CreatedAt == null ? DateTime.Now : Convert.ToDateTime(row.CreatedAt),
+                            UpdatedAt = row.UpdatedAt == null ? DateTime.Now : Convert.ToDateTime(row.UpdatedAt)
+                        };
+                        
+                        categories.Add(category);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error or handle as needed
+                        // For now, we'll skip this row if conversion fails
+                        continue;
+                    }
+                }
+                
+                return categories;
             }
         }
         

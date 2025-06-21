@@ -31,10 +31,15 @@ namespace BMYLBH2025_SDDAP
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabDashboard = new System.Windows.Forms.TabPage();
             this.pnlDashboard = new System.Windows.Forms.Panel();
+            this.btnManageCategoriesDash = new System.Windows.Forms.Button();
+            this.btnCreateOrderDash = new System.Windows.Forms.Button();
             this.btnUpdateStock = new System.Windows.Forms.Button();
             this.btnAddProduct = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.pnlSummaryCards = new System.Windows.Forms.Panel();
+            this.pnlOrdersCard = new System.Windows.Forms.Panel();
+            this.lblOrdersCount = new System.Windows.Forms.Label();
+            this.lblOrdersTitle = new System.Windows.Forms.Label();
             this.pnlProductsCard = new System.Windows.Forms.Panel();
             this.lblProductsCount = new System.Windows.Forms.Label();
             this.lblProductsTitle = new System.Windows.Forms.Label();
@@ -54,13 +59,30 @@ namespace BMYLBH2025_SDDAP
             this.tabProducts = new System.Windows.Forms.TabPage();
             this.pnlProducts = new System.Windows.Forms.Panel();
             this.dgvProducts = new System.Windows.Forms.DataGridView();
-            this.tabReports = new System.Windows.Forms.TabPage();
-            this.pnlReports = new System.Windows.Forms.Panel();
-            this.lblReportsTitle = new System.Windows.Forms.Label();
+            this.btnManageProducts = new System.Windows.Forms.Button();
+            this.lblProductsTabTitle = new System.Windows.Forms.Label();
+            this.tabCategories = new System.Windows.Forms.TabPage();
+            this.pnlCategories = new System.Windows.Forms.Panel();
+            this.dgvCategories = new System.Windows.Forms.DataGridView();
+            this.pnlCategoriesSearch = new System.Windows.Forms.Panel();
+            this.lblSearchCategories = new System.Windows.Forms.Label();
+            this.txtSearchCategories = new System.Windows.Forms.TextBox();
+            this.btnManageCategories = new System.Windows.Forms.Button();
+            this.lblCategoriesTitle = new System.Windows.Forms.Label();
+            this.tabOrders = new System.Windows.Forms.TabPage();
+            this.pnlOrders = new System.Windows.Forms.Panel();
+            this.dgvOrders = new System.Windows.Forms.DataGridView();
+            this.pnlOrdersSearch = new System.Windows.Forms.Panel();
+            this.lblSearchOrders = new System.Windows.Forms.Label();
+            this.txtSearchOrders = new System.Windows.Forms.TextBox();
+            this.btnManageOrders = new System.Windows.Forms.Button();
+            this.btnCreateOrder = new System.Windows.Forms.Button();
+            this.lblOrdersTabTitle = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabDashboard.SuspendLayout();
             this.pnlDashboard.SuspendLayout();
             this.pnlSummaryCards.SuspendLayout();
+            this.pnlOrdersCard.SuspendLayout();
             this.pnlProductsCard.SuspendLayout();
             this.pnlLowStockCard.SuspendLayout();
             this.pnlTotalValueCard.SuspendLayout();
@@ -71,8 +93,14 @@ namespace BMYLBH2025_SDDAP
             this.tabProducts.SuspendLayout();
             this.pnlProducts.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProducts)).BeginInit();
-            this.tabReports.SuspendLayout();
-            this.pnlReports.SuspendLayout();
+            this.tabCategories.SuspendLayout();
+            this.pnlCategories.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCategories)).BeginInit();
+            this.pnlCategoriesSearch.SuspendLayout();
+            this.tabOrders.SuspendLayout();
+            this.pnlOrders.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvOrders)).BeginInit();
+            this.pnlOrdersSearch.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -80,7 +108,8 @@ namespace BMYLBH2025_SDDAP
             this.tabControl.Controls.Add(this.tabDashboard);
             this.tabControl.Controls.Add(this.tabInventory);
             this.tabControl.Controls.Add(this.tabProducts);
-            this.tabControl.Controls.Add(this.tabReports);
+            this.tabControl.Controls.Add(this.tabCategories);
+            this.tabControl.Controls.Add(this.tabOrders);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.tabControl.Location = new System.Drawing.Point(0, 0);
@@ -93,15 +122,17 @@ namespace BMYLBH2025_SDDAP
             // 
             this.tabDashboard.BackColor = System.Drawing.Color.White;
             this.tabDashboard.Controls.Add(this.pnlDashboard);
-            this.tabDashboard.Location = new System.Drawing.Point(4, 32);
+            this.tabDashboard.Location = new System.Drawing.Point(4, 26);
             this.tabDashboard.Name = "tabDashboard";
-            this.tabDashboard.Size = new System.Drawing.Size(1192, 764);
+            this.tabDashboard.Size = new System.Drawing.Size(1192, 770);
             this.tabDashboard.TabIndex = 0;
             this.tabDashboard.Text = "📊 Dashboard";
             // 
             // pnlDashboard
             // 
             this.pnlDashboard.BackColor = System.Drawing.Color.White;
+            this.pnlDashboard.Controls.Add(this.btnManageCategoriesDash);
+            this.pnlDashboard.Controls.Add(this.btnCreateOrderDash);
             this.pnlDashboard.Controls.Add(this.btnUpdateStock);
             this.pnlDashboard.Controls.Add(this.btnAddProduct);
             this.pnlDashboard.Controls.Add(this.btnRefresh);
@@ -111,8 +142,36 @@ namespace BMYLBH2025_SDDAP
             this.pnlDashboard.Location = new System.Drawing.Point(0, 0);
             this.pnlDashboard.Name = "pnlDashboard";
             this.pnlDashboard.Padding = new System.Windows.Forms.Padding(20);
-            this.pnlDashboard.Size = new System.Drawing.Size(1192, 764);
+            this.pnlDashboard.Size = new System.Drawing.Size(1192, 770);
             this.pnlDashboard.TabIndex = 0;
+            // 
+            // btnManageCategoriesDash
+            // 
+            this.btnManageCategoriesDash.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.btnManageCategoriesDash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnManageCategoriesDash.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnManageCategoriesDash.ForeColor = System.Drawing.Color.White;
+            this.btnManageCategoriesDash.Location = new System.Drawing.Point(730, 210);
+            this.btnManageCategoriesDash.Name = "btnManageCategoriesDash";
+            this.btnManageCategoriesDash.Size = new System.Drawing.Size(150, 40);
+            this.btnManageCategoriesDash.TabIndex = 6;
+            this.btnManageCategoriesDash.Text = "🗂️ Categories";
+            this.btnManageCategoriesDash.UseVisualStyleBackColor = false;
+            this.btnManageCategoriesDash.Click += new System.EventHandler(this.btnManageCategories_Click);
+            // 
+            // btnCreateOrderDash
+            // 
+            this.btnCreateOrderDash.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
+            this.btnCreateOrderDash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCreateOrderDash.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnCreateOrderDash.ForeColor = System.Drawing.Color.White;
+            this.btnCreateOrderDash.Location = new System.Drawing.Point(570, 210);
+            this.btnCreateOrderDash.Name = "btnCreateOrderDash";
+            this.btnCreateOrderDash.Size = new System.Drawing.Size(150, 40);
+            this.btnCreateOrderDash.TabIndex = 5;
+            this.btnCreateOrderDash.Text = "🛒 Create Order";
+            this.btnCreateOrderDash.UseVisualStyleBackColor = false;
+            this.btnCreateOrderDash.Click += new System.EventHandler(this.btnCreateOrder_Click);
             // 
             // btnUpdateStock
             // 
@@ -158,12 +217,13 @@ namespace BMYLBH2025_SDDAP
             // 
             // pnlSummaryCards
             // 
+            this.pnlSummaryCards.Controls.Add(this.pnlOrdersCard);
             this.pnlSummaryCards.Controls.Add(this.pnlProductsCard);
             this.pnlSummaryCards.Controls.Add(this.pnlLowStockCard);
             this.pnlSummaryCards.Controls.Add(this.pnlTotalValueCard);
             this.pnlSummaryCards.Location = new System.Drawing.Point(20, 70);
             this.pnlSummaryCards.Name = "pnlSummaryCards";
-            this.pnlSummaryCards.Size = new System.Drawing.Size(1000, 120);
+            this.pnlSummaryCards.Size = new System.Drawing.Size(880, 120);
             this.pnlSummaryCards.TabIndex = 1;
             // 
             // pnlProductsCard
@@ -183,7 +243,7 @@ namespace BMYLBH2025_SDDAP
             this.lblProductsCount.ForeColor = System.Drawing.Color.White;
             this.lblProductsCount.Location = new System.Drawing.Point(15, 45);
             this.lblProductsCount.Name = "lblProductsCount";
-            this.lblProductsCount.Size = new System.Drawing.Size(25, 30);
+            this.lblProductsCount.Size = new System.Drawing.Size(26, 30);
             this.lblProductsCount.TabIndex = 1;
             this.lblProductsCount.Text = "0";
             // 
@@ -194,7 +254,7 @@ namespace BMYLBH2025_SDDAP
             this.lblProductsTitle.ForeColor = System.Drawing.Color.White;
             this.lblProductsTitle.Location = new System.Drawing.Point(15, 15);
             this.lblProductsTitle.Name = "lblProductsTitle";
-            this.lblProductsTitle.Size = new System.Drawing.Size(126, 19);
+            this.lblProductsTitle.Size = new System.Drawing.Size(129, 19);
             this.lblProductsTitle.TabIndex = 0;
             this.lblProductsTitle.Text = "📦 Total Products";
             // 
@@ -215,7 +275,7 @@ namespace BMYLBH2025_SDDAP
             this.lblLowStockCount.ForeColor = System.Drawing.Color.White;
             this.lblLowStockCount.Location = new System.Drawing.Point(15, 45);
             this.lblLowStockCount.Name = "lblLowStockCount";
-            this.lblLowStockCount.Size = new System.Drawing.Size(25, 30);
+            this.lblLowStockCount.Size = new System.Drawing.Size(26, 30);
             this.lblLowStockCount.TabIndex = 1;
             this.lblLowStockCount.Text = "0";
             // 
@@ -226,7 +286,7 @@ namespace BMYLBH2025_SDDAP
             this.lblLowStockTitle.ForeColor = System.Drawing.Color.White;
             this.lblLowStockTitle.Location = new System.Drawing.Point(15, 15);
             this.lblLowStockTitle.Name = "lblLowStockTitle";
-            this.lblLowStockTitle.Size = new System.Drawing.Size(132, 19);
+            this.lblLowStockTitle.Size = new System.Drawing.Size(141, 19);
             this.lblLowStockTitle.TabIndex = 0;
             this.lblLowStockTitle.Text = "⚠️ Low Stock Items";
             // 
@@ -247,7 +307,7 @@ namespace BMYLBH2025_SDDAP
             this.lblTotalValue.ForeColor = System.Drawing.Color.White;
             this.lblTotalValue.Location = new System.Drawing.Point(15, 45);
             this.lblTotalValue.Name = "lblTotalValue";
-            this.lblTotalValue.Size = new System.Drawing.Size(67, 30);
+            this.lblTotalValue.Size = new System.Drawing.Size(71, 30);
             this.lblTotalValue.TabIndex = 1;
             this.lblTotalValue.Text = "$0.00";
             // 
@@ -258,9 +318,41 @@ namespace BMYLBH2025_SDDAP
             this.lblTotalValueTitle.ForeColor = System.Drawing.Color.White;
             this.lblTotalValueTitle.Location = new System.Drawing.Point(15, 15);
             this.lblTotalValueTitle.Name = "lblTotalValueTitle";
-            this.lblTotalValueTitle.Size = new System.Drawing.Size(161, 19);
+            this.lblTotalValueTitle.Size = new System.Drawing.Size(172, 19);
             this.lblTotalValueTitle.TabIndex = 0;
             this.lblTotalValueTitle.Text = "💰 Total Inventory Value";
+            // 
+            // pnlOrdersCard
+            // 
+            this.pnlOrdersCard.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
+            this.pnlOrdersCard.Controls.Add(this.lblOrdersCount);
+            this.pnlOrdersCard.Controls.Add(this.lblOrdersTitle);
+            this.pnlOrdersCard.Location = new System.Drawing.Point(660, 0);
+            this.pnlOrdersCard.Name = "pnlOrdersCard";
+            this.pnlOrdersCard.Size = new System.Drawing.Size(200, 100);
+            this.pnlOrdersCard.TabIndex = 3;
+            // 
+            // lblOrdersCount
+            // 
+            this.lblOrdersCount.AutoSize = true;
+            this.lblOrdersCount.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblOrdersCount.ForeColor = System.Drawing.Color.White;
+            this.lblOrdersCount.Location = new System.Drawing.Point(15, 45);
+            this.lblOrdersCount.Name = "lblOrdersCount";
+            this.lblOrdersCount.Size = new System.Drawing.Size(26, 30);
+            this.lblOrdersCount.TabIndex = 1;
+            this.lblOrdersCount.Text = "0";
+            // 
+            // lblOrdersTitle
+            // 
+            this.lblOrdersTitle.AutoSize = true;
+            this.lblOrdersTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblOrdersTitle.ForeColor = System.Drawing.Color.White;
+            this.lblOrdersTitle.Location = new System.Drawing.Point(15, 15);
+            this.lblOrdersTitle.Name = "lblOrdersTitle";
+            this.lblOrdersTitle.Size = new System.Drawing.Size(150, 19);
+            this.lblOrdersTitle.TabIndex = 0;
+            this.lblOrdersTitle.Text = "🛒 Total Orders";
             // 
             // lblDashboardTitle
             // 
@@ -269,7 +361,7 @@ namespace BMYLBH2025_SDDAP
             this.lblDashboardTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this.lblDashboardTitle.Location = new System.Drawing.Point(20, 20);
             this.lblDashboardTitle.Name = "lblDashboardTitle";
-            this.lblDashboardTitle.Size = new System.Drawing.Size(378, 32);
+            this.lblDashboardTitle.Size = new System.Drawing.Size(415, 32);
             this.lblDashboardTitle.TabIndex = 0;
             this.lblDashboardTitle.Text = "Inventory Management Dashboard";
             // 
@@ -277,9 +369,9 @@ namespace BMYLBH2025_SDDAP
             // 
             this.tabInventory.BackColor = System.Drawing.Color.White;
             this.tabInventory.Controls.Add(this.pnlInventory);
-            this.tabInventory.Location = new System.Drawing.Point(4, 32);
+            this.tabInventory.Location = new System.Drawing.Point(4, 26);
             this.tabInventory.Name = "tabInventory";
-            this.tabInventory.Size = new System.Drawing.Size(1192, 764);
+            this.tabInventory.Size = new System.Drawing.Size(1192, 770);
             this.tabInventory.TabIndex = 1;
             this.tabInventory.Text = "📋 Inventory";
             // 
@@ -292,7 +384,7 @@ namespace BMYLBH2025_SDDAP
             this.pnlInventory.Location = new System.Drawing.Point(0, 0);
             this.pnlInventory.Name = "pnlInventory";
             this.pnlInventory.Padding = new System.Windows.Forms.Padding(10);
-            this.pnlInventory.Size = new System.Drawing.Size(1192, 764);
+            this.pnlInventory.Size = new System.Drawing.Size(1192, 770);
             this.pnlInventory.TabIndex = 0;
             // 
             // dgvInventory
@@ -308,7 +400,7 @@ namespace BMYLBH2025_SDDAP
             this.dgvInventory.ReadOnly = true;
             this.dgvInventory.RowHeadersVisible = false;
             this.dgvInventory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvInventory.Size = new System.Drawing.Size(1172, 684);
+            this.dgvInventory.Size = new System.Drawing.Size(1172, 690);
             this.dgvInventory.TabIndex = 1;
             // 
             // pnlInventorySearch
@@ -328,7 +420,7 @@ namespace BMYLBH2025_SDDAP
             this.lblSearchInventory.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblSearchInventory.Location = new System.Drawing.Point(280, 21);
             this.lblSearchInventory.Name = "lblSearchInventory";
-            this.lblSearchInventory.Size = new System.Drawing.Size(95, 15);
+            this.lblSearchInventory.Size = new System.Drawing.Size(98, 15);
             this.lblSearchInventory.TabIndex = 1;
             this.lblSearchInventory.Text = "Search Inventory:";
             // 
@@ -347,9 +439,9 @@ namespace BMYLBH2025_SDDAP
             // 
             this.tabProducts.BackColor = System.Drawing.Color.White;
             this.tabProducts.Controls.Add(this.pnlProducts);
-            this.tabProducts.Location = new System.Drawing.Point(4, 32);
+            this.tabProducts.Location = new System.Drawing.Point(4, 26);
             this.tabProducts.Name = "tabProducts";
-            this.tabProducts.Size = new System.Drawing.Size(1192, 764);
+            this.tabProducts.Size = new System.Drawing.Size(1192, 770);
             this.tabProducts.TabIndex = 2;
             this.tabProducts.Text = "🏷️ Products";
             // 
@@ -357,59 +449,280 @@ namespace BMYLBH2025_SDDAP
             // 
             this.pnlProducts.BackColor = System.Drawing.Color.White;
             this.pnlProducts.Controls.Add(this.dgvProducts);
+            this.pnlProducts.Controls.Add(this.btnManageProducts);
+            this.pnlProducts.Controls.Add(this.lblProductsTabTitle);
             this.pnlProducts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlProducts.Location = new System.Drawing.Point(0, 0);
             this.pnlProducts.Name = "pnlProducts";
-            this.pnlProducts.Padding = new System.Windows.Forms.Padding(10);
-            this.pnlProducts.Size = new System.Drawing.Size(1192, 764);
+            this.pnlProducts.Padding = new System.Windows.Forms.Padding(20);
+            this.pnlProducts.Size = new System.Drawing.Size(1192, 770);
             this.pnlProducts.TabIndex = 0;
             // 
             // dgvProducts
             // 
             this.dgvProducts.AllowUserToAddRows = false;
+            this.dgvProducts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvProducts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvProducts.BackgroundColor = System.Drawing.Color.White;
             this.dgvProducts.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvProducts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvProducts.Location = new System.Drawing.Point(10, 10);
+            this.dgvProducts.Location = new System.Drawing.Point(20, 140);
             this.dgvProducts.MultiSelect = false;
             this.dgvProducts.Name = "dgvProducts";
             this.dgvProducts.ReadOnly = true;
             this.dgvProducts.RowHeadersVisible = false;
             this.dgvProducts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvProducts.Size = new System.Drawing.Size(1172, 744);
-            this.dgvProducts.TabIndex = 0;
+            this.dgvProducts.Size = new System.Drawing.Size(1152, 610);
+            this.dgvProducts.TabIndex = 2;
             // 
-            // tabReports
+            // btnManageProducts
             // 
-            this.tabReports.BackColor = System.Drawing.Color.White;
-            this.tabReports.Controls.Add(this.pnlReports);
-            this.tabReports.Location = new System.Drawing.Point(4, 32);
-            this.tabReports.Name = "tabReports";
-            this.tabReports.Size = new System.Drawing.Size(1192, 764);
-            this.tabReports.TabIndex = 3;
-            this.tabReports.Text = "📊 Reports";
+            this.btnManageProducts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
+            this.btnManageProducts.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnManageProducts.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnManageProducts.ForeColor = System.Drawing.Color.White;
+            this.btnManageProducts.Location = new System.Drawing.Point(20, 80);
+            this.btnManageProducts.Name = "btnManageProducts";
+            this.btnManageProducts.Size = new System.Drawing.Size(200, 50);
+            this.btnManageProducts.TabIndex = 1;
+            this.btnManageProducts.Text = "🏷️ Manage Products";
+            this.btnManageProducts.UseVisualStyleBackColor = false;
+            this.btnManageProducts.Click += new System.EventHandler(this.btnManageProducts_Click);
             // 
-            // pnlReports
+            // lblProductsTabTitle
             // 
-            this.pnlReports.BackColor = System.Drawing.Color.White;
-            this.pnlReports.Controls.Add(this.lblReportsTitle);
-            this.pnlReports.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlReports.Location = new System.Drawing.Point(0, 0);
-            this.pnlReports.Name = "pnlReports";
-            this.pnlReports.Padding = new System.Windows.Forms.Padding(20);
-            this.pnlReports.Size = new System.Drawing.Size(1192, 764);
-            this.pnlReports.TabIndex = 0;
+            this.lblProductsTabTitle.AutoSize = true;
+            this.lblProductsTabTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblProductsTabTitle.Location = new System.Drawing.Point(20, 20);
+            this.lblProductsTabTitle.Name = "lblProductsTabTitle";
+            this.lblProductsTabTitle.Size = new System.Drawing.Size(240, 30);
+            this.lblProductsTabTitle.TabIndex = 0;
+            this.lblProductsTabTitle.Text = "Product Management";
             // 
-            // lblReportsTitle
+            // tabCategories
             // 
-            this.lblReportsTitle.AutoSize = true;
-            this.lblReportsTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblReportsTitle.Location = new System.Drawing.Point(20, 20);
-            this.lblReportsTitle.Name = "lblReportsTitle";
-            this.lblReportsTitle.Size = new System.Drawing.Size(190, 30);
-            this.lblReportsTitle.TabIndex = 0;
-            this.lblReportsTitle.Text = "Reports & Analytics";
+            this.tabCategories.BackColor = System.Drawing.Color.White;
+            this.tabCategories.Controls.Add(this.pnlCategories);
+            this.tabCategories.Location = new System.Drawing.Point(4, 26);
+            this.tabCategories.Name = "tabCategories";
+            this.tabCategories.Size = new System.Drawing.Size(1192, 770);
+            this.tabCategories.TabIndex = 3;
+            this.tabCategories.Text = "🗂️ Categories";
+            // 
+            // pnlCategories
+            // 
+            this.pnlCategories.BackColor = System.Drawing.Color.White;
+            this.pnlCategories.Controls.Add(this.dgvCategories);
+            this.pnlCategories.Controls.Add(this.pnlCategoriesSearch);
+            this.pnlCategories.Controls.Add(this.btnManageCategories);
+            this.pnlCategories.Controls.Add(this.lblCategoriesTitle);
+            this.pnlCategories.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlCategories.Location = new System.Drawing.Point(0, 0);
+            this.pnlCategories.Name = "pnlCategories";
+            this.pnlCategories.Padding = new System.Windows.Forms.Padding(20);
+            this.pnlCategories.Size = new System.Drawing.Size(1192, 770);
+            this.pnlCategories.TabIndex = 0;
+            // 
+            // dgvCategories
+            // 
+            this.dgvCategories.AllowUserToAddRows = false;
+            this.dgvCategories.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvCategories.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvCategories.BackgroundColor = System.Drawing.Color.White;
+            this.dgvCategories.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvCategories.Location = new System.Drawing.Point(20, 190);
+            this.dgvCategories.MultiSelect = false;
+            this.dgvCategories.Name = "dgvCategories";
+            this.dgvCategories.ReadOnly = true;
+            this.dgvCategories.RowHeadersVisible = false;
+            this.dgvCategories.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvCategories.Size = new System.Drawing.Size(1152, 560);
+            this.dgvCategories.TabIndex = 3;
+            // 
+            // pnlCategoriesSearch
+            // 
+            this.pnlCategoriesSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlCategoriesSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.pnlCategoriesSearch.Controls.Add(this.lblSearchCategories);
+            this.pnlCategoriesSearch.Controls.Add(this.txtSearchCategories);
+            this.pnlCategoriesSearch.Location = new System.Drawing.Point(20, 140);
+            this.pnlCategoriesSearch.Name = "pnlCategoriesSearch";
+            this.pnlCategoriesSearch.Padding = new System.Windows.Forms.Padding(10);
+            this.pnlCategoriesSearch.Size = new System.Drawing.Size(1152, 40);
+            this.pnlCategoriesSearch.TabIndex = 2;
+            // 
+            // lblSearchCategories
+            // 
+            this.lblSearchCategories.AutoSize = true;
+            this.lblSearchCategories.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblSearchCategories.Location = new System.Drawing.Point(10, 12);
+            this.lblSearchCategories.Name = "lblSearchCategories";
+            this.lblSearchCategories.Size = new System.Drawing.Size(52, 19);
+            this.lblSearchCategories.TabIndex = 0;
+            this.lblSearchCategories.Text = "Search:";
+            // 
+            // txtSearchCategories
+            // 
+            this.txtSearchCategories.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearchCategories.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtSearchCategories.ForeColor = System.Drawing.Color.Gray;
+            this.txtSearchCategories.Location = new System.Drawing.Point(70, 10);
+            this.txtSearchCategories.Name = "txtSearchCategories";
+            this.txtSearchCategories.Size = new System.Drawing.Size(1072, 25);
+            this.txtSearchCategories.TabIndex = 1;
+            this.txtSearchCategories.Text = "🔍 Search categories...";
+            this.txtSearchCategories.TextChanged += new System.EventHandler(this.txtSearchCategories_TextChanged);
+            this.txtSearchCategories.Enter += new System.EventHandler(this.txtSearchCategories_Enter);
+            this.txtSearchCategories.Leave += new System.EventHandler(this.txtSearchCategories_Leave);
+            // 
+            // btnManageCategories
+            // 
+            this.btnManageCategories.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
+            this.btnManageCategories.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnManageCategories.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnManageCategories.ForeColor = System.Drawing.Color.White;
+            this.btnManageCategories.Location = new System.Drawing.Point(20, 80);
+            this.btnManageCategories.Name = "btnManageCategories";
+            this.btnManageCategories.Size = new System.Drawing.Size(200, 50);
+            this.btnManageCategories.TabIndex = 1;
+            this.btnManageCategories.Text = "🗂️ Manage Categories";
+            this.btnManageCategories.UseVisualStyleBackColor = false;
+            this.btnManageCategories.Click += new System.EventHandler(this.btnManageCategories_Click);
+            // 
+            // lblCategoriesTitle
+            // 
+            this.lblCategoriesTitle.AutoSize = true;
+            this.lblCategoriesTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblCategoriesTitle.Location = new System.Drawing.Point(20, 20);
+            this.lblCategoriesTitle.Name = "lblCategoriesTitle";
+            this.lblCategoriesTitle.Size = new System.Drawing.Size(253, 30);
+            this.lblCategoriesTitle.TabIndex = 0;
+            this.lblCategoriesTitle.Text = "Category Management";
+            // 
+            // tabOrders
+            // 
+            this.tabOrders.BackColor = System.Drawing.Color.White;
+            this.tabOrders.Controls.Add(this.pnlOrders);
+            this.tabOrders.Location = new System.Drawing.Point(4, 26);
+            this.tabOrders.Name = "tabOrders";
+            this.tabOrders.Size = new System.Drawing.Size(1192, 770);
+            this.tabOrders.TabIndex = 4;
+            this.tabOrders.Text = "🛒 Orders";
+            // 
+            // pnlOrders
+            // 
+            this.pnlOrders.BackColor = System.Drawing.Color.White;
+            this.pnlOrders.Controls.Add(this.dgvOrders);
+            this.pnlOrders.Controls.Add(this.pnlOrdersSearch);
+            this.pnlOrders.Controls.Add(this.btnManageOrders);
+            this.pnlOrders.Controls.Add(this.btnCreateOrder);
+            this.pnlOrders.Controls.Add(this.lblOrdersTabTitle);
+            this.pnlOrders.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlOrders.Location = new System.Drawing.Point(0, 0);
+            this.pnlOrders.Name = "pnlOrders";
+            this.pnlOrders.Padding = new System.Windows.Forms.Padding(20);
+            this.pnlOrders.Size = new System.Drawing.Size(1192, 770);
+            this.pnlOrders.TabIndex = 0;
+            // 
+            // dgvOrders
+            // 
+            this.dgvOrders.AllowUserToAddRows = false;
+            this.dgvOrders.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvOrders.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvOrders.BackgroundColor = System.Drawing.Color.White;
+            this.dgvOrders.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvOrders.Location = new System.Drawing.Point(20, 190);
+            this.dgvOrders.MultiSelect = false;
+            this.dgvOrders.Name = "dgvOrders";
+            this.dgvOrders.ReadOnly = true;
+            this.dgvOrders.RowHeadersVisible = false;
+            this.dgvOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvOrders.Size = new System.Drawing.Size(1152, 560);
+            this.dgvOrders.TabIndex = 4;
+            this.dgvOrders.SelectionChanged += new System.EventHandler(this.dgvOrders_SelectionChanged);
+            // 
+            // pnlOrdersSearch
+            // 
+            this.pnlOrdersSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlOrdersSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.pnlOrdersSearch.Controls.Add(this.lblSearchOrders);
+            this.pnlOrdersSearch.Controls.Add(this.txtSearchOrders);
+            this.pnlOrdersSearch.Location = new System.Drawing.Point(20, 140);
+            this.pnlOrdersSearch.Name = "pnlOrdersSearch";
+            this.pnlOrdersSearch.Padding = new System.Windows.Forms.Padding(10);
+            this.pnlOrdersSearch.Size = new System.Drawing.Size(1152, 40);
+            this.pnlOrdersSearch.TabIndex = 3;
+            // 
+            // lblSearchOrders
+            // 
+            this.lblSearchOrders.AutoSize = true;
+            this.lblSearchOrders.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblSearchOrders.Location = new System.Drawing.Point(10, 12);
+            this.lblSearchOrders.Name = "lblSearchOrders";
+            this.lblSearchOrders.Size = new System.Drawing.Size(52, 19);
+            this.lblSearchOrders.TabIndex = 0;
+            this.lblSearchOrders.Text = "Search:";
+            // 
+            // txtSearchOrders
+            // 
+            this.txtSearchOrders.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearchOrders.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtSearchOrders.ForeColor = System.Drawing.Color.Gray;
+            this.txtSearchOrders.Location = new System.Drawing.Point(70, 10);
+            this.txtSearchOrders.Name = "txtSearchOrders";
+            this.txtSearchOrders.Size = new System.Drawing.Size(1072, 25);
+            this.txtSearchOrders.TabIndex = 1;
+            this.txtSearchOrders.Text = "🔍 Search orders...";
+            this.txtSearchOrders.TextChanged += new System.EventHandler(this.txtSearchOrders_TextChanged);
+            this.txtSearchOrders.Enter += new System.EventHandler(this.txtSearchOrders_Enter);
+            this.txtSearchOrders.Leave += new System.EventHandler(this.txtSearchOrders_Leave);
+            // 
+            // btnManageOrders
+            // 
+            this.btnManageOrders.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
+            this.btnManageOrders.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnManageOrders.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnManageOrders.ForeColor = System.Drawing.Color.White;
+            this.btnManageOrders.Location = new System.Drawing.Point(250, 80);
+            this.btnManageOrders.Name = "btnManageOrders";
+            this.btnManageOrders.Size = new System.Drawing.Size(200, 50);
+            this.btnManageOrders.TabIndex = 2;
+            this.btnManageOrders.Text = "📋 Manage Orders";
+            this.btnManageOrders.UseVisualStyleBackColor = false;
+            this.btnManageOrders.Click += new System.EventHandler(this.btnManageOrders_Click);
+            // 
+            // btnCreateOrder
+            // 
+            this.btnCreateOrder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnCreateOrder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCreateOrder.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnCreateOrder.ForeColor = System.Drawing.Color.White;
+            this.btnCreateOrder.Location = new System.Drawing.Point(20, 80);
+            this.btnCreateOrder.Name = "btnCreateOrder";
+            this.btnCreateOrder.Size = new System.Drawing.Size(200, 50);
+            this.btnCreateOrder.TabIndex = 1;
+            this.btnCreateOrder.Text = "➕ Create Order";
+            this.btnCreateOrder.UseVisualStyleBackColor = false;
+            this.btnCreateOrder.Click += new System.EventHandler(this.btnCreateOrder_Click);
+            // 
+            // lblOrdersTabTitle
+            // 
+            this.lblOrdersTabTitle.AutoSize = true;
+            this.lblOrdersTabTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblOrdersTabTitle.Location = new System.Drawing.Point(20, 20);
+            this.lblOrdersTabTitle.Name = "lblOrdersTabTitle";
+            this.lblOrdersTabTitle.Size = new System.Drawing.Size(218, 30);
+            this.lblOrdersTabTitle.TabIndex = 0;
+            this.lblOrdersTabTitle.Text = "Order Management";
             // 
             // MainDashboard
             // 
@@ -428,6 +741,8 @@ namespace BMYLBH2025_SDDAP
             this.pnlDashboard.ResumeLayout(false);
             this.pnlDashboard.PerformLayout();
             this.pnlSummaryCards.ResumeLayout(false);
+            this.pnlOrdersCard.ResumeLayout(false);
+            this.pnlOrdersCard.PerformLayout();
             this.pnlProductsCard.ResumeLayout(false);
             this.pnlProductsCard.PerformLayout();
             this.pnlLowStockCard.ResumeLayout(false);
@@ -441,11 +756,22 @@ namespace BMYLBH2025_SDDAP
             this.pnlInventorySearch.PerformLayout();
             this.tabProducts.ResumeLayout(false);
             this.pnlProducts.ResumeLayout(false);
+            this.pnlProducts.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProducts)).EndInit();
-            this.tabReports.ResumeLayout(false);
-            this.pnlReports.ResumeLayout(false);
-            this.pnlReports.PerformLayout();
+            this.tabCategories.ResumeLayout(false);
+            this.pnlCategories.ResumeLayout(false);
+            this.pnlCategories.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCategories)).EndInit();
+            this.pnlCategoriesSearch.ResumeLayout(false);
+            this.pnlCategoriesSearch.PerformLayout();
+            this.tabOrders.ResumeLayout(false);
+            this.pnlOrders.ResumeLayout(false);
+            this.pnlOrders.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvOrders)).EndInit();
+            this.pnlOrdersSearch.ResumeLayout(false);
+            this.pnlOrdersSearch.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion
@@ -456,7 +782,12 @@ namespace BMYLBH2025_SDDAP
         private System.Windows.Forms.Button btnUpdateStock;
         private System.Windows.Forms.Button btnAddProduct;
         private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.Button btnManageCategoriesDash;
+        private System.Windows.Forms.Button btnCreateOrderDash;
         private System.Windows.Forms.Panel pnlSummaryCards;
+        private System.Windows.Forms.Panel pnlOrdersCard;
+        private System.Windows.Forms.Label lblOrdersCount;
+        private System.Windows.Forms.Label lblOrdersTitle;
         private System.Windows.Forms.Panel pnlProductsCard;
         private System.Windows.Forms.Label lblProductsCount;
         private System.Windows.Forms.Label lblProductsTitle;
@@ -476,8 +807,24 @@ namespace BMYLBH2025_SDDAP
         private System.Windows.Forms.TabPage tabProducts;
         private System.Windows.Forms.Panel pnlProducts;
         private System.Windows.Forms.DataGridView dgvProducts;
-        private System.Windows.Forms.TabPage tabReports;
-        private System.Windows.Forms.Panel pnlReports;
-        private System.Windows.Forms.Label lblReportsTitle;
+        private System.Windows.Forms.Button btnManageProducts;
+        private System.Windows.Forms.Label lblProductsTabTitle;
+        private System.Windows.Forms.TabPage tabCategories;
+        private System.Windows.Forms.Panel pnlCategories;
+        private System.Windows.Forms.DataGridView dgvCategories;
+        private System.Windows.Forms.Panel pnlCategoriesSearch;
+        private System.Windows.Forms.Label lblSearchCategories;
+        private System.Windows.Forms.TextBox txtSearchCategories;
+        private System.Windows.Forms.Button btnManageCategories;
+        private System.Windows.Forms.Label lblCategoriesTitle;
+        private System.Windows.Forms.TabPage tabOrders;
+        private System.Windows.Forms.Panel pnlOrders;
+        private System.Windows.Forms.DataGridView dgvOrders;
+        private System.Windows.Forms.Panel pnlOrdersSearch;
+        private System.Windows.Forms.Label lblSearchOrders;
+        private System.Windows.Forms.TextBox txtSearchOrders;
+        private System.Windows.Forms.Button btnManageOrders;
+        private System.Windows.Forms.Button btnCreateOrder;
+        private System.Windows.Forms.Label lblOrdersTabTitle;
     }
 } 

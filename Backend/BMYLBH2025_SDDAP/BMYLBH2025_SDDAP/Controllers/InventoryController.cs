@@ -23,7 +23,7 @@ namespace BMYLBH2025_SDDAP.Controllers
             try
             {
                 var inventory = _inventoryRepository.GetAll();
-                return Ok(inventory);
+                return Ok(ApiResponse<IEnumerable<Inventory>>.CreateSuccess(inventory, "Inventory retrieved successfully"));
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (inventory == null)
                     return NotFound();
 
-                return Ok(inventory);
+                return Ok(ApiResponse<Inventory>.CreateSuccess(inventory, "Inventory retrieved successfully"));
             }
             catch (Exception ex)
             {
@@ -67,7 +67,7 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (inventory == null)
                     return NotFound();
 
-                return Ok(inventory);
+                return Ok(ApiResponse<Inventory>.CreateSuccess(inventory, "Inventory retrieved successfully"));
             }
             catch (Exception ex)
             {
@@ -83,7 +83,7 @@ namespace BMYLBH2025_SDDAP.Controllers
             try
             {
                 var lowStockItems = _inventoryRepository.GetLowStockItems();
-                return Ok(lowStockItems);
+                return Ok(ApiResponse<IEnumerable<Inventory>>.CreateSuccess(lowStockItems, "Low stock items retrieved successfully"));
             }
             catch (Exception ex)
             {
@@ -102,7 +102,7 @@ namespace BMYLBH2025_SDDAP.Controllers
                     return BadRequest("Invalid category ID");
 
                 var inventory = _inventoryRepository.GetByCategory(categoryId);
-                return Ok(inventory);
+                return Ok(ApiResponse<IEnumerable<Inventory>>.CreateSuccess(inventory, "Inventory retrieved successfully"));
             }
             catch (Exception ex)
             {
@@ -118,7 +118,7 @@ namespace BMYLBH2025_SDDAP.Controllers
             try
             {
                 var totalValue = _inventoryRepository.GetTotalInventoryValue();
-                return Ok(new { TotalValue = totalValue });
+                return Ok(ApiResponse<decimal>.CreateSuccess(totalValue, "Total inventory value retrieved successfully"));
             }
             catch (Exception ex)
             {
@@ -148,7 +148,11 @@ namespace BMYLBH2025_SDDAP.Controllers
                     return BadRequest("Inventory already exists for this product");
 
                 _inventoryRepository.Add(inventory);
-                return Created($"api/inventory/{inventory.InventoryID}", inventory);
+                
+                // Retrieve the created inventory with its assigned ID
+                var createdInventory = _inventoryRepository.GetByProductId(inventory.ProductID);
+                
+                return Ok(ApiResponse<Inventory>.CreateSuccess(createdInventory, "Inventory created successfully"));
             }
             catch (Exception ex)
             {
@@ -179,7 +183,10 @@ namespace BMYLBH2025_SDDAP.Controllers
                 inventory.InventoryID = id;
                 _inventoryRepository.Update(inventory);
                 
-                return Ok(inventory);
+                // Retrieve the updated inventory
+                var updatedInventory = _inventoryRepository.GetById(id);
+                
+                return Ok(ApiResponse<Inventory>.CreateSuccess(updatedInventory, "Inventory updated successfully"));
             }
             catch (Exception ex)
             {
@@ -202,7 +209,10 @@ namespace BMYLBH2025_SDDAP.Controllers
 
                 _inventoryRepository.UpdateStock(productId, request.Quantity);
                 
-                return Ok(new { Message = "Stock updated successfully" });
+                // Retrieve the updated inventory
+                var updatedInventory = _inventoryRepository.GetByProductId(productId);
+                
+                return Ok(ApiResponse<Inventory>.CreateSuccess(updatedInventory, "Stock updated successfully"));
             }
             catch (Exception ex)
             {
@@ -226,7 +236,7 @@ namespace BMYLBH2025_SDDAP.Controllers
 
                 _inventoryRepository.Delete(id);
                 
-                return Ok(new { Message = "Inventory deleted successfully" });
+                return Ok(ApiResponse.CreateSuccess("Inventory deleted successfully"));
             }
             catch (Exception ex)
             {
