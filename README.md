@@ -22,7 +22,7 @@ This modern inventory management system enables businesses to efficiently track 
   - 💰 Total Inventory Value
   - ⚠️ Low Stock Items Alert
   - 📦 Total Products Count
-  - 🛒 Total Orders Count (NEW!)
+  - 🛒 Total Orders Count
 - Visual status indicators and color-coded alerts
 - Comprehensive error handling with try-catch blocks
 - Auto-refresh functionality for real-time data
@@ -87,7 +87,6 @@ This modern inventory management system enables businesses to efficiently track 
 
 ### **Development Tools**
 - **Visual Studio Enterprise** - Primary IDE for debugging and testing
-- **Cursor AI** - Code editing and AI assistance
 - **MSTest Framework** - Unit testing
 - **Moq** - Mocking framework for tests
 - **FluentAssertions** - Fluent testing assertions
@@ -248,39 +247,15 @@ dotnet test
 </appSettings>
 ```
 
-## 🤝 Contributing
-
-1. **Fork the repository**
-2. **Create a feature branch** (`git checkout -b feature/amazing-feature`)
-3. **Commit your changes** (`git commit -m 'Add amazing feature'`)
-4. **Push to the branch** (`git push origin feature/amazing-feature`)
-5. **Open a Pull Request**
-
 ## 📝 License
 
-This project is created for educational purposes as part of the Software Design Development and Practice course.
+This project is created for educational purposes as part of the Software Design Development.
 
 ## 👥 Team
 
-**Course**: Software Design Development and Practice  
+**Members**: **Berat Kaan ÖZTÜRK** , **Muhammet Hikmet GÜNEŞ** , **Yiğit ESEDOĞLU** 
 **Academic Year**: 2025  
 **Project Code**: BMYLBH2025_SDDAP  
-
-## 📞 Support
-
-For questions and support:
-- **Issues**: [GitHub Issues](https://github.com/your-username/BMYLBH2025_SDDAP/issues)
-- **Documentation**: Check the `/Docs` folder
-- **Wiki**: [Project Wiki](https://github.com/your-username/BMYLBH2025_SDDAP/wiki)
-
-## 🚀 Recent Updates
-
-### **Latest Features (v1.2)**
-- ✅ **Modern Login Interface** - Completely redesigned with card layout
-- ✅ **Order Count Dashboard** - New purple card showing total orders
-- ✅ **Comprehensive Error Handling** - Try-catch blocks across all methods
-- ✅ **Enhanced Order Management** - Improved supplier and product data loading
-- ✅ **Visual Status Indicators** - Color-coded status for orders and inventory
 
 ### **Development Status**
 - 🟢 **Authentication System** - Complete
@@ -289,18 +264,7 @@ For questions and support:
 - 🟢 **Category Management** - Complete
 - 🟢 **Order Management** - Complete
 - 🟢 **Inventory Tracking** - Complete
-- 🟡 **Email Notifications** - In Progress
-- 🟡 **Advanced Reporting** - Planned
-
-## 🎯 Future Enhancements
-
-- 📊 **Advanced Analytics Dashboard** with charts and graphs
-- 📱 **Mobile-Responsive Design** for tablet compatibility  
-- 🔔 **Real-time Push Notifications** for critical alerts
-- 📄 **PDF Report Generation** for inventory and orders
-- 🌐 **Multi-language Support** for international use
-- 🔄 **Automatic Backup System** for data safety
-
----
-
-**Built with ❤️ for efficient inventory management**
+- 🟢 **Email Notifications** - Complete
+- 🟢 **Containerization** - Complete
+- 🟢 **CI & CD Implementation** - Complete
+- 🟢 **Unit Testing** - Complete
