@@ -114,6 +114,7 @@ namespace BMYLBH2025_SDDAP.Models
         bool UpdatePrice(int productId, decimal newPrice);
         bool UpdateMinimumStockLevel(int productId, int newLevel);
         decimal GetTotalProductValue();
+        bool HasOrderReferences(int productId);
     }
     
     public class ProductRepository : IProductRepository
@@ -537,6 +538,20 @@ namespace BMYLBH2025_SDDAP.Models
                     INNER JOIN Inventory i ON p.ProductID = i.ProductID";
                     
                 return con.QuerySingle<decimal>(sql);
+            }
+        }
+        
+        public bool HasOrderReferences(int productId)
+        {
+            using (var con = _connectionFactory.CreateConnection())
+            {
+                const string sql = @"
+                    SELECT COUNT(*) 
+                    FROM OrderDetails od
+                    WHERE od.ProductID = @ProductId";
+                    
+                var result = con.QuerySingle<int>(sql, new { ProductId = productId });
+                return result > 0;
             }
         }
     }

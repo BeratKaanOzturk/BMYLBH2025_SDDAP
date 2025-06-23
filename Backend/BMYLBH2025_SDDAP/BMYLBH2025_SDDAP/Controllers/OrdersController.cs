@@ -11,11 +11,13 @@ namespace BMYLBH2025_SDDAP.Controllers
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IOrderDetailRepository _orderDetailRepository;
+        private readonly IInventoryRepository _inventoryRepository;
 
-        public OrdersController(IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository)
+        public OrdersController(IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, IInventoryRepository inventoryRepository)
         {
             _orderRepository = orderRepository;
             _orderDetailRepository = orderDetailRepository;
+            _inventoryRepository = inventoryRepository;
         }
 
         // GET api/orders
@@ -79,15 +81,39 @@ namespace BMYLBH2025_SDDAP.Controllers
                     order.CreatedBy = 1; // Assuming admin user has ID 1
                 }
 
+                // Check stock availability for all order details before creating order
+                if (order.OrderDetails != null && order.OrderDetails.Any())
+                {
+                    foreach (var detail in order.OrderDetails)
+                    {
+                        if (detail.ProductID <= 0)
+                            return BadRequest($"Valid Product ID is required for order detail");
+                            
+                        if (detail.Quantity <= 0)
+                            return BadRequest($"Quantity must be greater than 0 for order detail");
+
+                        // Check if enough stock is available
+                        if (!_inventoryRepository.CanReduceStock(detail.ProductID, detail.Quantity))
+                        {
+                            var inventory = _inventoryRepository.GetByProductId(detail.ProductID);
+                            var availableStock = inventory?.Quantity ?? 0;
+                            return BadRequest($"Insufficient stock for product ID {detail.ProductID}. Available: {availableStock}, Requested: {detail.Quantity}");
+                        }
+                    }
+                }
+
                 _orderRepository.Add(order);
                 
-                // Add order details if provided
+                // Add order details and reduce inventory stock
                 if (order.OrderDetails != null && order.OrderDetails.Any())
                 {
                     foreach (var detail in order.OrderDetails)
                     {
                         detail.OrderID = order.OrderID;
                         _orderDetailRepository.Add(detail);
+                        
+                        // Reduce inventory stock
+                        _inventoryRepository.ReduceStock(detail.ProductID, detail.Quantity);
                     }
                 }
 
@@ -114,29 +140,29 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (order == null)
                     return BadRequest("Order data is required");
 
-                var existingOrder = _orderRepository.GetById(id);
+                var existingOrder = _orderRepository.GetOrderWithDetails(id);
                 if (existingOrder == null)
                     return NotFound();
 
-                order.OrderID = id;
-                _orderRepository.Update(order);
-
-                // Handle OrderDetails update
+                // Handle OrderDetails update with inventory management
                 if (order.OrderDetails != null)
                 {
                     // Get existing order details
                     var existingOrderDetails = _orderDetailRepository.GetByOrderId(id).ToList();
                     
-                    // Delete existing order details that are not in the new list
-                    var newDetailIds = order.OrderDetails.Where(od => od.OrderDetailID > 0).Select(od => od.OrderDetailID).ToList();
-                    var detailsToDelete = existingOrderDetails.Where(od => !newDetailIds.Contains(od.OrderDetailID)).ToList();
-                    
-                    foreach (var detailToDelete in detailsToDelete)
+                    // First, restore inventory for existing order details
+                    foreach (var existingDetail in existingOrderDetails)
                     {
-                        _orderDetailRepository.Delete(detailToDelete.OrderDetailID);
+                        _inventoryRepository.AddStock(existingDetail.ProductID, existingDetail.Quantity);
                     }
                     
-                    // Update or add order details
+                    // Delete existing order details
+                    foreach (var existingDetail in existingOrderDetails)
+                    {
+                        _orderDetailRepository.Delete(existingDetail.OrderDetailID);
+                    }
+                    
+                    // Validate new order details and check stock availability
                     foreach (var detail in order.OrderDetails)
                     {
                         detail.OrderID = id;
@@ -151,26 +177,34 @@ namespace BMYLBH2025_SDDAP.Controllers
                         if (detail.UnitPrice < 0)
                             return BadRequest("Unit price cannot be negative for order detail");
                         
-                        if (detail.OrderDetailID > 0)
+                        // Check if enough stock is available
+                        if (!_inventoryRepository.CanReduceStock(detail.ProductID, detail.Quantity))
                         {
-                            // Update existing detail
-                            _orderDetailRepository.Update(detail);
-                        }
-                        else
-                        {
-                            // Add new detail
-                            _orderDetailRepository.Add(detail);
+                            // Restore inventory back if stock check fails
+                            foreach (var restoredDetail in existingOrderDetails)
+                            {
+                                _inventoryRepository.ReduceStock(restoredDetail.ProductID, restoredDetail.Quantity);
+                            }
+                            
+                            var inventory = _inventoryRepository.GetByProductId(detail.ProductID);
+                            var availableStock = inventory?.Quantity ?? 0;
+                            return BadRequest($"Insufficient stock for product ID {detail.ProductID}. Available: {availableStock}, Requested: {detail.Quantity}");
                         }
                     }
                     
-                    // Recalculate order total after updating details
-                    var updatedOrderForRecalc = _orderRepository.GetOrderWithDetails(id);
-                    if (updatedOrderForRecalc != null)
+                    // Add new order details and reduce inventory
+                    foreach (var detail in order.OrderDetails)
                     {
-                        updatedOrderForRecalc.RecalculateTotal();
-                        _orderRepository.Update(updatedOrderForRecalc);
+                        _orderDetailRepository.Add(detail);
+                        _inventoryRepository.ReduceStock(detail.ProductID, detail.Quantity);
                     }
+                    
+                    // Recalculate order total after updating details
+                    order.OrderID = id;
+                    order.RecalculateTotal();
                 }
+
+                _orderRepository.Update(order);
 
                 var updatedOrder = _orderRepository.GetOrderWithDetails(id);
                 return Ok(ApiResponse<Order>.CreateSuccess(updatedOrder, "Order updated successfully"));
@@ -191,9 +225,18 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (id <= 0)
                     return BadRequest("Invalid order ID");
 
-                var existingOrder = _orderRepository.GetById(id);
+                var existingOrder = _orderRepository.GetOrderWithDetails(id);
                 if (existingOrder == null)
                     return NotFound();
+
+                // Restore inventory for all order details before deleting
+                if (existingOrder.OrderDetails != null && existingOrder.OrderDetails.Any())
+                {
+                    foreach (var detail in existingOrder.OrderDetails)
+                    {
+                        _inventoryRepository.AddStock(detail.ProductID, detail.Quantity);
+                    }
+                }
 
                 _orderRepository.Delete(id);
                 return Ok(ApiResponse<object>.CreateSuccess(null, "Order deleted successfully"));

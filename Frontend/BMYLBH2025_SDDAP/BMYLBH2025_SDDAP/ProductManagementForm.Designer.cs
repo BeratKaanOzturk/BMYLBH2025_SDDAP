@@ -40,6 +40,8 @@ namespace BMYLBH2025_SDDAP
             this.pnlFormContent = new System.Windows.Forms.Panel();
             this.cmbCategory = new System.Windows.Forms.ComboBox();
             this.lblCategory = new System.Windows.Forms.Label();
+            this.txtInventoryQuantity = new System.Windows.Forms.TextBox();
+            this.lblInventoryQuantityInput = new System.Windows.Forms.Label();
             this.txtMinimumStock = new System.Windows.Forms.TextBox();
             this.lblMinimumStock = new System.Windows.Forms.Label();
             this.txtPrice = new System.Windows.Forms.TextBox();
@@ -187,6 +189,8 @@ namespace BMYLBH2025_SDDAP
             // 
             // pnlFormContent
             // 
+            this.pnlFormContent.Controls.Add(this.txtInventoryQuantity);
+            this.pnlFormContent.Controls.Add(this.lblInventoryQuantityInput);
             this.pnlFormContent.Controls.Add(this.cmbCategory);
             this.pnlFormContent.Controls.Add(this.lblCategory);
             this.pnlFormContent.Controls.Add(this.txtMinimumStock);
@@ -213,21 +217,44 @@ namespace BMYLBH2025_SDDAP
             this.cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCategory.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cmbCategory.FormattingEnabled = true;
-            this.cmbCategory.Location = new System.Drawing.Point(15, 320);
+            this.cmbCategory.Location = new System.Drawing.Point(15, 370);
             this.cmbCategory.Name = "cmbCategory";
             this.cmbCategory.Size = new System.Drawing.Size(315, 25);
-            this.cmbCategory.TabIndex = 11;
+            this.cmbCategory.TabIndex = 13;
             // 
             // lblCategory
             // 
             this.lblCategory.AutoSize = true;
             this.lblCategory.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblCategory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(73)))), ((int)(((byte)(80)))), ((int)(((byte)(87)))));
-            this.lblCategory.Location = new System.Drawing.Point(15, 300);
+            this.lblCategory.Location = new System.Drawing.Point(15, 350);
             this.lblCategory.Name = "lblCategory";
             this.lblCategory.Size = new System.Drawing.Size(61, 15);
-            this.lblCategory.TabIndex = 10;
+            this.lblCategory.TabIndex = 12;
             this.lblCategory.Text = "Category:";
+            // 
+            // txtInventoryQuantity
+            // 
+            this.txtInventoryQuantity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtInventoryQuantity.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtInventoryQuantity.Location = new System.Drawing.Point(15, 320);
+            this.txtInventoryQuantity.Name = "txtInventoryQuantity";
+            this.txtInventoryQuantity.ReadOnly = true;
+            this.txtInventoryQuantity.Size = new System.Drawing.Size(315, 25);
+            this.txtInventoryQuantity.TabIndex = 11;
+            this.txtInventoryQuantity.Text = "0";
+            // 
+            // lblInventoryQuantityInput
+            // 
+            this.lblInventoryQuantityInput.AutoSize = true;
+            this.lblInventoryQuantityInput.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblInventoryQuantityInput.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(73)))), ((int)(((byte)(80)))), ((int)(((byte)(87)))));
+            this.lblInventoryQuantityInput.Location = new System.Drawing.Point(15, 300);
+            this.lblInventoryQuantityInput.Name = "lblInventoryQuantityInput";
+            this.lblInventoryQuantityInput.Size = new System.Drawing.Size(121, 15);
+            this.lblInventoryQuantityInput.TabIndex = 10;
+            this.lblInventoryQuantityInput.Text = "Inventory Quantity:";
             // 
             // txtMinimumStock
             // 
@@ -621,6 +648,8 @@ namespace BMYLBH2025_SDDAP
         private System.Windows.Forms.Panel pnlFormContent;
         private System.Windows.Forms.ComboBox cmbCategory;
         private System.Windows.Forms.Label lblCategory;
+        private System.Windows.Forms.TextBox txtInventoryQuantity;
+        private System.Windows.Forms.Label lblInventoryQuantityInput;
         private System.Windows.Forms.TextBox txtMinimumStock;
         private System.Windows.Forms.Label lblMinimumStock;
         private System.Windows.Forms.TextBox txtPrice;

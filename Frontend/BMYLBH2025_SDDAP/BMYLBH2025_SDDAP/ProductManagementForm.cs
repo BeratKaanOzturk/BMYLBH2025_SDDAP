@@ -315,6 +315,10 @@ namespace BMYLBH2025_SDDAP
             txtDescription.Text = product.Description ?? string.Empty;
             txtPrice.Text = product.Price.ToString("F2");
             txtMinimumStock.Text = product.MinimumStockLevel.ToString();
+            
+            // Load current inventory quantity
+            var inventory = await _apiService.GetInventoryByProductIdAsync(product.ProductID);
+            txtInventoryQuantity.Text = inventory?.Quantity.ToString() ?? "0";
 
             // Set category selection
             if (product.CategoryID > 0 && cmbCategory.Items.Count > 0)
@@ -395,6 +399,7 @@ namespace BMYLBH2025_SDDAP
             txtDescription.Text = string.Empty;
             txtPrice.Text = string.Empty;
             txtMinimumStock.Text = string.Empty;
+            txtInventoryQuantity.Text = "0";
             
             // Safely reset category selection
             if (cmbCategory.Items.Count > 0)
@@ -498,6 +503,27 @@ namespace BMYLBH2025_SDDAP
             txtPrice.Text = _selectedProduct.Price.ToString("F2");
             txtMinimumStock.Text = _selectedProduct.MinimumStockLevel.ToString();
             txtProductId.Text = _selectedProduct.ProductID.ToString();
+            
+            // Load current inventory quantity for editing
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var inventory = await _apiService.GetInventoryByProductIdAsync(_selectedProduct.ProductID);
+                    this.Invoke(new Action(() =>
+                    {
+                        txtInventoryQuantity.Text = inventory?.Quantity.ToString() ?? "0";
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error loading inventory for edit: {ex.Message}");
+                    this.Invoke(new Action(() =>
+                    {
+                        txtInventoryQuantity.Text = "0";
+                    }));
+                }
+            });
         }
 
         private void SetEditMode()
@@ -507,6 +533,7 @@ namespace BMYLBH2025_SDDAP
             txtDescription.ReadOnly = false;
             txtPrice.ReadOnly = false;
             txtMinimumStock.ReadOnly = false;
+            txtInventoryQuantity.ReadOnly = false;
             cmbCategory.Enabled = true;
             
             // Show/hide buttons
@@ -531,6 +558,7 @@ namespace BMYLBH2025_SDDAP
             txtDescription.ReadOnly = true;
             txtPrice.ReadOnly = true;
             txtMinimumStock.ReadOnly = true;
+            txtInventoryQuantity.ReadOnly = true;
             cmbCategory.Enabled = false;
             
             // Show/hide buttons
@@ -582,7 +610,7 @@ namespace BMYLBH2025_SDDAP
                 {
                     Name = txtName.Text.Trim(),
                     Description = txtDescription.Text.Trim(),
-                    Price = decimal.Parse(txtPrice.Text),
+                    Price = decimal.Parse(txtPrice.Text.Replace(",","."), System.Globalization.CultureInfo.InvariantCulture),
                     MinimumStockLevel = int.Parse(txtMinimumStock.Text),
                     CategoryID = GetSelectedCategoryId()
                 };
@@ -592,6 +620,26 @@ namespace BMYLBH2025_SDDAP
 
                 if (result != null)
                 {
+                    // Create initial inventory record if quantity is specified
+                    if (int.TryParse(txtInventoryQuantity.Text, out int initialQuantity) && initialQuantity > 0)
+                    {
+                        try
+                        {
+                            var inventory = new Inventory
+                            {
+                                ProductID = result.ProductID,
+                                Quantity = initialQuantity,
+                                LastUpdated = DateTime.Now
+                            };
+                            await _apiService.CreateInventoryAsync(inventory);
+                        }
+                        catch (Exception invEx)
+                        {
+                            // Log but don't fail the product creation
+                            System.Diagnostics.Debug.WriteLine($"Warning: Failed to create initial inventory: {invEx.Message}");
+                        }
+                    }
+
                     ShowSuccessMessage("Product created successfully!");
                     await LoadProductsAsync(); // Refresh the list
                     SetViewMode();
@@ -627,7 +675,7 @@ namespace BMYLBH2025_SDDAP
                 // Update product
                 _selectedProduct.Name = txtName.Text.Trim();
                 _selectedProduct.Description = txtDescription.Text.Trim();
-                _selectedProduct.Price = decimal.Parse(txtPrice.Text);
+                _selectedProduct.Price = decimal.Parse(txtPrice.Text.Replace(",", "."), System.Globalization.CultureInfo.InvariantCulture);
                 _selectedProduct.MinimumStockLevel = int.Parse(txtMinimumStock.Text);
                 _selectedProduct.CategoryID = GetSelectedCategoryId();
 
@@ -636,6 +684,42 @@ namespace BMYLBH2025_SDDAP
 
                 if (result != null)
                 {
+                    // Update inventory quantity if changed
+                    if (int.TryParse(txtInventoryQuantity.Text, out int newQuantity))
+                    {
+                        try
+                        {
+                            var currentInventory = await _apiService.GetInventoryByProductIdAsync(_selectedProduct.ProductID);
+                            
+                            if (currentInventory != null)
+                            {
+                                // Update existing inventory
+                                if (currentInventory.Quantity != newQuantity)
+                                {
+                                    currentInventory.Quantity = newQuantity;
+                                    currentInventory.LastUpdated = DateTime.Now;
+                                    await _apiService.UpdateInventoryAsync(currentInventory.InventoryID, currentInventory);
+                                }
+                            }
+                            else if (newQuantity > 0)
+                            {
+                                // Create new inventory record
+                                var inventory = new Inventory
+                                {
+                                    ProductID = _selectedProduct.ProductID,
+                                    Quantity = newQuantity,
+                                    LastUpdated = DateTime.Now
+                                };
+                                await _apiService.CreateInventoryAsync(inventory);
+                            }
+                        }
+                        catch (Exception invEx)
+                        {
+                            // Log but don't fail the product update
+                            System.Diagnostics.Debug.WriteLine($"Warning: Failed to update inventory: {invEx.Message}");
+                        }
+                    }
+
                     ShowSuccessMessage("Product updated successfully!");
                     await LoadProductsAsync(); // Refresh the list
                     SetViewMode();
@@ -746,9 +830,16 @@ namespace BMYLBH2025_SDDAP
                 return false;
             }
 
-            if (!decimal.TryParse(txtPrice.Text, out decimal price) || price < 0)
+            if (!decimal.TryParse(txtPrice.Text.Replace(",", "."), System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture, out decimal price) || price < 0)
             {
                 ShowErrorMessage("Please enter a valid price (0 or greater).");
+                txtPrice.Focus();
+                return false;
+            }
+
+            if (price > 999999999)
+            {
+                ShowErrorMessage("Price cannot exceed 999,999,999.");
                 txtPrice.Focus();
                 return false;
             }
@@ -766,6 +857,24 @@ namespace BMYLBH2025_SDDAP
                 ShowErrorMessage("Please enter a valid minimum stock level (0 or greater).");
                 txtMinimumStock.Focus();
                 return false;
+            }
+
+            // Check inventory quantity
+            if (!string.IsNullOrWhiteSpace(txtInventoryQuantity.Text))
+            {
+                if (!int.TryParse(txtInventoryQuantity.Text, out int inventoryQty) || inventoryQty < 0)
+                {
+                    ShowErrorMessage("Please enter a valid inventory quantity (0 or greater).");
+                    txtInventoryQuantity.Focus();
+                    return false;
+                }
+
+                if (inventoryQty > 999999)
+                {
+                    ShowErrorMessage("Inventory quantity cannot exceed 999,999.");
+                    txtInventoryQuantity.Focus();
+                    return false;
+                }
             }
 
             // Check category

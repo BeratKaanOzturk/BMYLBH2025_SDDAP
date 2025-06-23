@@ -219,37 +219,49 @@ namespace BMYLBH2025_SDDAP
 
         private void UpdateProductsGrid()
         {
-            if (dgvAvailableProducts == null || _availableProducts == null) return;
+            if (_availableProducts == null) return;
 
-            var displayData = _availableProducts.Select(p => new
+            var displayProducts = _availableProducts.Select(p => new
             {
                 ID = p.ProductID,
                 Name = p.Name,
                 Description = p.Description,
+                Category = p.Category?.Name ?? p.CategoryName ?? "Unknown",
+                Stock = GetProductStock(p.ProductID),
                 Price = p.Price,
-                PriceFormatted = p.Price.ToString("C"),
-                Category = p.Category?.Name ?? "Uncategorized",
-                Stock = GetProductStock(p.ProductID)
+                PriceFormatted = p.Price.ToString("C", System.Globalization.CultureInfo.CurrentUICulture),
+                IsLowStock = GetProductStock(p.ProductID) <= p.MinimumStockLevel
             }).ToList();
 
-            dgvAvailableProducts.DataSource = displayData;
+            dgvAvailableProducts.DataSource = displayProducts;
 
             // Configure columns
             if (dgvAvailableProducts.Columns.Count > 0)
             {
-                dgvAvailableProducts.Columns["ID"].HeaderText = "ID";
-                dgvAvailableProducts.Columns["ID"].Width = 60;
+                dgvAvailableProducts.Columns["ID"].Visible = false;
                 dgvAvailableProducts.Columns["Name"].HeaderText = "Product Name";
                 dgvAvailableProducts.Columns["Name"].Width = 200;
                 dgvAvailableProducts.Columns["Description"].HeaderText = "Description";
                 dgvAvailableProducts.Columns["Description"].Width = 250;
+                dgvAvailableProducts.Columns["Category"].HeaderText = "Category";
+                dgvAvailableProducts.Columns["Category"].Width = 120;
+                dgvAvailableProducts.Columns["Stock"].HeaderText = "Stock";
+                dgvAvailableProducts.Columns["Stock"].Width = 80;
                 dgvAvailableProducts.Columns["Price"].Visible = false; // Hide raw price
                 dgvAvailableProducts.Columns["PriceFormatted"].HeaderText = "Price";
                 dgvAvailableProducts.Columns["PriceFormatted"].Width = 100;
-                dgvAvailableProducts.Columns["Category"].HeaderText = "Category";
-                dgvAvailableProducts.Columns["Category"].Width = 150;
-                dgvAvailableProducts.Columns["Stock"].HeaderText = "Available";
-                dgvAvailableProducts.Columns["Stock"].Width = 100;
+                dgvAvailableProducts.Columns["IsLowStock"].HeaderText = "Low Stock";
+                dgvAvailableProducts.Columns["IsLowStock"].Width = 80;
+
+                // Style low stock rows
+                foreach (DataGridViewRow row in dgvAvailableProducts.Rows)
+                {
+                    if (Convert.ToBoolean(row.Cells["IsLowStock"].Value))
+                    {
+                        row.DefaultCellStyle.BackColor = Color.LightYellow;
+                        row.DefaultCellStyle.ForeColor = Color.DarkOrange;
+                    }
+                }
             }
         }
 
@@ -313,37 +325,35 @@ namespace BMYLBH2025_SDDAP
 
         private void UpdateOrderItemsGrid()
         {
-            if (dgvOrderItems == null) return;
+            if (_orderItems == null) return;
 
-            var displayData = _orderItems.Select(item => new
+            var displayItems = _orderItems.Select(item => new
             {
-                ID = item.OrderDetailID,
                 ProductID = item.ProductID,
                 ProductName = GetProductName(item.ProductID),
                 Quantity = item.Quantity,
                 UnitPrice = item.UnitPrice,
-                UnitPriceFormatted = item.UnitPrice.ToString("C"),
+                UnitPriceFormatted = item.UnitPrice.ToString("C", System.Globalization.CultureInfo.CurrentUICulture),
                 Subtotal = item.CalculateSubtotal(),
-                SubtotalFormatted = item.CalculateSubtotal().ToString("C")
+                SubtotalFormatted = item.CalculateSubtotal().ToString("C", System.Globalization.CultureInfo.CurrentUICulture)
             }).ToList();
 
-            dgvOrderItems.DataSource = displayData;
+            dgvOrderItems.DataSource = displayItems;
 
             // Configure columns
             if (dgvOrderItems.Columns.Count > 0)
             {
-                dgvOrderItems.Columns["ID"].Visible = false;
                 dgvOrderItems.Columns["ProductID"].Visible = false;
-                dgvOrderItems.Columns["ProductName"].HeaderText = "Product";
-                dgvOrderItems.Columns["ProductName"].Width = 250;
-                dgvOrderItems.Columns["Quantity"].HeaderText = "Qty";
+                dgvOrderItems.Columns["ProductName"].HeaderText = "Product Name";
+                dgvOrderItems.Columns["ProductName"].Width = 200;
+                dgvOrderItems.Columns["Quantity"].HeaderText = "Quantity";
                 dgvOrderItems.Columns["Quantity"].Width = 80;
                 dgvOrderItems.Columns["UnitPrice"].Visible = false;
                 dgvOrderItems.Columns["UnitPriceFormatted"].HeaderText = "Unit Price";
                 dgvOrderItems.Columns["UnitPriceFormatted"].Width = 100;
                 dgvOrderItems.Columns["Subtotal"].Visible = false;
                 dgvOrderItems.Columns["SubtotalFormatted"].HeaderText = "Subtotal";
-                dgvOrderItems.Columns["SubtotalFormatted"].Width = 120;
+                dgvOrderItems.Columns["SubtotalFormatted"].Width = 100;
             }
         }
 
@@ -358,9 +368,21 @@ namespace BMYLBH2025_SDDAP
 
         private int GetProductStock(int productId)
         {
-            // In a real application, this would come from inventory data
-            // For now, return a random stock number for demonstration
-            return new Random(productId).Next(10, 100);
+            // First try to get from product's StockQuantity property
+            var product = _availableProducts?.FirstOrDefault(p => p.ProductID == productId);
+            if (product?.StockQuantity.HasValue == true)
+            {
+                return product.StockQuantity.Value;
+            }
+            
+            // Fallback to mock data or default
+            switch (productId)
+            {
+                case 1: return 25; // Wireless Mouse
+                case 2: return 8;  // Mechanical Keyboard  
+                case 3: return 15; // USB-C Cable
+                default: return 0;
+            }
         }
 
         private void UpdateOrderSummary()
@@ -447,7 +469,7 @@ namespace BMYLBH2025_SDDAP
                 Name = p.Name,
                 Description = p.Description,
                 Price = p.Price,
-                PriceFormatted = p.Price.ToString("C"),
+                PriceFormatted = p.Price.ToString("C", System.Globalization.CultureInfo.CurrentUICulture),
                 Category = p.Category?.Name ?? "Uncategorized",
                 Stock = GetProductStock(p.ProductID)
             }).ToList();
@@ -463,7 +485,7 @@ namespace BMYLBH2025_SDDAP
             {
                 var row = dgvAvailableProducts.SelectedRows[0];
                 var price = Convert.ToDecimal(row.Cells["Price"].Value);
-                lblSelectedProductPrice.Text = $"Price: {price:C}";
+                lblSelectedProductPrice.Text = $"Price: {price.ToString("C", System.Globalization.CultureInfo.CurrentUICulture)}";
             }
             else
             {
@@ -528,9 +550,24 @@ namespace BMYLBH2025_SDDAP
                 var price = Convert.ToDecimal(row.Cells["Price"].Value);
                 var quantity = (int)nudQuantity.Value;
                 var productName = row.Cells["Name"].Value.ToString();
+                var availableStock = GetProductStock(productId);
 
-                // Check if product already exists in order
+                // Check stock before adding to order
                 var existingItem = _orderItems.FirstOrDefault(item => item.ProductID == productId);
+                var currentOrderQuantity = existingItem?.Quantity ?? 0;
+                var totalRequestedQuantity = currentOrderQuantity + quantity;
+
+                if (totalRequestedQuantity > availableStock)
+                {
+                    ShowErrorMessage($"Insufficient stock for {productName}.\n" +
+                                   $"Available: {availableStock}\n" +
+                                   $"Currently in order: {currentOrderQuantity}\n" +
+                                   $"Requesting: {quantity}\n" +
+                                   $"Total would be: {totalRequestedQuantity}");
+                    return;
+                }
+
+                // Add to order
                 if (existingItem != null)
                 {
                     existingItem.Quantity += quantity;
@@ -614,6 +651,16 @@ namespace BMYLBH2025_SDDAP
                     }
                     else
                     {
+                        // Check stock before updating quantity
+                        var availableStock = GetProductStock(productId);
+                        if (newQuantity > availableStock)
+                        {
+                            ShowErrorMessage($"Insufficient stock for {productName}.\n" +
+                                           $"Available: {availableStock}\n" +
+                                           $"Requested: {newQuantity}");
+                            return;
+                        }
+
                         itemToUpdate.Quantity = newQuantity;
                         ShowInfoMessage($"Updated {productName} quantity to {newQuantity}.");
                     }
@@ -647,6 +694,19 @@ namespace BMYLBH2025_SDDAP
 
                 this.Cursor = Cursors.WaitCursor;
                 btnSaveOrder.Enabled = false;
+                lblStatus.Text = "Checking backend connectivity...";
+                lblStatus.ForeColor = Color.Blue;
+
+                // Check backend connectivity first
+                var isBackendAvailable = await _apiService.IsBackendAvailableAsync();
+                if (!isBackendAvailable)
+                {
+                    ShowErrorMessage("Cannot connect to backend server. Please ensure the backend is running and try again.");
+                    lblStatus.Text = "Backend not available";
+                    lblStatus.ForeColor = Color.Red;
+                    return;
+                }
+
                 lblStatus.Text = _isEditMode ? "Updating order..." : "Creating order...";
                 lblStatus.ForeColor = Color.Blue;
 

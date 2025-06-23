@@ -1,8 +1,8 @@
+using BMYLBH2025_SDDAP.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
-using BMYLBH2025_SDDAP.Models;
 
 namespace BMYLBH2025_SDDAP.Controllers
 {
@@ -11,10 +11,9 @@ namespace BMYLBH2025_SDDAP.Controllers
     {
         private readonly ISupplierRepository _supplierRepository;
 
-        public SuppliersController()
+        public SuppliersController(ISupplierRepository supplierRepository)
         {
-            var connectionFactory = new SqliteConnectionFactory();
-            _supplierRepository = new SupplierRepository(connectionFactory);
+            _supplierRepository = supplierRepository;
         }
 
         // GET api/suppliers
@@ -24,7 +23,7 @@ namespace BMYLBH2025_SDDAP.Controllers
         {
             try
             {
-                var suppliers = _supplierRepository.GetAll().ToList();
+                var suppliers = _supplierRepository.GetAll();
                 return Ok(ApiResponse<IEnumerable<Supplier>>.CreateSuccess(suppliers, "Suppliers retrieved successfully"));
             }
             catch (Exception ex)
@@ -63,7 +62,7 @@ namespace BMYLBH2025_SDDAP.Controllers
             try
             {
                 if (string.IsNullOrWhiteSpace(name))
-                    return BadRequest("Supplier name is required");
+                    return BadRequest("Supplier name cannot be empty");
 
                 var supplier = _supplierRepository.GetByName(name);
                 if (supplier == null)
@@ -84,8 +83,8 @@ namespace BMYLBH2025_SDDAP.Controllers
         {
             try
             {
-                var suppliers = _supplierRepository.SearchByName(query).ToList();
-                return Ok(ApiResponse<IEnumerable<Supplier>>.CreateSuccess(suppliers, "Suppliers search completed"));
+                var suppliers = _supplierRepository.SearchByName(query);
+                return Ok(ApiResponse<IEnumerable<Supplier>>.CreateSuccess(suppliers, "Suppliers search completed successfully"));
             }
             catch (Exception ex)
             {
@@ -106,15 +105,33 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (string.IsNullOrWhiteSpace(supplier.Name))
                     return BadRequest("Supplier name is required");
 
+                if (supplier.Name.Trim().Length < 2)
+                    return BadRequest("Supplier name must be at least 2 characters long");
+
+                if (supplier.Name.Trim().Length > 200)
+                    return BadRequest("Supplier name cannot exceed 200 characters");
+
+                // Validate email format if provided
+                if (!string.IsNullOrWhiteSpace(supplier.Email) && !IsValidEmail(supplier.Email))
+                    return BadRequest("Invalid email format");
+
                 // Check if supplier with same name already exists
-                var existingSupplier = _supplierRepository.GetByName(supplier.Name);
+                var existingSupplier = _supplierRepository.GetByName(supplier.Name.Trim());
                 if (existingSupplier != null)
                     return BadRequest("Supplier with this name already exists");
 
+                // Clean up data
+                supplier.Name = supplier.Name.Trim();
+                supplier.ContactPerson = supplier.ContactPerson?.Trim();
+                supplier.Email = supplier.Email?.Trim();
+                supplier.Phone = supplier.Phone?.Trim();
+                supplier.Address = supplier.Address?.Trim();
+
                 _supplierRepository.Add(supplier);
 
-                // Get the created supplier
+                // Retrieve the created supplier with its assigned ID
                 var createdSupplier = _supplierRepository.GetByName(supplier.Name);
+
                 return Ok(ApiResponse<Supplier>.CreateSuccess(createdSupplier, "Supplier created successfully"));
             }
             catch (Exception ex)
@@ -139,19 +156,38 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (string.IsNullOrWhiteSpace(supplier.Name))
                     return BadRequest("Supplier name is required");
 
+                if (supplier.Name.Trim().Length < 2)
+                    return BadRequest("Supplier name must be at least 2 characters long");
+
+                if (supplier.Name.Trim().Length > 200)
+                    return BadRequest("Supplier name cannot exceed 200 characters");
+
+                // Validate email format if provided
+                if (!string.IsNullOrWhiteSpace(supplier.Email) && !IsValidEmail(supplier.Email))
+                    return BadRequest("Invalid email format");
+
                 var existingSupplier = _supplierRepository.GetById(id);
                 if (existingSupplier == null)
                     return NotFound();
 
                 // Check if another supplier with same name already exists
-                var duplicateSupplier = _supplierRepository.GetByName(supplier.Name);
+                var duplicateSupplier = _supplierRepository.GetByName(supplier.Name.Trim());
                 if (duplicateSupplier != null && duplicateSupplier.SupplierID != id)
                     return BadRequest("Another supplier with this name already exists");
+
+                // Clean up data
+                supplier.Name = supplier.Name.Trim();
+                supplier.ContactPerson = supplier.ContactPerson?.Trim();
+                supplier.Email = supplier.Email?.Trim();
+                supplier.Phone = supplier.Phone?.Trim();
+                supplier.Address = supplier.Address?.Trim();
 
                 supplier.SupplierID = id;
                 _supplierRepository.Update(supplier);
 
+                // Retrieve the updated supplier
                 var updatedSupplier = _supplierRepository.GetById(id);
+
                 return Ok(ApiResponse<Supplier>.CreateSuccess(updatedSupplier, "Supplier updated successfully"));
             }
             catch (Exception ex)
@@ -174,7 +210,12 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (existingSupplier == null)
                     return NotFound();
 
+                // Check if supplier has orders
+                if (_supplierRepository.HasOrderReferences(id))
+                    return BadRequest("Cannot delete supplier. It has associated orders. Please remove all orders related to this supplier first.");
+
                 _supplierRepository.Delete(id);
+
                 return Ok(ApiResponse.CreateSuccess("Supplier deleted successfully"));
             }
             catch (Exception ex)
@@ -182,5 +223,22 @@ namespace BMYLBH2025_SDDAP.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        #region Helper Methods
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        #endregion
     }
 } 

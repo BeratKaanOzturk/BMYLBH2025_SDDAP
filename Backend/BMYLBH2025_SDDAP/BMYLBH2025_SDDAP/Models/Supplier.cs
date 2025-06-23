@@ -62,6 +62,7 @@ namespace BMYLBH2025_SDDAP.Models
         IEnumerable<Supplier> GetSuppliersWithProducts();
         bool HasProducts(int supplierId);
         int GetProductCount(int supplierId);
+        bool HasOrderReferences(int supplierId);
     }
     
     public class SupplierRepository : ISupplierRepository
@@ -333,6 +334,22 @@ namespace BMYLBH2025_SDDAP.Models
             {
                 const string sql = "SELECT COUNT(*) FROM Products WHERE SupplierID = @SupplierId";
                 return con.QuerySingle<int>(sql, new { SupplierId = supplierId });
+            }
+        }
+
+        public bool HasOrderReferences(int supplierId)
+        {
+            using (var con = _connectionFactory.CreateConnection())
+            {
+                const string sql = @"
+                    SELECT COUNT(*) 
+                    FROM Orders o
+                    INNER JOIN OrderItems oi ON o.OrderID = oi.OrderID
+                    INNER JOIN Products p ON oi.ProductID = p.ProductID
+                    WHERE p.SupplierID = @SupplierId";
+                    
+                var count = con.QuerySingle<int>(sql, new { SupplierId = supplierId });
+                return count > 0;
             }
         }
     }

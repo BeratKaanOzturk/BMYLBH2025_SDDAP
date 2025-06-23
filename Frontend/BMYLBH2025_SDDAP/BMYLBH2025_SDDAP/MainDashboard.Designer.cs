@@ -31,9 +31,9 @@ namespace BMYLBH2025_SDDAP
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabDashboard = new System.Windows.Forms.TabPage();
             this.pnlDashboard = new System.Windows.Forms.Panel();
+            this.btnBulkUpdateStock = new System.Windows.Forms.Button();
             this.btnManageCategoriesDash = new System.Windows.Forms.Button();
             this.btnCreateOrderDash = new System.Windows.Forms.Button();
-            this.btnUpdateStock = new System.Windows.Forms.Button();
             this.btnAddProduct = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.pnlSummaryCards = new System.Windows.Forms.Panel();
@@ -56,6 +56,8 @@ namespace BMYLBH2025_SDDAP
             this.pnlInventorySearch = new System.Windows.Forms.Panel();
             this.lblSearchInventory = new System.Windows.Forms.Label();
             this.txtSearchInventory = new System.Windows.Forms.TextBox();
+            this.btnUpdateStockInv = new System.Windows.Forms.Button();
+            this.btnBulkUpdateStockInv = new System.Windows.Forms.Button();
             this.tabProducts = new System.Windows.Forms.TabPage();
             this.pnlProducts = new System.Windows.Forms.Panel();
             this.dgvProducts = new System.Windows.Forms.DataGridView();
@@ -131,9 +133,9 @@ namespace BMYLBH2025_SDDAP
             // pnlDashboard
             // 
             this.pnlDashboard.BackColor = System.Drawing.Color.White;
+            this.pnlDashboard.Controls.Add(this.btnBulkUpdateStock);
             this.pnlDashboard.Controls.Add(this.btnManageCategoriesDash);
             this.pnlDashboard.Controls.Add(this.btnCreateOrderDash);
-            this.pnlDashboard.Controls.Add(this.btnUpdateStock);
             this.pnlDashboard.Controls.Add(this.btnAddProduct);
             this.pnlDashboard.Controls.Add(this.btnRefresh);
             this.pnlDashboard.Controls.Add(this.pnlSummaryCards);
@@ -145,16 +147,30 @@ namespace BMYLBH2025_SDDAP
             this.pnlDashboard.Size = new System.Drawing.Size(1192, 770);
             this.pnlDashboard.TabIndex = 0;
             // 
+            // btnBulkUpdateStock
+            // 
+            this.btnBulkUpdateStock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
+            this.btnBulkUpdateStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBulkUpdateStock.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnBulkUpdateStock.ForeColor = System.Drawing.Color.White;
+            this.btnBulkUpdateStock.Location = new System.Drawing.Point(730, 210);
+            this.btnBulkUpdateStock.Name = "btnBulkUpdateStock";
+            this.btnBulkUpdateStock.Size = new System.Drawing.Size(150, 40);
+            this.btnBulkUpdateStock.TabIndex = 6;
+            this.btnBulkUpdateStock.Text = "📦 Bulk Update";
+            this.btnBulkUpdateStock.UseVisualStyleBackColor = false;
+            this.btnBulkUpdateStock.Click += new System.EventHandler(this.btnBulkUpdateStock_Click);
+            // 
             // btnManageCategoriesDash
             // 
             this.btnManageCategoriesDash.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
             this.btnManageCategoriesDash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnManageCategoriesDash.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnManageCategoriesDash.ForeColor = System.Drawing.Color.White;
-            this.btnManageCategoriesDash.Location = new System.Drawing.Point(730, 210);
+            this.btnManageCategoriesDash.Location = new System.Drawing.Point(570, 210);
             this.btnManageCategoriesDash.Name = "btnManageCategoriesDash";
             this.btnManageCategoriesDash.Size = new System.Drawing.Size(150, 40);
-            this.btnManageCategoriesDash.TabIndex = 6;
+            this.btnManageCategoriesDash.TabIndex = 5;
             this.btnManageCategoriesDash.Text = "🗂️ Categories";
             this.btnManageCategoriesDash.UseVisualStyleBackColor = false;
             this.btnManageCategoriesDash.Click += new System.EventHandler(this.btnManageCategories_Click);
@@ -165,27 +181,15 @@ namespace BMYLBH2025_SDDAP
             this.btnCreateOrderDash.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCreateOrderDash.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnCreateOrderDash.ForeColor = System.Drawing.Color.White;
-            this.btnCreateOrderDash.Location = new System.Drawing.Point(570, 210);
+            this.btnCreateOrderDash.Location = new System.Drawing.Point(410, 210);
             this.btnCreateOrderDash.Name = "btnCreateOrderDash";
             this.btnCreateOrderDash.Size = new System.Drawing.Size(150, 40);
-            this.btnCreateOrderDash.TabIndex = 5;
+            this.btnCreateOrderDash.TabIndex = 4;
             this.btnCreateOrderDash.Text = "🛒 Create Order";
             this.btnCreateOrderDash.UseVisualStyleBackColor = false;
             this.btnCreateOrderDash.Click += new System.EventHandler(this.btnCreateOrder_Click);
             // 
-            // btnUpdateStock
-            // 
-            this.btnUpdateStock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(196)))), ((int)(((byte)(15)))));
-            this.btnUpdateStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnUpdateStock.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnUpdateStock.ForeColor = System.Drawing.Color.White;
-            this.btnUpdateStock.Location = new System.Drawing.Point(410, 210);
-            this.btnUpdateStock.Name = "btnUpdateStock";
-            this.btnUpdateStock.Size = new System.Drawing.Size(150, 40);
-            this.btnUpdateStock.TabIndex = 4;
-            this.btnUpdateStock.Text = "📈 Update Stock";
-            this.btnUpdateStock.UseVisualStyleBackColor = false;
-            this.btnUpdateStock.Click += new System.EventHandler(this.btnUpdateStock_Click);
+
             // 
             // btnAddProduct
             // 
@@ -406,6 +410,8 @@ namespace BMYLBH2025_SDDAP
             // pnlInventorySearch
             // 
             this.pnlInventorySearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
+            this.pnlInventorySearch.Controls.Add(this.btnBulkUpdateStockInv);
+            this.pnlInventorySearch.Controls.Add(this.btnUpdateStockInv);
             this.pnlInventorySearch.Controls.Add(this.lblSearchInventory);
             this.pnlInventorySearch.Controls.Add(this.txtSearchInventory);
             this.pnlInventorySearch.Dock = System.Windows.Forms.DockStyle.Top;
@@ -427,13 +433,43 @@ namespace BMYLBH2025_SDDAP
             // txtSearchInventory
             // 
             this.txtSearchInventory.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtSearchInventory.ForeColor = System.Drawing.Color.Gray;
             this.txtSearchInventory.Location = new System.Drawing.Point(15, 15);
             this.txtSearchInventory.Name = "txtSearchInventory";
             this.txtSearchInventory.Size = new System.Drawing.Size(250, 25);
             this.txtSearchInventory.TabIndex = 0;
+            this.txtSearchInventory.Text = "🔍 Search inventory...";
             this.txtSearchInventory.TextChanged += new System.EventHandler(this.txtSearchInventory_TextChanged);
             this.txtSearchInventory.Enter += new System.EventHandler(this.TxtSearchInventory_Enter);
             this.txtSearchInventory.Leave += new System.EventHandler(this.TxtSearchInventory_Leave);
+            //
+            // btnUpdateStockInv
+            //
+            this.btnUpdateStockInv.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(196)))), ((int)(((byte)(15)))));
+            this.btnUpdateStockInv.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUpdateStockInv.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnUpdateStockInv.ForeColor = System.Drawing.Color.White;
+            this.btnUpdateStockInv.Location = new System.Drawing.Point(900, 12);
+            this.btnUpdateStockInv.Name = "btnUpdateStockInv";
+            this.btnUpdateStockInv.Size = new System.Drawing.Size(120, 35);
+            this.btnUpdateStockInv.TabIndex = 2;
+            this.btnUpdateStockInv.Text = "📈 Update Stock";
+            this.btnUpdateStockInv.UseVisualStyleBackColor = false;
+            this.btnUpdateStockInv.Click += new System.EventHandler(this.btnUpdateStockInv_Click);
+            //
+            // btnBulkUpdateStockInv
+            //
+            this.btnBulkUpdateStockInv.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
+            this.btnBulkUpdateStockInv.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBulkUpdateStockInv.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnBulkUpdateStockInv.ForeColor = System.Drawing.Color.White;
+            this.btnBulkUpdateStockInv.Location = new System.Drawing.Point(1030, 12);
+            this.btnBulkUpdateStockInv.Name = "btnBulkUpdateStockInv";
+            this.btnBulkUpdateStockInv.Size = new System.Drawing.Size(120, 35);
+            this.btnBulkUpdateStockInv.TabIndex = 3;
+            this.btnBulkUpdateStockInv.Text = "📦 Bulk Update";
+            this.btnBulkUpdateStockInv.UseVisualStyleBackColor = false;
+            this.btnBulkUpdateStockInv.Click += new System.EventHandler(this.btnBulkUpdateStockInv_Click);
             // 
             // tabProducts
             // 
@@ -779,11 +815,11 @@ namespace BMYLBH2025_SDDAP
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage tabDashboard;
         private System.Windows.Forms.Panel pnlDashboard;
-        private System.Windows.Forms.Button btnUpdateStock;
         private System.Windows.Forms.Button btnAddProduct;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Button btnManageCategoriesDash;
         private System.Windows.Forms.Button btnCreateOrderDash;
+        private System.Windows.Forms.Button btnBulkUpdateStock;
         private System.Windows.Forms.Panel pnlSummaryCards;
         private System.Windows.Forms.Panel pnlOrdersCard;
         private System.Windows.Forms.Label lblOrdersCount;
@@ -804,6 +840,8 @@ namespace BMYLBH2025_SDDAP
         private System.Windows.Forms.Panel pnlInventorySearch;
         private System.Windows.Forms.Label lblSearchInventory;
         private System.Windows.Forms.TextBox txtSearchInventory;
+        private System.Windows.Forms.Button btnUpdateStockInv;
+        private System.Windows.Forms.Button btnBulkUpdateStockInv;
         private System.Windows.Forms.TabPage tabProducts;
         private System.Windows.Forms.Panel pnlProducts;
         private System.Windows.Forms.DataGridView dgvProducts;

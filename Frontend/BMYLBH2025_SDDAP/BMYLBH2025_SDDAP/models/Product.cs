@@ -11,6 +11,10 @@
 
         // Navigation property
         public Category Category { get; set; }
+        
+        // Additional properties for UI
+        public string CategoryName { get; set; }
+        public int? StockQuantity { get; set; }
 
         public Product()
         {
@@ -20,17 +24,27 @@
         public void UpdateInfo(string name, string description, decimal price)
         {
             // Update product information
+            Name = name;
+            Description = description;
+            Price = price;
         }
 
         public void SetCategory(int categoryId)
         {
             // Assign category
+            CategoryID = categoryId;
         }
 
         public bool CheckStockLevel()
         {
             // Check stock level
-            return false;
+            return StockQuantity.HasValue && StockQuantity.Value > MinimumStockLevel;
+        }
+        
+        public bool IsLowStock()
+        {
+            // Check if product is low on stock
+            return StockQuantity.HasValue && StockQuantity.Value <= MinimumStockLevel;
         }
     }
 }

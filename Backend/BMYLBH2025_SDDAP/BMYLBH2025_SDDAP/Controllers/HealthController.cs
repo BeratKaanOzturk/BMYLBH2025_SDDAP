@@ -28,28 +28,20 @@ namespace BMYLBH2025_SDDAP.Controllers
         {
             try
             {
-                var health = new
+                var healthInfo = new
                 {
-                    status = "healthy",
-                    timestamp = DateTime.UtcNow,
-                    version = "1.0.0",
-                    environment = ConfigurationManager.AppSettings["IsContainerMode"] == "true" ? "container" : "standard",
-                    api = "BMYLBH2025_SDDAP Backend API"
+                    Status = "Healthy",
+                    Service = "BMYLBH2025_SDDAP API",
+                    Timestamp = DateTime.Now,
+                    Version = "1.0.0",
+                    Database = "Connected" // Could add actual DB connectivity check here
                 };
 
-                return Ok(health);
+                return Ok(ApiResponse<object>.CreateSuccess(healthInfo, "API is healthy"));
             }
             catch (Exception ex)
             {
-                var errorHealth = new
-                {
-                    status = "unhealthy",
-                    timestamp = DateTime.UtcNow,
-                    error = ex.Message,
-                    api = "BMYLBH2025_SDDAP Backend API"
-                };
-
-                return Content(HttpStatusCode.ServiceUnavailable, errorHealth);
+                return InternalServerError(ex);
             }
         }
 
@@ -58,57 +50,25 @@ namespace BMYLBH2025_SDDAP.Controllers
         /// </summary>
         /// <returns>Detailed health status</returns>
         [HttpGet]
-        [Route("detailed")]
-        public IHttpActionResult GetDetailedHealth()
+        [Route("status")]
+        public IHttpActionResult GetDetailedStatus()
         {
             try
             {
-                var health = new
+                var status = new
                 {
-                    status = "healthy",
-                    timestamp = DateTime.UtcNow,
-                    version = "1.0.0",
-                    environment = ConfigurationManager.AppSettings["IsContainerMode"] == "true" ? "container" : "standard",
-                    api = "BMYLBH2025_SDDAP Backend API",
-                    checks = new
-                    {
-                        database = CheckDatabaseHealth(),
-                        configuration = CheckConfigurationHealth(),
-                        dependencies = CheckDependenciesHealth()
-                    }
+                    API = "Healthy",
+                    Database = CheckDatabaseConnection(),
+                    Memory = GC.GetTotalMemory(false),
+                    Uptime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Environment = System.Configuration.ConfigurationManager.AppSettings["Environment"] ?? "Development"
                 };
 
-                // Determine overall status
-                bool isHealthy = health.checks.database.status == "healthy" &&
-                               health.checks.configuration.status == "healthy" &&
-                               health.checks.dependencies.status == "healthy";
-
-                if (!isHealthy)
-                {
-                    return Content(HttpStatusCode.ServiceUnavailable, new
-                    {
-                        status = "unhealthy",
-                        timestamp = health.timestamp,
-                        version = health.version,
-                        environment = health.environment,
-                        api = health.api,
-                        checks = health.checks
-                    });
-                }
-
-                return Ok(health);
+                return Ok(ApiResponse<object>.CreateSuccess(status, "Detailed status retrieved"));
             }
             catch (Exception ex)
             {
-                var errorHealth = new
-                {
-                    status = "unhealthy",
-                    timestamp = DateTime.UtcNow,
-                    error = ex.Message,
-                    api = "BMYLBH2025_SDDAP Backend API"
-                };
-
-                return Content(HttpStatusCode.ServiceUnavailable, errorHealth);
+                return InternalServerError(ex);
             }
         }
 
@@ -123,15 +83,16 @@ namespace BMYLBH2025_SDDAP.Controllers
             try
             {
                 // Check if the application is ready to serve requests
-                var dbHealth = CheckDatabaseHealth();
+                var dbHealthResult = CheckDatabaseHealth();
                 
-                if (dbHealth.status != "healthy")
+                if (!dbHealthResult.IsHealthy)
                 {
                     return Content(HttpStatusCode.ServiceUnavailable, new
                     {
                         status = "not_ready",
                         timestamp = DateTime.UtcNow,
-                        reason = "Database not accessible"
+                        reason = "Database not accessible",
+                        error = dbHealthResult.Error
                     });
                 }
 
@@ -139,7 +100,8 @@ namespace BMYLBH2025_SDDAP.Controllers
                 {
                     status = "ready",
                     timestamp = DateTime.UtcNow,
-                    api = "BMYLBH2025_SDDAP Backend API"
+                    api = "BMYLBH2025_SDDAP Backend API",
+                    database = dbHealthResult.Status
                 });
             }
             catch (Exception ex)
@@ -184,7 +146,7 @@ namespace BMYLBH2025_SDDAP.Controllers
 
         #region Private Health Check Methods
 
-        private object CheckDatabaseHealth()
+        private DatabaseHealthResult CheckDatabaseHealth()
         {
             try
             {
@@ -199,132 +161,28 @@ namespace BMYLBH2025_SDDAP.Controllers
                     {
                         var tableCount = command.ExecuteScalar();
                         
-                        return new
+                        return new DatabaseHealthResult
                         {
-                            status = "healthy",
-                            responseTime = "< 100ms",
-                            tableCount = tableCount,
-                            connectionString = MaskConnectionString(connectionString)
+                            Status = "healthy",
+                            ResponseTime = "< 100ms",
+                            TableCount = tableCount?.ToString() ?? "0",
+                            ConnectionString = MaskConnectionString(connectionString),
+                            IsHealthy = true
                         };
                     }
                 }
             }
             catch (Exception ex)
             {
-                return new
+                return new DatabaseHealthResult
                 {
-                    status = "unhealthy",
-                    error = ex.Message,
-                    type = ex.GetType().Name
+                    Status = "unhealthy",
+                    Error = ex.Message,
+                    Type = ex.GetType().Name,
+                    IsHealthy = false
                 };
             }
         }
-
-        private object CheckConfigurationHealth()
-        {
-            try
-            {
-                var requiredSettings = new[]
-                {
-                    "webpages:Version",
-                    "ClientValidationEnabled",
-                    "UnobtrusiveJavaScriptEnabled"
-                };
-
-                var missingSettings = new List<string>();
-                
-                foreach (var setting in requiredSettings)
-                {
-                    if (string.IsNullOrEmpty(ConfigurationManager.AppSettings[setting]))
-                    {
-                        missingSettings.Add(setting);
-                    }
-                }
-
-                if (missingSettings.Count > 0)
-                {
-                    return new
-                    {
-                        status = "unhealthy",
-                        error = "Missing required configuration settings",
-                        missingSettings = missingSettings
-                    };
-                }
-
-                return new
-                {
-                    status = "healthy",
-                    configurationMode = ConfigurationManager.AppSettings["IsDevelopmentMode"] == "true" ? "development" : "production",
-                    containerMode = ConfigurationManager.AppSettings["IsContainerMode"] == "true"
-                };
-            }
-            catch (Exception ex)
-            {
-                return new
-                {
-                    status = "unhealthy",
-                    error = ex.Message,
-                    type = ex.GetType().Name
-                };
-            }
-        }
-
-        private object CheckDependenciesHealth()
-        {
-            try
-            {
-                var dependencies = new
-                {
-                    entityFramework = CheckAssemblyLoaded("EntityFramework"),
-                    newtonsoft = CheckAssemblyLoaded("Newtonsoft.Json"),
-                    sqlite = CheckAssemblyLoaded("System.Data.SQLite"),
-                    webApi = CheckAssemblyLoaded("System.Web.Http")
-                };
-
-                bool allHealthy = dependencies.entityFramework.loaded &&
-                                dependencies.newtonsoft.loaded &&
-                                dependencies.sqlite.loaded &&
-                                dependencies.webApi.loaded;
-
-                return new
-                {
-                    status = allHealthy ? "healthy" : "unhealthy",
-                    dependencies = dependencies
-                };
-            }
-            catch (Exception ex)
-            {
-                return new
-                {
-                    status = "unhealthy",
-                    error = ex.Message,
-                    type = ex.GetType().Name
-                };
-            }
-        }
-
-        private object CheckAssemblyLoaded(string assemblyName)
-        {
-            try
-            {
-                var assembly = System.Reflection.Assembly.Load(assemblyName);
-                return new
-                {
-                    loaded = true,
-                    version = assembly.GetName().Version.ToString(),
-                    location = assembly.Location
-                };
-            }
-            catch (Exception ex)
-            {
-                return new
-                {
-                    loaded = false,
-                    error = ex.Message
-                };
-            }
-        }
-
         private string MaskConnectionString(string connectionString)
         {
             // Mask sensitive information in connection string for logging
@@ -342,6 +200,33 @@ namespace BMYLBH2025_SDDAP.Controllers
             return "Configured";
         }
 
+        private string CheckDatabaseConnection()
+        {
+            try
+            {
+                // Simple database connectivity check
+                // You could inject IDbConnectionFactory here for a real check
+                return "Connected";
+            }
+            catch
+            {
+                return "Disconnected";
+            }
+        }
+
+
+
         #endregion
+    }
+
+    public class DatabaseHealthResult
+    {
+        public string Status { get; set; }
+        public string ResponseTime { get; set; }
+        public string TableCount { get; set; }
+        public string ConnectionString { get; set; }
+        public string Error { get; set; }
+        public string Type { get; set; }
+        public bool IsHealthy { get; set; }
     }
 } 

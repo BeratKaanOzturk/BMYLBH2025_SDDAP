@@ -455,15 +455,57 @@ namespace BMYLBH2025_SDDAP
             }
         }
 
-        private void btnUpdateStock_Click(object sender, EventArgs e)
+
+
+        private void btnBulkUpdateStock_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var bulkUpdateForm = new BulkStockUpdateForm(_apiService);
+                var result = bulkUpdateForm.ShowDialog(this);
+                
+                if (result == DialogResult.OK)
+                {
+                    // Refresh all data after successful bulk update
+                    _ = LoadDataAsync();
+                    ShowInfoMessage("Bulk stock update completed successfully!");
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error opening bulk update form: {ex.Message}");
+            }
+        }
+
+        private void btnUpdateStockInv_Click(object sender, EventArgs e)
         {
             try
             {
                 if (dgvInventory.SelectedRows.Count > 0)
                 {
                     var selectedRow = dgvInventory.SelectedRows[0];
-                    var productName = selectedRow.Cells["Product"].Value?.ToString();
-                    ShowInfoMessage($"Update Stock feature for '{productName}' will be implemented in the next phase!");
+                    var inventoryId = Convert.ToInt32(selectedRow.Cells["ID"].Value);
+                    
+                    // Find the inventory item from our current data
+                    var inventoryItem = _currentInventory?.FirstOrDefault(i => i.InventoryID == inventoryId);
+                    
+                    if (inventoryItem != null)
+                    {
+                        // Open stock update dialog
+                        var stockUpdateDialog = new StockUpdateDialog(_apiService, inventoryItem);
+                        var result = stockUpdateDialog.ShowDialog(this);
+                        
+                        if (result == DialogResult.OK)
+                        {
+                            // Refresh inventory data after successful update
+                            _ = LoadDataAsync();
+                            ShowInfoMessage("Stock update completed successfully!");
+                        }
+                    }
+                    else
+                    {
+                        ShowErrorMessage("Unable to find the selected inventory item. Please refresh the data and try again.");
+                    }
                 }
                 else
                 {
@@ -473,6 +515,26 @@ namespace BMYLBH2025_SDDAP
             catch (Exception ex)
             {
                 ShowErrorMessage($"Error updating stock: {ex.Message}");
+            }
+        }
+
+        private void btnBulkUpdateStockInv_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var bulkUpdateForm = new BulkStockUpdateForm(_apiService);
+                var result = bulkUpdateForm.ShowDialog(this);
+                
+                if (result == DialogResult.OK)
+                {
+                    // Refresh all data after successful bulk update
+                    _ = LoadDataAsync();
+                    ShowInfoMessage("Bulk stock update completed successfully!");
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error opening bulk update form: {ex.Message}");
             }
         }
 

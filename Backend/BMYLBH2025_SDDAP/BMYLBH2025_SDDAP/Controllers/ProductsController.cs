@@ -176,6 +176,9 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (product.Price < 0)
                     return BadRequest("Product price cannot be negative");
 
+                if (product.Price > 999999999)
+                    return BadRequest("Product price cannot exceed 999,999,999");
+
                 if (product.MinimumStockLevel < 0)
                     return BadRequest("Minimum stock level cannot be negative");
 
@@ -207,6 +210,12 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (product.Price < 0)
                     return BadRequest("Product price cannot be negative");
 
+                if (product.Price > 999999999)
+                    return BadRequest("Product price cannot exceed 999,999,999");
+
+                if (product.MinimumStockLevel < 0)
+                    return BadRequest("Minimum stock level cannot be negative");
+
                 var existingProduct = _productRepository.GetById(id);
                 if (existingProduct == null)
                     return NotFound();
@@ -234,6 +243,9 @@ namespace BMYLBH2025_SDDAP.Controllers
 
                 if (request == null || request.Price < 0)
                     return BadRequest("Valid price is required");
+
+                if (request.Price > 999999999)
+                    return BadRequest("Price cannot exceed 999,999,999");
 
                 var success = _productRepository.UpdatePrice(id, request.Price);
                 if (!success)
@@ -285,6 +297,10 @@ namespace BMYLBH2025_SDDAP.Controllers
                 var existingProduct = _productRepository.GetById(id);
                 if (existingProduct == null)
                     return NotFound();
+
+                // Check if product has order references
+                if (_productRepository.HasOrderReferences(id))
+                    return BadRequest("Cannot delete product. It has associated orders. Please remove all orders related to this product first.");
 
                 _productRepository.Delete(id);
                 return Ok(ApiResponse.CreateSuccess("Product deleted successfully"));

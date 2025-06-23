@@ -69,6 +69,9 @@ namespace BMYLBH2025_SDDAP.Models
         bool Create(Inventory inventory);
         bool UpdateInventory(Inventory inventory);
         bool DeleteInventory(int id);
+        bool ReduceStock(int productId, int quantity);
+        bool CanReduceStock(int productId, int quantity);
+        bool AddStock(int productId, int quantity);
     }
     
     public class InventoryRepository : IInventoryRepository
@@ -540,6 +543,74 @@ namespace BMYLBH2025_SDDAP.Models
         public void Delete(int id)
         {
             DeleteInventory(id);
+        }
+        
+        public bool ReduceStock(int productId, int quantity)
+        {
+            try
+            {
+                using (var con = _connectionFactory.CreateConnection())
+                {
+                    con.Open();
+                    const string sql = @"
+                        UPDATE Inventory 
+                        SET Quantity = Quantity - @Quantity, 
+                            LastUpdated = @LastUpdated 
+                        WHERE ProductID = @ProductId";
+                        
+                    var result = con.Execute(sql, new { 
+                        ProductId = productId, 
+                        Quantity = quantity, 
+                        LastUpdated = DateTime.Now 
+                    });
+                    return result > 0;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        
+        public bool CanReduceStock(int productId, int quantity)
+        {
+            using (var con = _connectionFactory.CreateConnection())
+            {
+                const string sql = @"
+                    SELECT Quantity 
+                    FROM Inventory 
+                    WHERE ProductID = @ProductId AND Quantity >= @Quantity";
+                    
+                var result = con.QuerySingleOrDefault<int>(sql, new { ProductId = productId, Quantity = quantity });
+                return result > 0;
+            }
+        }
+        
+        public bool AddStock(int productId, int quantity)
+        {
+            try
+            {
+                using (var con = _connectionFactory.CreateConnection())
+                {
+                    con.Open();
+                    const string sql = @"
+                        UPDATE Inventory 
+                        SET Quantity = Quantity + @Quantity, 
+                            LastUpdated = @LastUpdated 
+                        WHERE ProductID = @ProductId";
+                        
+                    var result = con.Execute(sql, new { 
+                        ProductId = productId, 
+                        Quantity = quantity, 
+                        LastUpdated = DateTime.Now 
+                    });
+                    return result > 0;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

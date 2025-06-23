@@ -81,13 +81,34 @@ namespace BMYLBH2025_SDDAP.Services
                 {
                     try
                     {
-                        return JsonConvert.DeserializeObject<T>(responseContent);
+                        var result = JsonConvert.DeserializeObject<T>(responseContent);
+                        
+                        // Check if this is an ApiResponse and if it contains an error
+                        if (result is ApiResponse apiResponse && !apiResponse.Success)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"API Error from {endpoint}: {apiResponse.Message}");
+                        }
+                        
+                        return result;
                     }
-                    catch (JsonException)
+                    catch (JsonException ex)
                     {
-                        // Return error response for failed deserialization
-                        return CreateErrorResponse<T>($"Failed to parse response from {endpoint}");
+                        System.Diagnostics.Debug.WriteLine($"JSON Parse Error from {endpoint}: {ex.Message}");
+                        System.Diagnostics.Debug.WriteLine($"Response Content: {responseContent}");
+                        
+                        // If response indicates an error (like BadRequest), try to extract error message
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            return CreateErrorResponse<T>($"Server error ({(int)response.StatusCode}): {responseContent}");
+                        }
+                        
+                        return CreateErrorResponse<T>($"Failed to parse response from {endpoint}: {ex.Message}");
                     }
+                }
+                
+                if (!response.IsSuccessStatusCode)
+                {
+                    return CreateErrorResponse<T>($"Server error ({(int)response.StatusCode}): {response.ReasonPhrase}");
                 }
                 
                 return CreateErrorResponse<T>($"No response from {endpoint}");
@@ -261,7 +282,34 @@ namespace BMYLBH2025_SDDAP.Services
                 var response = await GetAsync<ApiResponse<IEnumerable<Product>>>("api/products");
                 if (response?.Success == true && response.Data != null)
                 {
-                    return new List<Product>(response.Data);
+                    var products = new List<Product>(response.Data);
+                    
+                    // Enrich products with additional data
+                    foreach (var product in products)
+                    {
+                        // Set CategoryName from Category navigation property
+                        if (product.Category != null && !string.IsNullOrEmpty(product.Category.Name))
+                        {
+                            product.CategoryName = product.Category.Name;
+                        }
+                        
+                        // Get inventory data to set stock quantity
+                        try
+                        {
+                            var inventory = await GetInventoryByProductIdAsync(product.ProductID);
+                            if (inventory != null)
+                            {
+                                product.StockQuantity = inventory.Quantity;
+                            }
+                        }
+                        catch
+                        {
+                            // If inventory call fails, leave StockQuantity as null
+                            product.StockQuantity = null;
+                        }
+                    }
+                    
+                    return products;
                 }
                 else
                 {
@@ -286,7 +334,9 @@ namespace BMYLBH2025_SDDAP.Services
                     Description = "High-precision wireless optical mouse",
                     Price = 29.99m,
                     CategoryID = 1,
-                    MinimumStockLevel = 10
+                    MinimumStockLevel = 10,
+                    CategoryName = "Electronics",
+                    StockQuantity = 25
                 },
                 new Product
                 {
@@ -295,7 +345,9 @@ namespace BMYLBH2025_SDDAP.Services
                     Description = "RGB backlit mechanical gaming keyboard",
                     Price = 89.99m,
                     CategoryID = 1,
-                    MinimumStockLevel = 5
+                    MinimumStockLevel = 5,
+                    CategoryName = "Electronics",
+                    StockQuantity = 8
                 },
                 new Product
                 {
@@ -304,7 +356,9 @@ namespace BMYLBH2025_SDDAP.Services
                     Description = "3ft USB-C to USB-A cable",
                     Price = 12.99m,
                     CategoryID = 2,
-                    MinimumStockLevel = 20
+                    MinimumStockLevel = 20,
+                    CategoryName = "Accessories",
+                    StockQuantity = 15
                 }
             };
         }
@@ -613,67 +667,18 @@ namespace BMYLBH2025_SDDAP.Services
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine($"CreateOrderAsync: Backend failed, creating mock order for testing");
-                    
-                    // Create a mock successful response for testing when backend is not available
-                    var mockOrder = new Order
-                    {
-                        OrderID = new Random().Next(1000, 9999),
-                        SupplierID = order.SupplierID,
-                        OrderDate = order.OrderDate,
-                        Status = "Pending",
-                        TotalAmount = order.TotalAmount,
-                        // CreatedBy property not available in frontend model
-                        OrderDetails = order.OrderDetails?.Select(od => new OrderDetail
-                        {
-                            OrderDetailID = new Random().Next(1000, 9999),
-                            OrderID = 0, // Will be set after order creation
-                            ProductID = od.ProductID,
-                            Quantity = od.Quantity,
-                            UnitPrice = od.UnitPrice
-                        }).ToList() ?? new List<OrderDetail>()
-                    };
-                    
-                    // Set OrderID for all order details
-                    foreach (var detail in mockOrder.OrderDetails)
-                    {
-                        detail.OrderID = mockOrder.OrderID;
-                    }
-                    
-                    System.Diagnostics.Debug.WriteLine($"CreateOrderAsync: Created mock order with ID={mockOrder.OrderID}");
-                    return mockOrder;
+                    // Don't create mock orders - throw exception with actual error message
+                    var errorMessage = response?.Message ?? "Failed to create order - Unknown error from server";
+                    System.Diagnostics.Debug.WriteLine($"CreateOrderAsync: Backend failed with error: {errorMessage}");
+                    throw new Exception(errorMessage);
                 }
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"CreateOrderAsync: Exception occurred - {ex.Message}");
                 
-                // Create a mock order even when there's an exception
-                var fallbackOrder = new Order
-                {
-                    OrderID = new Random().Next(1000, 9999),
-                    SupplierID = order.SupplierID,
-                    OrderDate = order.OrderDate,
-                    Status = "Pending",
-                    TotalAmount = order.TotalAmount,
-                    // CreatedBy property not available in frontend model
-                    OrderDetails = order.OrderDetails?.Select(od => new OrderDetail
-                    {
-                        OrderDetailID = new Random().Next(1000, 9999),
-                        OrderID = 0,
-                        ProductID = od.ProductID,
-                        Quantity = od.Quantity,
-                        UnitPrice = od.UnitPrice
-                    }).ToList() ?? new List<OrderDetail>()
-                };
-                
-                foreach (var detail in fallbackOrder.OrderDetails)
-                {
-                    detail.OrderID = fallbackOrder.OrderID;
-                }
-                
-                System.Diagnostics.Debug.WriteLine($"CreateOrderAsync: Exception fallback - Created mock order with ID={fallbackOrder.OrderID}");
-                return fallbackOrder;
+                // Re-throw the exception instead of creating mock data
+                throw new Exception($"Failed to create order: {ex.Message}");
             }
         }
 
@@ -867,6 +872,20 @@ namespace BMYLBH2025_SDDAP.Services
         public void Dispose()
         {
             _httpClient?.Dispose();
+        }
+
+        // Health check method to test backend connectivity
+        public async Task<bool> IsBackendAvailableAsync()
+        {
+            try
+            {
+                var response = await GetAsync<object>("api/health");
+                return response != null;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 } 
