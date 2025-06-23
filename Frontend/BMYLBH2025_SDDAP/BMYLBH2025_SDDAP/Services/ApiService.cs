@@ -405,6 +405,20 @@ namespace BMYLBH2025_SDDAP.Services
             return await DeleteAsync($"api/products/{id}");
         }
 
+        public async Task<bool> CheckProductHasOrdersAsync(int productId)
+        {
+            try
+            {
+                var response = await GetAsync<ApiResponse<bool>>($"api/products/{productId}/has-orders");
+                return response?.Data ?? false;
+            }
+            catch
+            {
+                // If the endpoint doesn't exist or there's an error, assume false
+                return false;
+            }
+        }
+
         // Category Methods
         public async Task<List<Category>> GetAllCategoriesAsync()
         {

@@ -229,17 +229,25 @@ namespace BMYLBH2025_SDDAP.Controllers
                 if (existingOrder == null)
                     return NotFound();
 
-                // Restore inventory for all order details before deleting
-                if (existingOrder.OrderDetails != null && existingOrder.OrderDetails.Any())
+                // Get all order details for this order
+                var orderDetails = _orderDetailRepository.GetByOrderId(id).ToList();
+
+                // First, restore inventory for all order details and delete them
+                if (orderDetails.Any())
                 {
-                    foreach (var detail in existingOrder.OrderDetails)
+                    foreach (var detail in orderDetails)
                     {
+                        // Restore inventory stock
                         _inventoryRepository.AddStock(detail.ProductID, detail.Quantity);
+                        
+                        // Delete the order detail
+                        _orderDetailRepository.Delete(detail.OrderDetailID);
                     }
                 }
 
+                // Finally, delete the order itself
                 _orderRepository.Delete(id);
-                return Ok(ApiResponse<object>.CreateSuccess(null, "Order deleted successfully"));
+                return Ok(ApiResponse<object>.CreateSuccess(null, "Order and all associated order details deleted successfully"));
             }
             catch (Exception ex)
             {

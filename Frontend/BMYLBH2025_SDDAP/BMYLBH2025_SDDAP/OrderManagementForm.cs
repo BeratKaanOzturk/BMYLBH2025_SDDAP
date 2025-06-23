@@ -422,7 +422,7 @@ namespace BMYLBH2025_SDDAP
                     if (success)
                     {
                         await LoadDataAsync();
-                        ShowSuccessMessage($"Order #{_selectedOrder.OrderID} deleted successfully!");
+                        ShowSuccessMessage($"Order #{_selectedOrder?.OrderID} deleted successfully!");
                     }
                     else
                     {

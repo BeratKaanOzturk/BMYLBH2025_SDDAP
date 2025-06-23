@@ -748,6 +748,15 @@ namespace BMYLBH2025_SDDAP
         {
             try
             {
+                // First check if product has orders
+                var hasOrders = await _apiService.CheckProductHasOrdersAsync(product.ProductID);
+                
+                if (hasOrders)
+                {
+                    ShowErrorMessage($"Cannot delete product '{product.Name}'.\n\nThis product has associated orders and cannot be deleted. Please remove all orders related to this product first.");
+                    return;
+                }
+
                 // Check if product has inventory
                 var inventory = await _apiService.GetInventoryByProductIdAsync(product.ProductID);
                 

@@ -3,32 +3,40 @@
   "WorkspaceRootPath": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\ordercreationform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\ordercreationform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\maindashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\maindashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\maindashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\maindashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\frontend\\bmylbh2025_sddap\\bmylbh2025_sddap\\productmanagementform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\productmanagementform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\frontend\\bmylbh2025_sddap\\bmylbh2025_sddap\\categorymanagementform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\categorymanagementform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\services\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\services\\apiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\productmanagementform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\productmanagementform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\productmanagementform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\productmanagementform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\frontend\\bmylbh2025_sddap\\bmylbh2025_sddap\\ordermanagementform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\ordermanagementform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\frontend\\bmylbh2025_sddap\\bmylbh2025_sddap\\ordermanagementform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\ordermanagementform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\stockupdatedialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\stockupdatedialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\stockupdatedialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\stockupdatedialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\bulkstockupdateform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -39,16 +47,24 @@
       "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\bulkstockupdateform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\stockupdatedialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\stockupdatedialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\maindashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\maindashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\frontend\\bmylbh2025_sddap\\bmylbh2025_sddap\\ordercreationform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\ordercreationform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\maindashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\maindashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\categorymanagementform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\categorymanagementform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\maindashboard.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\maindashboard.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\stockupdatedialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\stockupdatedialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -57,14 +73,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\ordercreationform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\ordercreationform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B1613CFE-2653-4D42-8435-3972E9A924F9}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -74,7 +82,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 21,
+          "SelectedChildIndex": 20,
           "Children": [
             {
               "$type": "Bookmark",
@@ -118,29 +126,44 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "BulkStockUpdateForm.cs [Design]",
-              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\BulkStockUpdateForm.cs",
-              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\BulkStockUpdateForm.cs",
-              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\BulkStockUpdateForm.cs [Design]",
-              "RelativeToolTip": "BMYLBH2025_SDDAP\\BulkStockUpdateForm.cs [Design]",
+              "DocumentIndex": 4,
+              "Title": "OrderManagementForm.cs [Design]",
+              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\OrderManagementForm.cs",
+              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\OrderManagementForm.cs",
+              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\OrderManagementForm.cs [Design]",
+              "RelativeToolTip": "BMYLBH2025_SDDAP\\OrderManagementForm.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-23T10:41:44.715Z"
+              "WhenOpened": "2025-06-23T15:46:53.934Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 3,
+              "Title": "OrderManagementForm.cs",
+              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\OrderManagementForm.cs",
+              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\OrderManagementForm.cs",
+              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\OrderManagementForm.cs",
+              "RelativeToolTip": "BMYLBH2025_SDDAP\\OrderManagementForm.cs",
+              "ViewState": "AgIAAI0BAAAAAAAAAAAAAKMBAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-23T15:44:55.476Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "StockUpdateDialog.cs [Design]",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\StockUpdateDialog.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\StockUpdateDialog.cs",
               "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\StockUpdateDialog.cs [Design]",
               "RelativeToolTip": "BMYLBH2025_SDDAP\\StockUpdateDialog.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-23T10:41:41.006Z"
+              "WhenOpened": "2025-06-23T10:41:41.006Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 15,
               "Title": "MainDashboard.Designer.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\MainDashboard.Designer.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\MainDashboard.Designer.cs",
@@ -153,31 +176,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 5,
               "Title": "StockUpdateDialog.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\StockUpdateDialog.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\StockUpdateDialog.cs",
               "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\StockUpdateDialog.cs",
               "RelativeToolTip": "BMYLBH2025_SDDAP\\StockUpdateDialog.cs",
-              "ViewState": "AgIAACkAAAAAAAAAAAAtwEgAAAA/AAAAAAAAAA==",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAQwGAAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-23T10:19:30.011Z"
+              "WhenOpened": "2025-06-23T10:19:30.011Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "BulkStockUpdateForm.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\BulkStockUpdateForm.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\BulkStockUpdateForm.cs",
               "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\BulkStockUpdateForm.cs",
               "RelativeToolTip": "BMYLBH2025_SDDAP\\BulkStockUpdateForm.cs",
-              "ViewState": "AgIAAJwAAAAAAAAAAADwv6cAAAA7AAAAAAAAAA==",
+              "ViewState": "AgIAAOAAAAAAAAAAAAAUwAIBAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-23T10:16:00.955Z"
+              "WhenOpened": "2025-06-23T10:16:00.955Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 16,
               "Title": "Product.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\models\\Product.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\models\\Product.cs",
@@ -189,20 +214,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "ProductManagementForm.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\ProductManagementForm.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\ProductManagementForm.cs",
               "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\ProductManagementForm.cs",
               "RelativeToolTip": "BMYLBH2025_SDDAP\\ProductManagementForm.cs",
-              "ViewState": "AgIAAF4CAAAAAAAAAAAgwHQCAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAANsCAAAAAAAAAAAQwO8CAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-23T10:08:05.877Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 2,
               "Title": "ProductManagementForm.cs [Design]",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\ProductManagementForm.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\ProductManagementForm.cs",
@@ -214,7 +239,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 13,
               "Title": "MainDashboard.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\MainDashboard.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\MainDashboard.cs",
@@ -227,20 +252,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
               "Title": "ApiService.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Services\\ApiService.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Services\\ApiService.cs",
               "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Services\\ApiService.cs",
               "RelativeToolTip": "BMYLBH2025_SDDAP\\Services\\ApiService.cs",
-              "ViewState": "AgIAADABAAAAAAAAAAAqwJcBAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAAIQBAAAAAAAAAAAiwJcBAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-23T09:52:44.868Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 17,
               "Title": "OrderCreationForm.cs [Design]",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\OrderCreationForm.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\OrderCreationForm.cs",
@@ -252,20 +277,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 12,
               "Title": "OrderCreationForm.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\OrderCreationForm.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\OrderCreationForm.cs",
               "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\OrderCreationForm.cs",
               "RelativeToolTip": "BMYLBH2025_SDDAP\\OrderCreationForm.cs",
-              "ViewState": "AgIAAO4BAAAAAAAAAAAcwKcCAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAPoBAAAAAAAAAAAcwKcCAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-23T09:20:47.211Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 11,
               "Title": "MainDashboard.cs [Design]",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\MainDashboard.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\MainDashboard.cs",
@@ -277,7 +302,44 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
+              "Title": "LoginForm.cs [Design]",
+              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\LoginForm.cs",
+              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\LoginForm.cs",
+              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\LoginForm.cs [Design]",
+              "RelativeToolTip": "BMYLBH2025_SDDAP\\LoginForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T08:21:04.853Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "LoginForm.cs",
+              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\LoginForm.cs",
+              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\LoginForm.cs",
+              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\LoginForm.cs",
+              "RelativeToolTip": "BMYLBH2025_SDDAP\\LoginForm.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAQwCIAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T08:21:07.49Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "BulkStockUpdateForm.cs [Design]",
+              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\BulkStockUpdateForm.cs",
+              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\BulkStockUpdateForm.cs",
+              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\BulkStockUpdateForm.cs [Design]",
+              "RelativeToolTip": "BMYLBH2025_SDDAP\\BulkStockUpdateForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-23T10:41:44.715Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "CategoryManagementForm.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\CategoryManagementForm.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\CategoryManagementForm.cs",
@@ -285,31 +347,7 @@
               "RelativeToolTip": "BMYLBH2025_SDDAP\\CategoryManagementForm.cs",
               "ViewState": "AgIAABoAAAAAAAAAAAA3wIIAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-23T15:13:02.657Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "LoginForm.cs",
-              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\LoginForm.cs",
-              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\LoginForm.cs",
-              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\LoginForm.cs",
-              "RelativeToolTip": "BMYLBH2025_SDDAP\\LoginForm.cs",
-              "ViewState": "AgIAALQAAAAAAAAAAAApwNUAAABGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T08:21:07.49Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "LoginForm.cs [Design]",
-              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\LoginForm.cs",
-              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\LoginForm.cs",
-              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Frontend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\LoginForm.cs [Design]",
-              "RelativeToolTip": "BMYLBH2025_SDDAP\\LoginForm.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T08:21:04.853Z"
+              "WhenOpened": "2025-06-23T15:13:02.657Z"
             }
           ]
         }

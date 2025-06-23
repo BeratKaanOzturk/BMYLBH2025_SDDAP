@@ -284,6 +284,29 @@ namespace BMYLBH2025_SDDAP.Controllers
             }
         }
 
+        // GET api/products/5/has-orders
+        [HttpGet]
+        [Route("{id:int}/has-orders")]
+        public IHttpActionResult CheckProductHasOrders(int id)
+        {
+            try
+            {
+                if (id <= 0)
+                    return BadRequest("Invalid product ID");
+
+                var existingProduct = _productRepository.GetById(id);
+                if (existingProduct == null)
+                    return NotFound();
+
+                var hasOrders = _productRepository.HasOrderReferences(id);
+                return Ok(ApiResponse<bool>.CreateSuccess(hasOrders, "Product order status checked successfully"));
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
         // DELETE api/products/5
         [HttpDelete]
         [Route("{id:int}")]

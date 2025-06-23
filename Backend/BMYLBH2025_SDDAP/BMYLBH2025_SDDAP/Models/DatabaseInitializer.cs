@@ -14,6 +14,11 @@ namespace BMYLBH2025_SDDAP.Models
             {
                 conn.Open();
                 
+                // Enable foreign key constraints
+                var pragmaCmd = conn.CreateCommand();
+                pragmaCmd.CommandText = "PRAGMA foreign_keys = ON;";
+                pragmaCmd.ExecuteNonQuery();
+                
                 // Create all tables
                 CreateUsersTable(conn);
                 CreateCategoriesTable(conn);
@@ -148,8 +153,8 @@ namespace BMYLBH2025_SDDAP.Models
                     Quantity INTEGER NOT NULL,
                     UnitPrice DECIMAL(10,2) NOT NULL,
                     LineTotal DECIMAL(10,2) NOT NULL,
-                    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
-                    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+                    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID) ON DELETE CASCADE,
+                    FOREIGN KEY (ProductID) REFERENCES Products(ProductID) ON DELETE RESTRICT
                 );";
             cmd.ExecuteNonQuery();
         }

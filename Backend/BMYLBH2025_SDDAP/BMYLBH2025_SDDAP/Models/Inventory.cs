@@ -506,7 +506,7 @@ namespace BMYLBH2025_SDDAP.Models
                     con.Open();
                     const string sql = @"
                         UPDATE Inventory 
-                        SET Quantity = Quantity + @Quantity, 
+                        SET Quantity = @Quantity, 
                             LastUpdated = @LastUpdated 
                         WHERE ProductID = @ProductId";
                         

@@ -22,7 +22,18 @@ namespace BMYLBH2025_SDDAP.Models
         /// <returns>A new SQLite connection instance</returns>
         public IDbConnection CreateConnection()
         {
-            return new SQLiteConnection(_connectionString);
+            var connection = new SQLiteConnection(_connectionString);
+            connection.Open();
+            
+            // Enable foreign key constraints for this connection
+            using (var cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = "PRAGMA foreign_keys = ON;";
+                cmd.ExecuteNonQuery();
+            }
+            
+            connection.Close();
+            return connection;
         }
     }
 }
