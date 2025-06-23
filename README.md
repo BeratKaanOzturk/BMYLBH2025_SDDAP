@@ -253,7 +253,7 @@ This project is created for educational purposes as part of the Software Design 
 
 ## 👥 Team
 
-**Members**: **Berat Kaan ÖZTÜRK** , **Muhammet Hikmet GÜNEŞ** , **Yiğit ESEDOĞLU** 
+**Members**: **Berat Kaan ÖZTÜRK** , **Muhammet Hikmet GÜNEŞ** , **Selçuk Yiğit ESEDOĞLU** 
 **Academic Year**: 2025  
 **Project Code**: BMYLBH2025_SDDAP  
 
