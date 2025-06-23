@@ -3,31 +3,39 @@
   "WorkspaceRootPath": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\backend\\bmylbh2025_sddap\\bmylbh2025_sddap\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\backend\\bmylbh2025_sddap\\bmylbh2025_sddap\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\backend\\bmylbh2025_sddap\\bmylbh2025_sddap\\models\\inventory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\models\\inventory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\backend\\bmylbh2025_sddap\\bmylbh2025_sddap\\controllers\\inventorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\controllers\\inventorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\controllers\\inventorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\backend\\bmylbh2025_sddap\\bmylbh2025_sddap\\models\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\models\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\models\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\backend\\bmylbh2025_sddap\\bmylbh2025_sddap\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\controllers\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\backend\\bmylbh2025_sddap\\bmylbh2025_sddap\\models\\baserepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\models\\baserepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\models\\baserepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\backend\\bmylbh2025_sddap\\bmylbh2025_sddap\\controllers\\healthcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\controllers\\healthcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\controllers\\healthcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|c:\\projects\\kaan\\bmylbh2025_sddap\\backend\\bmylbh2025_sddap\\bmylbh2025_sddap\\controllers\\supplierscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\bmylbh2025_sddap\\controllers\\supplierscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{49FE589B-2411-4635-BE0B-2FC6CBDD8912}|BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP.csproj|solutionrelative:bmylbh2025_sddap\\controllers\\supplierscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -83,19 +91,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "OrdersController.cs",
+              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Controllers\\OrdersController.cs",
+              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Controllers\\OrdersController.cs",
+              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Controllers\\OrdersController.cs",
+              "RelativeToolTip": "BMYLBH2025_SDDAP\\Controllers\\OrdersController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABoAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-23T15:10:50.63Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Product.cs",
+              "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\Product.cs",
+              "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Models\\Product.cs",
+              "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\Product.cs",
+              "RelativeToolTip": "BMYLBH2025_SDDAP\\Models\\Product.cs",
+              "ViewState": "AgIAAHEAAAAAAAAAAAA0wOcAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-23T15:07:11.788Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Inventory.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\Inventory.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Models\\Inventory.cs",
               "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\Inventory.cs",
               "RelativeToolTip": "BMYLBH2025_SDDAP\\Models\\Inventory.cs",
-              "ViewState": "AgIAAHoAAAAAAAAAAAAcwJYAAAA/AAAAAAAAAA==",
+              "ViewState": "AgIAAG4AAAAAAAAAAAAcwIsAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-23T10:49:07.596Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "BaseRepository.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\BaseRepository.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Models\\BaseRepository.cs",
@@ -103,25 +137,24 @@
               "RelativeToolTip": "BMYLBH2025_SDDAP\\Models\\BaseRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-23T10:08:47.562Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-23T10:08:47.562Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "ProductsController.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Controllers\\ProductsController.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Controllers\\ProductsController.cs",
               "ToolTip": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Controllers\\ProductsController.cs",
               "RelativeToolTip": "BMYLBH2025_SDDAP\\Controllers\\ProductsController.cs",
-              "ViewState": "AgIAAJ0AAAAAAAAAAAAiwLgAAAAjAAAAAAAAAA==",
+              "ViewState": "AgIAAJoAAAAAAAAAAAAiwLgAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-23T10:08:38.13Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "InventoryController.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Controllers\\InventoryController.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Controllers\\InventoryController.cs",
@@ -129,12 +162,11 @@
               "RelativeToolTip": "BMYLBH2025_SDDAP\\Controllers\\InventoryController.cs",
               "ViewState": "AgIAABMAAAAAAAAAAAAgwBgAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-23T09:55:03.695Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-23T09:55:03.695Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "SuppliersController.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Controllers\\SuppliersController.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Controllers\\SuppliersController.cs",
@@ -142,12 +174,11 @@
               "RelativeToolTip": "BMYLBH2025_SDDAP\\Controllers\\SuppliersController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-23T09:54:55.367Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-23T09:54:55.367Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "HealthController.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Controllers\\HealthController.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Controllers\\HealthController.cs",
@@ -155,12 +186,11 @@
               "RelativeToolTip": "BMYLBH2025_SDDAP\\Controllers\\HealthController.cs",
               "ViewState": "AgIAADEAAAAAAAAAAAAewLkAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-23T09:53:00.537Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-23T09:53:00.537Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "DatabaseInitializer.cs",
               "DocumentMoniker": "C:\\projects\\kaan\\BMYLBH2025_SDDAP\\Backend\\BMYLBH2025_SDDAP\\BMYLBH2025_SDDAP\\Models\\DatabaseInitializer.cs",
               "RelativeDocumentMoniker": "BMYLBH2025_SDDAP\\Models\\DatabaseInitializer.cs",
@@ -168,8 +198,7 @@
               "RelativeToolTip": "BMYLBH2025_SDDAP\\Models\\DatabaseInitializer.cs",
               "ViewState": "AgIAAFsAAAAAAAAAAAAAAHIAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T07:13:25.465Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-22T07:13:25.465Z"
             }
           ]
         }

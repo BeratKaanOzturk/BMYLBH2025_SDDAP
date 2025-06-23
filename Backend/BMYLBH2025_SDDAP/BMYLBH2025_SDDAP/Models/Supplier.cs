@@ -147,9 +147,11 @@ namespace BMYLBH2025_SDDAP.Models
             {
                 const string sql = @"
                     INSERT INTO Suppliers (Name, ContactPerson, Email, Phone, Address) 
-                    VALUES (@Name, @ContactPerson, @Email, @Phone, @Address)";
+                    VALUES (@Name, @ContactPerson, @Email, @Phone, @Address);
+                    SELECT CAST(last_insert_rowid() AS INTEGER);";
                     
-                con.Execute(sql, entity);
+                var insertedId = con.QuerySingle<int>(sql, entity);
+                entity.SupplierID = insertedId;
             }
         }
         

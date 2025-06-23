@@ -203,9 +203,11 @@ namespace BMYLBH2025_SDDAP.Models
             {
                 const string sql = @"
                     INSERT INTO Categories (Name, Description) 
-                    VALUES (@Name, @Description)";
+                    VALUES (@Name, @Description);
+                    SELECT CAST(last_insert_rowid() AS INTEGER);";
                     
-                con.Execute(sql, entity);
+                var insertedId = con.QuerySingle<int>(sql, entity);
+                entity.CategoryID = insertedId;
             }
         }
         

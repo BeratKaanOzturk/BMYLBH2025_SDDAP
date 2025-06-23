@@ -225,10 +225,12 @@ namespace BMYLBH2025_SDDAP.Models
             {
                 const string sql = @"
                     INSERT INTO Inventory (ProductID, Quantity, LastUpdated) 
-                    VALUES (@ProductID, @Quantity, @LastUpdated)";
+                    VALUES (@ProductID, @Quantity, @LastUpdated);
+                    SELECT CAST(last_insert_rowid() AS INTEGER);";
                     
                 entity.LastUpdated = DateTime.Now;
-                con.Execute(sql, entity);
+                var insertedId = con.QuerySingle<int>(sql, entity);
+                entity.InventoryID = insertedId;
             }
         }
         

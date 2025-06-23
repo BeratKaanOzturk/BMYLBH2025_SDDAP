@@ -445,9 +445,7 @@ namespace BMYLBH2025_SDDAP
             {
                 var productForm = new ProductManagementForm(_apiService);
                 productForm.ShowDialog(this);
-                
-                // Refresh data after the form closes
-                _ = LoadDataAsync();
+                btnRefresh_Click(sender, e);
             }
             catch (Exception ex)
             {
@@ -466,10 +464,9 @@ namespace BMYLBH2025_SDDAP
                 
                 if (result == DialogResult.OK)
                 {
-                    // Refresh all data after successful bulk update
-                    _ = LoadDataAsync();
                     ShowInfoMessage("Bulk stock update completed successfully!");
                 }
+                btnRefresh_Click(sender, e);
             }
             catch (Exception ex)
             {
@@ -497,10 +494,9 @@ namespace BMYLBH2025_SDDAP
                         
                         if (result == DialogResult.OK)
                         {
-                            // Refresh inventory data after successful update
-                            _ = LoadDataAsync();
                             ShowInfoMessage("Stock update completed successfully!");
                         }
+                        btnRefresh_Click(sender, e);
                     }
                     else
                     {
@@ -527,10 +523,9 @@ namespace BMYLBH2025_SDDAP
                 
                 if (result == DialogResult.OK)
                 {
-                    // Refresh all data after successful bulk update
-                    _ = LoadDataAsync();
                     ShowInfoMessage("Bulk stock update completed successfully!");
                 }
+                btnRefresh_Click(sender, e);
             }
             catch (Exception ex)
             {
@@ -595,6 +590,7 @@ namespace BMYLBH2025_SDDAP
             {
                 var categoryForm = new CategoryManagementForm(_apiService);
                 categoryForm.ShowDialog(this);
+                btnRefresh_Click(sender, e);
             }
             catch (Exception ex)
             {
@@ -608,9 +604,7 @@ namespace BMYLBH2025_SDDAP
             {
                 var productForm = new ProductManagementForm(_apiService);
                 productForm.ShowDialog(this);
-                
-                // Refresh data after the form closes
-                _ = LoadDataAsync();
+                btnRefresh_Click(sender, e);
             }
             catch (Exception ex)
             {
@@ -718,10 +712,9 @@ namespace BMYLBH2025_SDDAP
                 
                 if (result == DialogResult.OK)
                 {
-                    // Refresh the orders data after successful creation
-                    _ = LoadDataAsync();
                     ShowInfoMessage("Order created successfully!");
                 }
+                btnRefresh_Click(sender, e);
             }
             catch (Exception ex)
             {
@@ -735,9 +728,7 @@ namespace BMYLBH2025_SDDAP
             {
                 var orderManagementForm = new OrderManagementForm(_apiService);
                 orderManagementForm.ShowDialog(this);
-                
-                // Refresh the orders data after the form closes
-                _ = LoadDataAsync();
+                btnRefresh_Click(sender, e);
             }
             catch (Exception ex)
             {

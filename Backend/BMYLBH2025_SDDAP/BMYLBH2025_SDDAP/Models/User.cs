@@ -133,14 +133,17 @@ namespace BMYLBH2025_SDDAP.Models
         {
             using (var con = _connectionFactory.CreateConnection())
             {
-                con.Execute(
-                    @"INSERT INTO Users (Username, Password, PasswordHash, Email, FullName, Role, IsActive, 
+                const string sql = @"
+                    INSERT INTO Users (Username, Password, PasswordHash, Email, FullName, Role, IsActive, 
                       IsEmailVerified, EmailVerificationToken, PasswordResetToken, PasswordResetExpiry, 
                       PasswordResetOTP, OTPExpiry, CreatedAt, UpdatedAt) 
                       VALUES (@Username, @Password, @PasswordHash, @Email, @FullName, @Role, @IsActive, 
                       @IsEmailVerified, @EmailVerificationToken, @PasswordResetToken, @PasswordResetExpiry, 
-                      @PasswordResetOTP, @OTPExpiry, @CreatedAt, @UpdatedAt)",
-                    entity);
+                      @PasswordResetOTP, @OTPExpiry, @CreatedAt, @UpdatedAt);
+                    SELECT CAST(last_insert_rowid() AS INTEGER);";
+                    
+                var insertedId = con.QuerySingle<int>(sql, entity);
+                entity.UserID = insertedId;
             }
         }
 

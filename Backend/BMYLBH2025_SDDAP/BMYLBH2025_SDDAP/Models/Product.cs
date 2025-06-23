@@ -236,9 +236,11 @@ namespace BMYLBH2025_SDDAP.Models
             {
                 const string sql = @"
                     INSERT INTO Products (Name, Description, Price, MinimumStockLevel, CategoryID) 
-                    VALUES (@Name, @Description, @Price, @MinimumStockLevel, @CategoryID)";
+                    VALUES (@Name, @Description, @Price, @MinimumStockLevel, @CategoryID);
+                    SELECT CAST(last_insert_rowid() AS INTEGER);";
                     
-                con.Execute(sql, entity);
+                var insertedId = con.QuerySingle<int>(sql, entity);
+                entity.ProductID = insertedId;
             }
         }
         

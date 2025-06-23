@@ -151,11 +151,13 @@ namespace BMYLBH2025_SDDAP.Models
             {
                 const string sql = @"
                     INSERT INTO Notifications (UserID, Message, Type, Priority, IsRead, CreatedAt) 
-                    VALUES (@UserID, @Message, @Type, @Priority, @IsRead, @CreatedAt)";
+                    VALUES (@UserID, @Message, @Type, @Priority, @IsRead, @CreatedAt);
+                    SELECT CAST(last_insert_rowid() AS INTEGER);";
                     
                 entity.CreatedAt = DateTime.Now;
                 entity.IsRead = false;
-                con.Execute(sql, entity);
+                var insertedId = con.QuerySingle<int>(sql, entity);
+                entity.NotificationID = insertedId;
             }
         }
         
